@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedBridge - Wireframes</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .wireframe-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .wireframe {
+            background: white;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .phone-frame {
+            width: 375px;
+            margin: 0 auto;
+            border: 3px solid #333;
+            border-radius: 25px;
+            padding: 20px;
+            background: white;
+        }
+        .header {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c5aa0;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #2c5aa0;
+        }
+        .screen-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        .logo {
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+        .user-info {
+            font-size: 12px;
+            color: #666;
+        }
+        .button {
+            background: #2c5aa0;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            margin: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .button.secondary {
+            background: #6c757d;
+        }
+        .button.success {
+            background: #28a745;
+        }
+        .button.warning {
+            background: #ffc107;
+            color: #333;
+        }
+        .case-card {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f9f9f9;
+        }
+        .case-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .case-meta {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .status-draft { background: #ffc107; color: #333; }
+        .status-submitted { background: #17a2b8; color: white; }
+        .status-in-review { background: #fd7e14; color: white; }
+        .status-completed { background: #28a745; color: white; }
+        .form-group {
+            margin: 15px 0;
+        }
+        .form-label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        .radio-group {
+            display: flex;
+            gap: 15px;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+        }
+        .page-btn.active {
+            background: #2c5aa0;
+            color: white;
+        }
+        .review-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+        .wireframe-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+        @media (max-width: 768px) {
+            .wireframe-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wireframe-container">
+        <div class="header">MedBridge Gaza - App Wireframes</div>
+        
+        <!-- Login Screen -->
+        <div class="wireframe">
+            <div class="screen-title">1. Login / Registration Screen</div>
+            <div class="phone-frame">
+                <div class="nav-bar">
+                    <div class="logo">MedBridge Gaza</div>
+                </div>
+                <div style="text-align: center; margin: 40px 0;">
+                    <h2>Welcome Back</h2>
+                    <p>Connecting medical expertise</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input class="form-input" placeholder="doctor@example.com" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input class="form-input" type="password" placeholder="••••••••" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">I am a:</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="userType" /> Internal Doctor</label>
+                        <label><input type="radio" name="userType" /> External Doctor</label>
+                    </div>
+                </div>
+                <button class="button" style="width: 100%; margin-top: 20px;">Login</button>
+                <p style="text-align: center; margin-top: 20px;">
+                    <a href="#" style="color: #2c5aa0;">Don't have an account? Register</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Internal Doctor Dashboard -->
+        <div class="wireframe">
+            <div class="screen-title">2. Internal Doctor Dashboard</div>
+            <div class="phone-frame">
+                <div class="nav-bar">
+                    <div class="logo">MedBridge Gaza</div>
+                    <div class="user-info">Dr. Ahmad M.<br/>Internal</div>
+                </div>
+                <div style="text-align: center; margin: 20px 0;">
+                    <h3>Welcome back, Dr. Ahmad</h3>
+                    <button class="button" style="width: 100%; font-size: 16px;">+ Create New Case</button>
+                </div>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">12</div>
+                        <div>Total Cases</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">3</div>
+                        <div>Pending Review</div>
+                    </div>
+                </div>
+
+                <h4>My Recent Cases</h4>
+                <div class="case-card">
+                    <div class="case-title">Chest Pain - 45yr Male</div>
+                    <div class="case-meta">Cardiology • 2 days ago</div>
+                    <span class="status-badge status-in-review">In Review</span>
+                </div>
+                <div class="case-card">
+                    <div class="case-title">Fracture - 30yr Female</div>
+                    <div class="case-meta">Orthopedics • 5 days ago</div>
+                    <span class="status-badge status-completed">Completed</span>
+                </div>
+                <div class="case-card">
+                    <div class="case-title">Pediatric Fever</div>
+                    <div class="case-meta">Pediatrics • 1 week ago</div>
+                    <span class="status-badge status-draft">Draft</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Case Creation Form -->
+        <div class="wireframe">
+            <div class="screen-title">3. Create New Case Form</div>
+            <div class="phone-frame">
+                <div class="nav-bar">
+                    <div>← Back</div>
+                    <div class="logo">New Case</div>
+                    <div></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Case Title</label>
+                    <input class="form-input" placeholder="Brief case description" />
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Age Range</label>
+                    <select class="form-input">
+                        <option>0-5 years</option>
+                        <option>6-12 years</option>
+                        <option>13-17 years</option>
+                        <option>18-30 years</option>
+                        <option>31-50 years</option>
+                        <option>51+ years</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Gender</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="gender" /> Male</label>
+                        <label><input type="radio" name="gender" /> Female</label>
+                        <label><input type="radio" name="gender" /> Other</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Case Type</label>
+                    <select class="form-input">
+                        <option>Cardiology</option>
+                        <option>Orthopedics</option>
+                        <option>Emergency</option>
+                        <option>Pediatrics</option>
+                        <option>Surgery</option>
+                        <option>General Medicine</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Symptoms</label>
+                    <textarea class="form-input textarea" placeholder="Describe symptoms and presentation..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Medical History</label>
+                    <textarea class="form-input textarea" placeholder="Relevant medical history..."></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 30px;">
+                    <button class="button secondary" style="flex: 1;">Save Draft</button>
+                    <button class="button" style="flex: 1;">Submit for Review</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- External Doctor Dashboard -->
+        <div class="wireframe">
+            <div class="screen-title">4. External Doctor Dashboard</div>
+            <div class="phone-frame">
+                <div class="nav-bar">
+                    <div class="logo">MedBridge Gaza</div>
+                    <div class="user-info">Dr. Sarah K.<br/>External</div>
+                </div>
+                
+                <div style="margin: 20px 0;">
+                    <h3>Available Cases for Review</h3>
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <select class="form-input" style="width: auto;">
+                            <option>All Types</option>
+                            <option>Cardiology</option>
+                            <option>Orthopedics</option>
+                            <option>Emergency</option>
+                        </select>
+                        <button class="button secondary" style="padding: 8px 12px;">Filter</button>
+                    </div>
+                </div>
+
+                <div class="case-card">
+                    <div class="case-title">Chest Pain - 45yr Male</div>
+                    <div class="case-meta">Cardiology • Submitted 2 days ago</div>
+                    <button class="button" style="padding: 6px 12px; font-size: 12px;">Assign to Me</button>
+                </div>
+                
+                <div class="case-card">
+                    <div class="case-title">Severe Headache - 28yr Female</div>
+                    <div class="case-meta">Emergency • Submitted 1 day ago</div>
+                    <button class="button" style="padding: 6px 12px; font-size: 12px;">Assign to Me</button>
+                </div>
+                
+                <div class="case-card">
+                    <div class="case-title">Pediatric Respiratory Issue</div>
+                    <div class="case-meta">Pediatrics • Submitted 3 hours ago</div>
+                    <button class="button" style="padding: 6px 12px; font-size: 12px;">Assign to Me</button>
+                </div>
+
+                <div class="pagination">
+                    <button class="page-btn">←</button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn">→</button>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <h4>My Assigned Cases (2)</h4>
+                    <div class="case-card" style="background: #e8f4f8;">
+                        <div class="case-title">Joint Pain - 55yr Male</div>
+                        <div class="case-meta">Orthopedics • Assigned 1 day ago</div>
+                        <button class="button warning" style="padding: 6px 12px; font-size: 12px;">Review</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Case Review Interface -->
+        <div class="wireframe">
+            <div class="screen-title">5. Case Review Interface</div>
+            <div class="phone-frame">
+                <div class="nav-bar">
+                    <div>← Back</div>
+                    <div class="logo">Review Case</div>
+                    <div></div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                    <h4>Chest Pain - 45yr Male</h4>
+                    <div class="case-meta">Cardiology • Submitted by Dr. Ahmad M. • 2 days ago</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Patient Details</label>
+                    <p>Age: 45-50 years • Gender: Male</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Symptoms</label>
+                    <div style="background: #f8f9fa; padding: 10px; border-radius: 4px;">
+                        Patient presented with acute chest pain, radiating to left arm. Pain started 2 hours ago during physical exertion...
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Medical History</label>
+                    <div style="background: #f8f9fa; padding: 10px; border-radius: 4px;">
+                        Previous hypertension, family history of cardiac disease. No previous cardiac events...
+                    </div>
+                </div>
+
+                <div class="review-actions">
+                    <button class="button success" style="flex: 1;">✓ Approve</button>
+                    <button class="button warning" style="flex: 1;">? Question</button>
+                    <button class="button secondary" style="flex: 1;">💬 Feedback</button>
+                </div>
+
+                <div id="feedback-form" style="margin-top: 20px; display: none; background: #f8f9fa; padding: 15px; border-radius: 6px;">
+                    <label class="form-label">Your Feedback</label>
+                    <textarea class="form-input textarea" placeholder="Provide your professional feedback..."></textarea>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button class="button secondary">Cancel</button>
+                        <button class="button">Submit Feedback</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback View for Internal Doctor -->
+        <div class="wireframe">
+            <div class="screen-title">6. Case with Feedback (Internal Doctor View)</div>
+            <div class="phone-frame">
+                <div class="nav-bar">
+                    <div>← Back</div>
+                    <div class="logo">Case Details</div>
+                    <div></div>
+                </div>
+                
+                <div class="case-card" style="background: #d4edda;">
+                    <div class="case-title">Chest Pain - 45yr Male</div>
+                    <div class="case-meta">Cardiology • 2 days ago</div>
+                    <span class="status-badge status-completed">Reviewed</span>
+                </div>
+
+                <h4>Review Feedback</h4>
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin: 15px 0;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <strong>Dr. Sarah K.</strong>
+                        <small>2 hours ago</small>
+                    </div>
+                    <div style="background: #e8f4f8; padding: 10px; border-radius: 4px;">
+                        <strong>✓ Approved</strong>
+                        <p style="margin: 5px 0 0 0;">Excellent diagnosis and treatment plan. The ECG findings support your assessment. Consider adding troponin levels for complete workup.</p>
+                    </div>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin: 15px 0;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <strong>Dr. James L.</strong>
+                        <small>1 day ago</small>
+                    </div>
+                    <div style="background: #fff3cd; padding: 10px; border-radius: 4px;">
+                        <strong>? Question</strong>
+                        <p style="margin: 5px 0 0 0;">Did you consider stress testing? What was the BP reading during the episode?</p>
+                    </div>
+                </div>
+
+                <button class="button" style="width: 100%; margin-top: 20px;">Reply to Feedback</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple interaction for feedback form
+        document.addEventListener('click', function(e) {
+            if (e.target.textContent.includes('Feedback') || e.target.textContent.includes('💬')) {
+                const feedbackForm = document.getElementById('feedback-form');
+                if (feedbackForm) {
+                    feedbackForm.style.display = feedbackForm.style.display === 'none' ? 'block' : 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
