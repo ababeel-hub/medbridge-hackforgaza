@@ -1,7 +1,7 @@
 {
   "name": "ShifaLink",
   "short_name": "ShifaLink",
-  "description": "Medical consultation platform for healthcare professionals",
+  "description": "A progressive web application for medical personnel in Gaza to seek expert medical opinions and guidance",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -12,18 +12,60 @@
   "categories": ["medical", "health", "productivity"],
   "icons": [
     {
-      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjMmM1YWEwIi8+CjxyZWN0IHg9Ijc3IiB5PSIzOCIgd2lkdGg9IjM4IiBoZWlnaHQ9IjExNiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iMzgiIHk9Ijc3IiB3aWR0aD0iMTE2IiBoZWlnaHQ9IjM4IiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K",
+      "src": "icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
     }
   ],
   "shortcuts": [
     {
-      "name": "Create New Case",
+      "name": "Submit Case",
       "short_name": "New Case",
-      "description": "Create a new medical case for consultation",
-      "url": "/?view=case-creation",
+      "description": "Submit a new medical case for review",
+      "url": "/submit-case",
       "icons": [
         {
           "src": "icons/icon-96x96.png",
@@ -32,10 +74,10 @@
       ]
     },
     {
-      "name": "My Cases",
+      "name": "View Cases",
       "short_name": "Cases",
-      "description": "View your submitted cases",
-      "url": "/?view=internal-dashboard",
+      "description": "View all submitted cases",
+      "url": "/cases",
       "icons": [
         {
           "src": "icons/icon-96x96.png",

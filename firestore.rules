@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // DEMO MODE: Allow public read access for testing
+    // TODO: Restore authentication requirements for production
+    
+    // Cases collection - public read, restricted write
+    match /cases/{caseId} {
+      allow read: if true; // Public read for demo
+      allow create, update, delete: if true; // Public write for demo
+    }
+    
+    // Answers collection - public read, restricted write  
+    match /answers/{answerId} {
+      allow read: if true; // Public read for demo
+      allow create, update, delete: if true; // Public write for demo
+    }
+    
+    // Users collection - public read for demo
+    match /users/{userId} {
+      allow read: if true; // Public read for demo
+      allow create, update, delete: if true; // Public write for demo
+    }
+    
+    // Votes collection - public read, restricted write
+    match /votes/{voteId} {
+      allow read: if true; // Public read for demo
+      allow create, update, delete: if true; // Public write for demo
+    }
+    
+    // Test collection - for testing purposes
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+    
+    // Fallback rule for any other collections
+    match /{document=**} {
+      allow read, write: if true; // Public access for demo mode
+    }
+  }
+} 
