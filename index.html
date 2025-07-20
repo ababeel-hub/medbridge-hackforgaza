@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedBridge Gaza</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2c5aa0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="MedBridge Gaza">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2c5aa0',
+                        secondary: '#6c757d'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, enableNetwork, disableNetwork } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCVE0UlE4gGSYNiRbt_QhwkuN_ebeNZFCc",
+            authDomain: "medbridge-hackforgaza.firebaseapp.com",
+            projectId: "medbridge-hackforgaza",
+            storageBucket: "medbridge-hackforgaza.firebasestorage.app",
+            messagingSenderId: "750494963580",
+            appId: "1:750494963580:web:f72e4caf4764aa0a6276f9",
+            measurementId: "G-BHJ03BEXXG"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Enable Firestore offline persistence
+        // This is enabled by default in newer versions of Firebase
+
+        // Global Firebase objects for use in other scripts
+        window.firebaseApp = app;
+        window.firebaseAuth = auth;
+        window.firebaseDb = db;
+
+        // Authentication state listener
+        onAuthStateChanged(auth, (user) => {
+            console.log('Auth state changed:', user ? 'User logged in' : 'No user');
+            if (user) {
+                console.log('User ID:', user.uid);
+                // Update UI based on authentication state
+                updateAuthUI(user);
+            } else {
+                // User is signed out
+                updateAuthUI(null);
+            }
+        });
+
+        // Authentication functions
+        async function signInWithEmail(email, password) {
+            try {
+                const result = await signInWithEmailAndPassword(auth, email, password);
+                console.log('Email sign-in successful:', result.user.uid);
+                return result.user;
+            } catch (error) {
+                console.error('Email sign-in failed:', error);
+                throw error;
+            }
+        }
+
+        async function createUserWithEmail(email, password) {
+            try {
+                const result = await createUserWithEmailAndPassword(auth, email, password);
+                console.log('User creation successful:', result.user.uid);
+                return result.user;
+            } catch (error) {
+                console.error('User creation failed:', error);
+                throw error;
+            }
+        }
+
+        async function signOutUser() {
+            try {
+                await signOut(auth);
+                console.log('Sign out successful');
+            } catch (error) {
+                console.error('Sign out failed:', error);
+            }
+        }
+
+        // Update UI based on authentication state
+        function updateAuthUI(user) {
+            const authStatus = document.getElementById('auth-status');
+            const userInfo = document.getElementById('user-info');
+            const loginSection = document.getElementById('login-section');
+            const dashboardSection = document.getElementById('dashboard-section');
+            
+            if (user) {
+                authStatus.textContent = 'Authenticated';
+                authStatus.className = 'text-green-600 font-semibold';
+                userInfo.textContent = `User: ${user.email}`;
+                userInfo.className = 'text-sm text-gray-600';
+                
+                // Show dashboard, hide login
+                loginSection.classList.add('hidden');
+                dashboardSection.classList.remove('hidden');
+            } else {
+                authStatus.textContent = 'Not Authenticated';
+                authStatus.className = 'text-red-600 font-semibold';
+                userInfo.textContent = '';
+                
+                // Show login, hide dashboard
+                loginSection.classList.remove('hidden');
+                dashboardSection.classList.add('hidden');
+            }
+        }
+
+        // Initialize authentication (no auto sign-in for email/password)
+        // Users will need to login manually
+
+        // Network status handling for offline capability
+        window.addEventListener('online', () => {
+            console.log('App is online');
+            enableNetwork(db);
+        });
+
+        window.addEventListener('offline', () => {
+            console.log('App is offline');
+        });
+
+        // Export for use in other scripts
+        window.firebaseUtils = {
+            signInWithEmail,
+            createUserWithEmail,
+            signOutUser,
+            updateAuthUI
+        };
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-primary text-white shadow-lg">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold">🏥 MedBridge Gaza</h1>
+                    <div class="flex items-center space-x-4 text-sm">
+                        <div>
+                            <span class="font-semibold">Auth:</span>
+                            <span id="auth-status" class="ml-2">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="user-info" class="text-sm mt-2"></div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-8">
+            <div class="max-w-4xl mx-auto">
+
+
+                <!-- Login Form (shown when not authenticated) -->
+                <div id="login-section" class="bg-white rounded-lg shadow-md p-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">Welcome to MedBridge Gaza</h2>
+                    <p class="text-gray-600 mb-6 text-center">
+                        A progressive web application for medical personnel in Gaza to seek expert medical opinions and guidance.
+                    </p>
+                    
+                    <div id="login-form" class="max-w-md mx-auto">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                                Email
+                            </label>
+                            <input type="email" id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="doctor@example.com">
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                                Password
+                            </label>
+                            <input type="password" id="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" placeholder="••••••••">
+                        </div>
+                        <div class="flex items-center justify-between mb-4">
+                            <label class="flex items-center">
+                                <input type="radio" name="userType" value="internal" class="mr-2" checked>
+                                <span class="text-sm">Internal Doctor</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="userType" value="external" class="mr-2">
+                                <span class="text-sm">External Doctor</span>
+                            </label>
+                        </div>
+                        <div class="flex space-x-4">
+                            <button id="login-btn" class="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex-1">
+                                Login
+                            </button>
+                            <button id="register-btn" class="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors flex-1">
+                                Register
+                            </button>
+                        </div>
+                        <div id="auth-error" class="text-red-600 text-sm mt-2 text-center hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Dashboard (shown when authenticated) -->
+                <div id="dashboard-section" class="bg-white rounded-lg shadow-md p-8 text-center hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome to MedBridge Gaza</h2>
+                    <p class="text-gray-600 mb-6">
+                        A progressive web application for medical personnel in Gaza to seek expert medical opinions and guidance.
+                    </p>
+                    <div class="flex justify-center space-x-4">
+                        <button id="populate-mock" class="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                            Populate Mock Data
+                        </button>
+                        <button id="view-data" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                            View Data
+                        </button>
+                        <button id="signout-btn" class="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors">
+                            Sign Out
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Mock Data Script -->
+    <script src="mock-data.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        // Register Service Worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered successfully:', registration);
+                    })
+                    .catch((error) => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
+        } else {
+            console.log('Service Worker not supported');
+        }
+
+        // Authentication button functionality
+        document.getElementById('login-btn').addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('auth-error');
+            
+            if (!email || !password) {
+                errorDiv.textContent = 'Please enter both email and password';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+            
+            try {
+                await window.firebaseUtils.signInWithEmail(email, password);
+                errorDiv.classList.add('hidden');
+            } catch (error) {
+                errorDiv.textContent = `Login failed: ${error.message}`;
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('register-btn').addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const userType = document.querySelector('input[name="userType"]:checked').value;
+            const errorDiv = document.getElementById('auth-error');
+            
+            if (!email || !password) {
+                errorDiv.textContent = 'Please enter both email and password';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+            
+            if (password.length < 6) {
+                errorDiv.textContent = 'Password must be at least 6 characters';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+            
+            try {
+                const user = await window.firebaseUtils.createUserWithEmail(email, password);
+                
+                // Create user profile in Firestore
+                const { setDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                await setDoc(doc(window.firebaseDb, 'users', user.uid), {
+                    uid: user.uid,
+                    email: user.email,
+                    displayName: user.email.split('@')[0], // Use email prefix as display name
+                    userType: userType,
+                    specialty: 'General Medicine', // Default specialty
+                    hospital: 'To be updated',
+                    location: 'Gaza',
+                    experience: 'To be updated',
+                    phone: '',
+                    isVerified: false,
+                    createdAt: new Date(),
+                    lastActive: new Date()
+                });
+                
+                errorDiv.classList.add('hidden');
+            } catch (error) {
+                errorDiv.textContent = `Registration failed: ${error.message}`;
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('signout-btn').addEventListener('click', async () => {
+            await window.firebaseUtils.signOutUser();
+        });
+
+        // Button functionality
+
+
+        document.getElementById('populate-mock').addEventListener('click', async () => {
+            if (confirm('This will populate your Firestore database with comprehensive mock data. Continue?')) {
+                try {
+                    const { setDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                    
+                    if (!window.firebaseDb) {
+                        alert('❌ Firebase not initialized');
+                        return;
+                    }
+
+                    console.log('Starting to populate Firestore with comprehensive mock data...');
+                    
+                    // Use the existing mock data from mock-data.js
+                    if (typeof window.MOCK_DATA === 'undefined') {
+                        alert('❌ Mock data not loaded. Please refresh the page and try again.');
+                        return;
+                    }
+
+                    const mockData = window.MOCK_DATA;
+                    
+                    // Add users
+                    console.log('Adding users...');
+                    for (const user of mockData.users) {
+                        await setDoc(doc(window.firebaseDb, 'users', user.uid), user);
+                        console.log(`  ✅ Added user: ${user.displayName}`);
+                    }
+                    
+                    // Add cases
+                    console.log('Adding medical cases...');
+                    console.log('Cases to add:', mockData.cases.length);
+                    for (const caseData of mockData.cases) {
+                        console.log('Adding case:', caseData.title, 'with ID:', caseData.id);
+                        await setDoc(doc(window.firebaseDb, 'cases', caseData.id), caseData);
+                        console.log(`  ✅ Added case: ${caseData.title}`);
+                    }
+                    
+                    // Add answers
+                    console.log('Adding answers/feedback...');
+                    for (const answer of mockData.answers) {
+                        await setDoc(doc(window.firebaseDb, 'answers', answer.id), answer);
+                        console.log(`  ✅ Added answer: ${answer.id}`);
+                    }
+                    
+                    // Add votes
+                    console.log('Adding votes...');
+                    for (const vote of mockData.votes) {
+                        await setDoc(doc(window.firebaseDb, 'votes', vote.id), vote);
+                        console.log(`  ✅ Added vote: ${vote.id}`);
+                    }
+                    
+                    alert(`✅ Comprehensive mock data populated successfully!\n\n📊 Summary:\n- Users: ${mockData.users.length}\n- Cases: ${mockData.cases.length}\n- Answers: ${mockData.answers.length}\n- Votes: ${mockData.votes.length}\n\nCheck the console for details.`);
+                    console.log('✅ Firestore population completed successfully!');
+                    
+                } catch (error) {
+                    alert(`❌ Error populating mock data: ${error.message}`);
+                    console.error('Error:', error);
+                }
+            }
+        });
+
+        document.getElementById('view-data').addEventListener('click', async () => {
+            try {
+                const { collection, getDocs } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                
+                if (!window.firebaseDb) {
+                    alert('❌ Firebase not initialized');
+                    return;
+                }
+
+                console.log('Fetching data from Firestore...');
+                
+                // Get users
+                const usersSnapshot = await getDocs(collection(window.firebaseDb, 'users'));
+                const users = [];
+                usersSnapshot.forEach(doc => {
+                    users.push({ id: doc.id, ...doc.data() });
+                });
+                
+                // Get cases
+                const casesSnapshot = await getDocs(collection(window.firebaseDb, 'cases'));
+                const cases = [];
+                casesSnapshot.forEach(doc => {
+                    cases.push({ id: doc.id, ...doc.data() });
+                });
+                
+                // Get answers
+                const answersSnapshot = await getDocs(collection(window.firebaseDb, 'answers'));
+                const answers = [];
+                answersSnapshot.forEach(doc => {
+                    answers.push({ id: doc.id, ...doc.data() });
+                });
+                
+                console.log('📊 Database Contents:');
+                console.log('Users:', users.length, users);
+                console.log('Cases:', cases.length, cases);
+                console.log('Answers:', answers.length, answers);
+                
+                let dataSummary = `📊 Database Contents:\n\n`;
+                dataSummary += `👥 Users: ${users.length}\n`;
+                dataSummary += `📋 Cases: ${cases.length}\n`;
+                dataSummary += `💬 Answers: ${answers.length}\n\n`;
+                
+                if (cases.length > 0) {
+                    dataSummary += `📋 Cases:\n`;
+                    cases.forEach(caseData => {
+                        dataSummary += `- ${caseData.title} (${caseData.specialty})\n`;
+                    });
+                }
+                
+                if (users.length > 0) {
+                    dataSummary += `\n👥 Users:\n`;
+                    users.forEach(user => {
+                        dataSummary += `- ${user.displayName} (${user.userType})\n`;
+                    });
+                }
+                
+                alert(dataSummary);
+                
+            } catch (error) {
+                alert(`❌ Error viewing data: ${error.message}`);
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html> 
