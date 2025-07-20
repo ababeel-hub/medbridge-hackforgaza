@@ -1,4 +1,4 @@
-const CACHE_NAME = 'medbridge-gaza-v7-dev'; // Updated version for development
+const CACHE_NAME = 'shifalink-v7-dev'; // Updated version for development
 const urlsToCache = [
   '/',
   '/index.html',

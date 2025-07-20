@@ -1,8 +1,8 @@
-# MedBridge Gaza PWA - Implementation Guide
+# ShifaLink PWA - Implementation Guide
 
 ## Overview
 
-This document describes the Progressive Web Application (PWA) implementation for MedBridge Gaza, a medical consultation platform designed for healthcare professionals in Gaza.
+This document describes the Progressive Web Application (PWA) implementation for ShifaLink, a medical consultation platform designed for healthcare professionals.
 
 ## 🏗️ Architecture
 
@@ -20,7 +20,7 @@ This document describes the Progressive Web Application (PWA) implementation for
 ## 🚀 PWA Features
 
 ### Manifest (`manifest.json`)
-- **App name**: "MedBridge Gaza"
+- **App name**: "ShifaLink"
 - **Display mode**: Standalone (app-like experience)
 - **Theme colors**: Medical blue (#2c5aa0)
 - **Icons**: Multiple sizes for different devices
@@ -133,7 +133,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 ```javascript
 // Cases collection
 {
-  id: "MB-2024-001",
+  id: "MB-2025-001",
   title: "Case title",
   description: "Detailed description",
   symptoms: "Key symptoms",
@@ -148,7 +148,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 // Responses collection
 {
   id: "RES-001",
-  caseId: "MB-2024-001",
+  caseId: "MB-2025-001",
   content: "Expert response",
   author: "expert-id",
   authorName: "Dr. Smith",
@@ -209,4 +209,4 @@ For technical issues or questions about the PWA implementation, please refer to 
 
 ---
 
-**MedBridge Gaza PWA** - Empowering healthcare professionals through technology. 
+**ShifaLink PWA** - Empowering healthcare professionals through technology. 

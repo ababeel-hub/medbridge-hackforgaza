@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MedBridge Gaza - Medical consultation platform for healthcare professionals">
+    <meta name="description" content="ShifaLink - Medical consultation platform for healthcare professionals">
     <meta name="theme-color" content="#2c5aa0">
     
     <!-- PWA Manifest -->
@@ -15,7 +15,7 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjMmM1YWEwIi8+CjxyZWN0IHg9Ijc3IiB5PSIzOCIgd2lkdGg9IjM4IiBoZWlnaHQ9IjExNiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iMzgiIHk9Ijc3IiB3aWR0aD0iMTE2IiBoZWlnaHQ9IjM4IiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
     
-    <title>MedBridge Gaza</title>
+    <title>ShifaLink</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com/3.3.0"></script>
@@ -24,12 +24,15 @@
     <!-- Custom CSS Variables and Base Styles -->
     <style>
         :root {
-            --primary-blue: #2c5aa0;
-            --success-green: #28a745;
-            --warning-yellow: #ffc107;
-            --danger-red: #dc3545;
-            --light-gray: #f8f9fa;
-            --dark-gray: #343a40;
+            --primary-olive: #6b7744;
+            --primary-olive-dark: #556032;
+            --primary-olive-light: #8b9b5f;
+            --success-green: #7ba05b;
+            --warning-yellow: #b8a068;
+            --danger-red: #a0544b;
+            --light-olive: #f5f6f2;
+            --dark-olive: #3d4229;
+            --accent-olive: #9aab7a;
         }
         
         * {
@@ -39,8 +42,8 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
-            color: var(--dark-gray);
-            background-color: var(--light-gray);
+            color: var(--dark-olive);
+            background-color: var(--light-olive);
             margin: 0;
             padding: 0;
         }
@@ -71,13 +74,62 @@
             font-size: 16px;
         }
         
+        /* Voice Input Styles */
+        .voice-input-container {
+            position: relative;
+        }
+        
+        .voice-btn {
+            background: var(--accent-olive);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .voice-btn:hover {
+            background: var(--primary-olive);
+        }
+        
+        .voice-btn.recording {
+            background: #ef4444;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .voice-btn.processing {
+            background: #f59e0b;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .voice-status {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        
+        .microphone-icon {
+            width: 16px;
+            height: 16px;
+        }
+        
         .btn-primary {
-            background-color: var(--primary-blue);
+            background-color: var(--primary-olive);
             color: white;
         }
         
         .btn-primary:hover {
-            background-color: #1e4a8a;
+            background-color: var(--primary-olive-dark);
             transform: translateY(-1px);
         }
         
@@ -174,7 +226,8 @@
         
         /* Navigation */
         .nav-bar {
-            background: white;
+            background: linear-gradient(135deg, var(--primary-olive), var(--primary-olive-dark));
+            color: white;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             padding: 16px 20px;
             position: sticky;
@@ -182,13 +235,26 @@
             z-index: 100;
         }
         
+        /* Logo Styles */
+        .logo {
+            height: 40px;
+            width: auto;
+            margin-right: 12px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
         /* Stats cards */
         .stat-card {
-            background: linear-gradient(135deg, var(--primary-blue), #1e4a8a);
+            background: linear-gradient(135deg, var(--primary-olive), var(--primary-olive-dark));
             color: white;
             border-radius: 12px;
             padding: 20px;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .stat-number {
@@ -237,17 +303,29 @@
 </head>
 <body>
     <!-- Login View -->
-    <div id="login-view" class="view active min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-50">
-        <div class="w-full max-w-md mx-4">
-            <!-- Logo and Title -->
+    <div id="login-view" class="view active min-h-screen flex items-center justify-center" style="background: linear-gradient(135deg, var(--light-olive), var(--accent-olive));">
+        <div class="card max-w-md w-full mx-4">
             <div class="text-center mb-8">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                    </svg>
+                <div class="logo-variation mb-6">
+                    <div class="logo-container justify-center mb-4">
+                        <img src="logo.png?v=3" alt="ShifaLink Logo" class="logo" style="height: 100px;">
+                    </div>
+                    <div class="tagline-v4" style="
+                        font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+                        font-size: 14px;
+                        font-weight: 400;
+                        color: var(--primary-olive-dark);
+                        letter-spacing: 0.3px;
+                        margin-bottom: 8px;
+                    ">Healing Beyond Borders</div>
+                    <div class="accent-line" style="
+                        width: 50px;
+                        height: 2px;
+                        background: linear-gradient(90deg, var(--primary-olive-light), var(--primary-olive-dark));
+                        margin: 8px auto 0;
+                        border-radius: 1px;
+                    "></div>
                 </div>
-                <h1 class="text-3xl font-bold text-gray-900 mb-2">MedBridge Gaza</h1>
-                <p class="text-gray-600">Connecting medical expertise worldwide</p>
             </div>
 
             <!-- Error Message -->
@@ -263,15 +341,17 @@
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
                         <input type="email" id="email" name="email" required 
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                               placeholder="demo@medbridge.ps">
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-blue-500 transition-colors"
+                               style="--tw-ring-color: var(--primary-olive);"
+                           placeholder="demo@medbridge.ps">
                     </div>
                     
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
                         <input type="password" id="password" name="password" required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                               placeholder="Enter any password">
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-blue-500 transition-colors"
+                               style="--tw-ring-color: var(--primary-olive);"
+                           placeholder="Enter any password">
                     </div>
                     
                     <div>
@@ -304,11 +384,13 @@
         <nav class="nav-bar">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <h1 class="text-xl font-bold text-blue-900">MedBridge Gaza</h1>
+                    <div class="logo-container">
+                        <img src="logo.png?v=2" alt="ShifaLink Logo" class="logo" style="height: 50px;">
+                    </div>
                 </div>
                 <div class="flex items-center space-x-4">
                     <button id="install-btn" class="btn btn-success text-sm" style="display: none;">📱 Install App</button>
-                    <span class="text-sm text-gray-600">Dr. <span id="doctor-name">Loading...</span></span>
+                    <span class="text-sm text-white">Dr. <span id="doctor-name">Loading...</span></span>
                     <button id="logout-btn" class="btn btn-secondary text-sm">Logout</button>
                 </div>
             </div>
@@ -478,11 +560,14 @@
         <nav class="nav-bar">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
+                    <div class="logo-container">
+                        <img src="logo.png?v=2" alt="ShifaLink Logo" class="logo" style="height: 50px;">
+                    </div>
                     <button id="back-to-dashboard" class="btn btn-secondary text-sm">← Back to Dashboard</button>
-                    <h1 class="text-xl font-bold text-blue-900">Create New Case</h1>
+                    <h1 class="text-xl font-bold text-white">Create New Case</h1>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-600">Dr. <span id="case-doctor-name">Ahmed Hassan</span></span>
+                    <span class="text-sm text-white">Dr. <span id="case-doctor-name">Ahmed Hassan</span></span>
                 </div>
             </div>
         </nav>
@@ -495,29 +580,87 @@
                         <label for="case-title" class="block text-sm font-medium text-gray-700 mb-2">Case Title *</label>
                         <input type="text" id="case-title" name="title" required 
                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                               placeholder="Brief description of the case">
+                               placeholder="Brief case description">
                     </div>
                     
                     <div>
-                        <label for="case-description" class="block text-sm font-medium text-gray-700 mb-2">Detailed Description *</label>
-                        <textarea id="case-description" name="description" rows="6" required 
-                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                  placeholder="Provide detailed information about the patient's condition, symptoms, and your concerns"></textarea>
+                        <label for="age-range" class="block text-sm font-medium text-gray-700 mb-2">Age Range *</label>
+                        <select id="age-range" name="age_range" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Select age range</option>
+                            <option value="0-5">0-5 years</option>
+                            <option value="6-12">6-12 years</option>
+                            <option value="13-17">13-17 years</option>
+                            <option value="18-30">18-30 years</option>
+                            <option value="31-50">31-50 years</option>
+                            <option value="51+">51+ years</option>
+                        </select>
                     </div>
                     
                     <div>
-                        <label for="case-symptoms" class="block text-sm font-medium text-gray-700 mb-2">Key Symptoms</label>
-                        <textarea id="case-symptoms" name="symptoms" rows="3" 
-                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                  placeholder="List the main symptoms observed"></textarea>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Gender *</label>
+                        <div class="flex space-x-6">
+                            <label class="flex items-center">
+                                <input type="radio" name="gender" value="male" required 
+                                       class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                <span class="ml-2 text-sm text-gray-700">Male</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="gender" value="female" required 
+                                       class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                <span class="ml-2 text-sm text-gray-700">Female</span>
+                            </label>
+                        </div>
                     </div>
                     
                     <div>
-                        <label for="case-tags" class="block text-sm font-medium text-gray-700 mb-2">Medical Tags</label>
-                        <input type="text" id="case-tags" name="tags" 
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                               placeholder="e.g., trauma, pediatrics, emergency, surgery">
-                        <p class="text-xs text-gray-500 mt-1">Separate tags with commas</p>
+                        <label for="case-type" class="block text-sm font-medium text-gray-700 mb-2">Case Type *</label>
+                        <select id="case-type" name="case_type" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Select case type</option>
+                            <option value="cardiology">Cardiology</option>
+                            <option value="orthopedics">Orthopedics</option>
+                            <option value="emergency">Emergency</option>
+                            <option value="pediatrics">Pediatrics</option>
+                            <option value="surgery">Surgery</option>
+                            <option value="general">General Medicine</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="case-symptoms" class="block text-sm font-medium text-gray-700 mb-2">Symptoms *</label>
+                        <div class="voice-input-container">
+                            <textarea id="case-symptoms" name="symptoms" rows="4" required 
+                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                      placeholder="Describe symptoms and presentation..."></textarea>
+                            <button type="button" onclick="startVoiceInput('case-symptoms')" class="voice-btn mt-2">
+                                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
+                                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 00-1-1z"/>
+                                </svg>
+                                🎤 Speak Symptoms
+                            </button>
+                            <div id="case-symptoms-status" class="voice-status"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="medical-history" class="block text-sm font-medium text-gray-700 mb-2">Medical History *</label>
+                        <div class="voice-input-container">
+                            <textarea id="medical-history" name="medical_history" rows="4" required 
+                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                      placeholder="Relevant medical history..."></textarea>
+                            <button type="button" onclick="startVoiceInput('medical-history')" class="voice-btn mt-2">
+                                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
+                                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                                </svg>
+                                🎤 Speak Medical History
+                            </button>
+                            <div id="medical-history-status" class="voice-status"></div>
+                        </div>
                     </div>
                     
                     <div>
@@ -531,20 +674,12 @@
                         </select>
                     </div>
                     
-                    <div class="flex items-center space-x-3">
-                        <input type="checkbox" id="research-consent" name="research_consent" 
-                               class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-                        <label for="research-consent" class="text-sm text-gray-700">
-                            I consent to this case being used for research and training purposes (anonymized)
-                        </label>
-                    </div>
-                    
                     <div class="flex space-x-4 pt-6">
                         <button type="button" id="save-draft-btn" class="btn btn-secondary flex-1">
-                            Save as Draft
+                            Save Draft
                         </button>
                         <button type="submit" class="btn btn-primary flex-1">
-                            Submit Case
+                            Submit for Review
                         </button>
                     </div>
                 </form>
@@ -574,7 +709,7 @@
                     <div>
                         <h2 id="detail-case-title" class="text-2xl font-bold text-gray-900 mb-2">Trauma Case - Compound Fracture</h2>
                         <div class="flex items-center space-x-4 text-sm text-gray-600">
-                            <span>Case ID: #MB-2024-001</span>
+                            <span>Case ID: #MB-2025-001</span>
                             <span>Submitted: 2 hours ago</span>
                             <span class="status-badge status-in-review">In Review</span>
                         </div>
@@ -658,11 +793,13 @@
         <nav class="nav-bar">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <h1 class="text-xl font-bold text-blue-900">MedBridge Gaza</h1>
+                    <div class="logo-container">
+                        <img src="logo.png?v=2" alt="ShifaLink Logo" class="logo" style="height: 50px;">
+                    </div>
                 </div>
                 <div class="flex items-center space-x-4">
                     <button id="install-btn-ext" class="btn btn-success text-sm" style="display: none;">📱 Install App</button>
-                    <span class="text-sm text-gray-600">Dr. <span id="ext-doctor-name">Loading...</span></span>
+                    <span class="text-sm text-white">Dr. <span id="ext-doctor-name">Loading...</span></span>
                     <button id="ext-logout-btn" class="btn btn-secondary text-sm">Logout</button>
                 </div>
             </div>
@@ -747,7 +884,7 @@
                         <div>
                             <h2 id="assign-case-title" class="text-2xl font-bold text-gray-900 mb-2">Trauma Case - Compound Fracture</h2>
                             <div class="flex items-center space-x-4 text-sm text-gray-600 mb-4">
-                                <span>Case ID: #MB-2024-001</span>
+                                <span>Case ID: #MB-2025-001</span>
                                 <span>Submitted: 2 hours ago</span>
                                 <span>Priority: <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">High</span></span>
                             </div>
@@ -822,7 +959,7 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
                     <div>
                         <h2 id="review-case-title" class="text-2xl font-bold text-gray-900 mb-2">Trauma Case - Compound Fracture</h2>
                         <div class="flex items-center space-x-4 text-sm text-gray-600">
-                            <span>Case ID: #MB-2024-001</span>
+                            <span>Case ID: #MB-2025-001</span>
                             <span>Assigned: 1 hour ago</span>
                             <span class="status-badge status-in-review">In Review</span>
                         </div>
@@ -858,23 +995,56 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
                 <form id="expert-review-form" class="space-y-6">
                     <div class="form-group">
                         <label for="expert-diagnosis" class="form-label">Primary Assessment & Recommendations *</label>
-                        <textarea id="expert-diagnosis" name="diagnosis" rows="6" required 
-                                  class="form-input"
-                                  placeholder="Provide your expert assessment, recommended treatment plan, and any immediate actions required..."></textarea>
+                        <div class="voice-input-container">
+                            <textarea id="expert-diagnosis" name="diagnosis" rows="6" required 
+                                      class="form-input"
+                                      placeholder="Provide your expert assessment, recommended treatment plan, and any immediate actions required..."></textarea>
+                            <button type="button" onclick="startVoiceInput('expert-diagnosis')" class="voice-btn mt-2">
+                                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
+                                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                                </svg>
+                                🎤 Speak Assessment
+                            </button>
+                            <div id="expert-diagnosis-status" class="voice-status"></div>
+                        </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="additional-tests" class="form-label">Recommended Additional Tests/Imaging</label>
-                        <textarea id="additional-tests" name="tests" rows="3" 
-                                  class="form-input"
-                                  placeholder="List any additional diagnostic tests, imaging, or lab work needed..."></textarea>
+                        <div class="voice-input-container">
+                            <textarea id="additional-tests" name="tests" rows="3" 
+                                      class="form-input"
+                                      placeholder="List any additional diagnostic tests, imaging, or lab work needed..."></textarea>
+                            <button type="button" onclick="startVoiceInput('additional-tests')" class="voice-btn mt-2">
+                                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
+                                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                                </svg>
+                                🎤 Speak Tests
+                            </button>
+                            <div id="additional-tests-status" class="voice-status"></div>
+                        </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="follow-up" class="form-label">Follow-up Instructions</label>
-                        <textarea id="follow-up" name="followup" rows="3" 
-                                  class="form-input"
-                                  placeholder="Provide follow-up care instructions and monitoring guidelines..."></textarea>
+                        <div class="voice-input-container">
+                            <textarea id="follow-up" name="followup" rows="3" 
+                                      class="form-input"
+                                      placeholder="Provide follow-up care instructions and monitoring guidelines..."></textarea>
+                            <button type="button" onclick="startVoiceInput('follow-up')" class="voice-btn mt-2">
+                                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
+                                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                                </svg>
+                                🎤 Speak Instructions
+                            </button>
+                            <div id="follow-up-status" class="voice-status"></div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -954,16 +1124,14 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
 
             <!-- Filter Section -->
             <div class="mb-6">
-                <div class="flex items-center space-x-4">
-                    <div class="form-group mb-0">
-                        <label for="status-filter" class="form-label text-sm">Filter by Status:</label>
-                        <select id="status-filter" class="form-input">
-                            <option value="">All Cases</option>
-                            <option value="in-review">In Review</option>
-                            <option value="draft">Draft</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                    </div>
+                <div class="flex items-center space-x-3">
+                    <select id="status-filter" class="form-input" style="width: auto;">
+                        <option value="">All Cases</option>
+                        <option value="in-review">In Review</option>
+                        <option value="draft">Draft</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <button class="btn btn-secondary text-sm">Filter</button>
                 </div>
             </div>
 
@@ -1027,6 +1195,557 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
                     });
             });
         }
+
+        // View Management
+        function showView(viewId) {
+            console.log('showView called with:', viewId);
+            
+            // Hide all views
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.remove('active');
+                console.log('Hiding view:', view.id);
+            });
+            
+            // Show the target view
+            const targetView = document.getElementById(viewId);
+            console.log('Target view found:', !!targetView);
+            
+            if (targetView) {
+                targetView.classList.add('active');
+                console.log('Showing view:', targetView.id);
+                
+                // Load user info for dashboard views
+                if (viewId === 'internal-dashboard-view' || viewId === 'case-creation-view' || viewId === 'case-detail-view' || 
+                    viewId === 'external-dashboard-view' || viewId === 'case-assignment-view' || viewId === 'case-review-view' || viewId === 'my-assigned-cases-view') {
+                    loadUserInfo();
+                }
+                
+                console.log('View switch completed successfully');
+            } else {
+                console.error('Target view not found:', viewId);
+            }
+        }
+
+        // Load and display user information
+        function loadUserInfo() {
+            const userInfo = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const username = userInfo.username || 'Default User';
+            
+            // Update all username displays (both internal and external doctor elements)
+            const doctorNameElements = document.querySelectorAll('#doctor-name, #welcome-name, #case-doctor-name, #detail-doctor-name, #ext-doctor-name, #ext-welcome-name, #assign-doctor-name, #review-doctor-name, #assigned-doctor-name');
+            doctorNameElements.forEach(element => {
+                if (element) {
+                    element.textContent = username;
+                }
+            });
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, setting up event listeners');
+            
+            // Test that views exist
+            const loginView = document.getElementById('login-view');
+            const dashboardView = document.getElementById('internal-dashboard-view');
+            console.log('Login view exists:', !!loginView);
+            console.log('Dashboard view exists:', !!dashboardView);
+            
+            // Initialize user info on page load
+            loadUserInfo();
+            
+            // Login form submission - ONLY handle form submit, not button click
+            const loginForm = document.getElementById('login-form');
+            console.log('Login form found:', !!loginForm);
+            
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('Login form submitted');
+                    handleLogin();
+                });
+            }
+        
+        // Login handler function
+        function handleLogin() {
+            console.log('handleLogin called');
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            
+            console.log('Form values:', { username, password, role });
+            
+            // Basic validation
+            if (!username || !password || !role) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Store user info for display
+            localStorage.setItem('currentUser', JSON.stringify({
+                username: username,
+                role: role
+            }));
+            
+            console.log('Switching to dashboard for role:', role);
+            
+            if (role === 'internal') {
+                console.log('About to call showView for internal dashboard');
+                console.log('showView function exists:', typeof showView);
+                try {
+                    showView('internal-dashboard-view');
+                    console.log('showView call completed');
+                } catch (error) {
+                    console.error('Error calling showView:', error);
+                }
+            } else if (role === 'external') {
+                console.log('About to call showView for external dashboard');
+                try {
+                    showView('external-dashboard-view');
+                    console.log('External dashboard view shown');
+                } catch (error) {
+                    console.error('Error showing external dashboard:', error);
+                }
+            }
+        }
+        
+            // Navigation buttons
+            const createCaseBtn = document.getElementById('create-case-btn');
+            if (createCaseBtn) {
+                createCaseBtn.addEventListener('click', function() {
+                    showView('case-creation-view');
+                });
+            }
+
+            const backToDashboard = document.getElementById('back-to-dashboard');
+            if (backToDashboard) {
+                backToDashboard.addEventListener('click', function() {
+                    showView('internal-dashboard-view');
+                });
+            }
+
+            const backToCases = document.getElementById('back-to-cases');
+            if (backToCases) {
+                backToCases.addEventListener('click', function() {
+                    showView('internal-dashboard-view');
+                });
+            }
+
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    // Clear stored user information
+                    localStorage.removeItem('currentUser');
+                    showView('login-view');
+                });
+            }
+
+            // Case creation form
+            const caseForm = document.getElementById('case-creation-form');
+            if (caseForm) {
+                caseForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // TODO: Implement case submission to Firebase
+                    alert('Case submitted successfully!');
+                    showView('internal-dashboard-view');
+                });
+            }
+
+            // Save draft button
+            const saveDraftBtn = document.getElementById('save-draft-btn');
+            if (saveDraftBtn) {
+                saveDraftBtn.addEventListener('click', function() {
+                    // TODO: Implement draft saving
+                    alert('Draft saved successfully!');
+                });
+            }
+
+            // Case detail buttons
+            const viewDetailsBtns = document.querySelectorAll('.card .btn-primary');
+            viewDetailsBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    showView('case-detail-view');
+                });
+            });
+            
+            // Handle install button click
+            const installBtn = document.getElementById('install-btn');
+            if (installBtn) {
+                installBtn.addEventListener('click', async () => {
+                    console.log('Install button clicked');
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        console.log('Install outcome:', outcome);
+                        if (outcome === 'accepted') {
+                            console.log('PWA installed successfully');
+                        }
+                        deferredPrompt = null;
+                        installBtn.style.display = 'none';
+                    }
+                });
+            }
+
+            // External Doctor Navigation Events
+            const extLogoutBtn = document.getElementById('ext-logout-btn');
+            if (extLogoutBtn) {
+                extLogoutBtn.addEventListener('click', function() {
+                    localStorage.removeItem('currentUser');
+                    showView('login-view');
+                });
+            }
+
+            const viewMyAssignedBtn = document.getElementById('view-my-assigned-btn');
+            if (viewMyAssignedBtn) {
+                viewMyAssignedBtn.addEventListener('click', function() {
+                    showView('my-assigned-cases-view');
+                });
+            }
+
+            const backToExtDashboard = document.getElementById('back-to-ext-dashboard');
+            if (backToExtDashboard) {
+                backToExtDashboard.addEventListener('click', function() {
+                    showView('external-dashboard-view');
+                });
+            }
+
+            const backToAssignedCases = document.getElementById('back-to-assigned-cases');
+            if (backToAssignedCases) {
+                backToAssignedCases.addEventListener('click', function() {
+                    showView('my-assigned-cases-view');
+                });
+            }
+
+            const backToExtMain = document.getElementById('back-to-ext-main');
+            if (backToExtMain) {
+                backToExtMain.addEventListener('click', function() {
+                    showView('external-dashboard-view');
+                });
+            }
+
+            // Case Assignment Events
+            const assignToMeBtn = document.getElementById('assign-to-me-btn');
+            if (assignToMeBtn) {
+                assignToMeBtn.addEventListener('click', function() {
+                    alert('Case assigned successfully!');
+                    showView('my-assigned-cases-view');
+                });
+            }
+
+            const declineCaseBtn = document.getElementById('decline-case-btn');
+            if (declineCaseBtn) {
+                declineCaseBtn.addEventListener('click', function() {
+                    alert('Case declined.');
+                    showView('external-dashboard-view');
+                });
+            }
+
+            // Expert Review Form
+            const expertReviewForm = document.getElementById('expert-review-form');
+            if (expertReviewForm) {
+                expertReviewForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Expert review submitted successfully!');
+                    showView('my-assigned-cases-view');
+                });
+            }
+
+            const saveDraftReviewBtn = document.getElementById('save-draft-review-btn');
+            if (saveDraftReviewBtn) {
+                saveDraftReviewBtn.addEventListener('click', function() {
+                    alert('Review draft saved successfully!');
+                });
+            }
+        });
+
+        // External Doctor Navigation Functions
+        function showCaseAssignment(caseId) {
+            console.log('Showing case assignment for:', caseId);
+            showView('case-assignment-view');
+        }
+
+        function showCaseReview(caseId) {
+            console.log('Showing case review for:', caseId);
+            showView('case-review-view');
+        }
+
+        // Voice Input Functionality
+        let currentRecognition = null;
+        let isVoiceSupported = false;
+        
+        // Check for Web Speech API support
+        function checkVoiceSupport() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                isVoiceSupported = true;
+                console.log('Voice recognition supported');
+            } else {
+                isVoiceSupported = false;
+                console.log('Voice recognition not supported');
+                // Hide all voice buttons if not supported
+                document.querySelectorAll('.voice-btn').forEach(btn => {
+                    btn.style.display = 'none';
+                });
+            }
+        }
+        
+        // Medical terminology correction dictionary
+        const medicalTerms = {
+            'fracture': ['fracture', 'brake', 'break'],
+            'pneumonia': ['pneumonia', 'new monia', 'pneumonic'],
+            'cardiovascular': ['cardiovascular', 'cardio vascular', 'heart blood vessel'],
+            'hypertension': ['hypertension', 'high blood pressure', 'hyper tension'],
+            'diabetes': ['diabetes', 'diabetic', 'sugar disease'],
+            'myocardial infarction': ['heart attack', 'myocardial infarction', 'mi'],
+            'tachycardia': ['tachycardia', 'fast heart rate', 'rapid pulse'],
+            'bradycardia': ['bradycardia', 'slow heart rate', 'slow pulse'],
+            'dyspnea': ['dyspnea', 'shortness of breath', 'difficulty breathing'],
+            'syncope': ['syncope', 'fainting', 'passing out'],
+            'thrombosis': ['thrombosis', 'blood clot', 'clotting'],
+            'hemorrhage': ['hemorrhage', 'bleeding', 'blood loss'],
+            'contusion': ['contusion', 'bruise', 'bruising'],
+            'laceration': ['laceration', 'cut', 'tear'],
+            'abrasion': ['abrasion', 'scrape', 'scratch'],
+            'edema': ['edema', 'swelling', 'fluid retention'],
+            'sepsis': ['sepsis', 'blood poisoning', 'infection'],
+            'hypoxia': ['hypoxia', 'low oxygen', 'oxygen deficiency'],
+            'anemia': ['anemia', 'low blood count', 'iron deficiency'],
+            'arrhythmia': ['arrhythmia', 'irregular heartbeat', 'heart rhythm problem']
+        };
+        
+        // Correct medical terminology in transcribed text
+        function correctMedicalTerms(text) {
+            let correctedText = text.toLowerCase();
+            
+            Object.entries(medicalTerms).forEach(([correct, variations]) => {
+                variations.forEach(variation => {
+                    const regex = new RegExp(`\\b${variation.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
+                    correctedText = correctedText.replace(regex, correct);
+                });
+            });
+            
+            // Capitalize first letter of sentences
+            correctedText = correctedText.replace(/(^\w|[.!?]\s*\w)/g, (match) => match.toUpperCase());
+            
+            return correctedText;
+        }
+        
+        // Start voice input for a specific field
+        function startVoiceInput(fieldId) {
+            if (!isVoiceSupported) {
+                alert('Voice recognition is not supported in your browser. Please try Chrome or Edge.');
+                return;
+            }
+            
+            // Stop any existing recognition
+            if (currentRecognition) {
+                currentRecognition.stop();
+            }
+            
+            const field = document.getElementById(fieldId);
+            const button = document.querySelector(`button[onclick="startVoiceInput('${fieldId}')"]`);
+            const statusElement = document.getElementById(fieldId + '-status');
+            
+            if (!field || !button) {
+                console.error('Field or button not found:', fieldId);
+                return;
+            }
+            
+            // Initialize speech recognition
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            currentRecognition = recognition;
+            
+            // Configure recognition
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+            recognition.maxAlternatives = 1;
+            
+            let finalTranscript = '';
+            let interimTranscript = '';
+            
+            // Update UI for recording state
+            button.classList.add('recording');
+            button.innerHTML = `
+                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
+                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                </svg>
+                🔴 Recording... (Click to stop)
+            `;
+            
+            if (statusElement) {
+                statusElement.textContent = 'Listening... Speak now';
+            }
+            
+                         let startingText = field.value; // Store the original text
+             
+             recognition.onresult = function(event) {
+                 interimTranscript = '';
+                 let currentFinalTranscript = '';
+                 
+                 for (let i = event.resultIndex; i < event.results.length; i++) {
+                     const transcript = event.results[i][0].transcript;
+                     
+                     if (event.results[i].isFinal) {
+                         currentFinalTranscript += transcript + ' ';
+                     } else {
+                         interimTranscript += transcript;
+                     }
+                 }
+                 
+                 // Only add final results to our permanent transcript
+                 if (currentFinalTranscript) {
+                     finalTranscript += currentFinalTranscript;
+                 }
+                 
+                 // Show real-time preview with interim results
+                 const correctedFinal = correctMedicalTerms(finalTranscript);
+                 const correctedInterim = correctMedicalTerms(interimTranscript);
+                 
+                 // Combine starting text + final + interim (interim is temporary)
+                 let displayText = startingText;
+                 if (correctedFinal) {
+                     displayText += (displayText && !displayText.endsWith(' ') ? ' ' : '') + correctedFinal;
+                 }
+                 if (correctedInterim) {
+                     displayText += (displayText && !displayText.endsWith(' ') ? ' ' : '') + correctedInterim;
+                 }
+                 
+                 field.value = displayText;
+                 
+                 if (statusElement) {
+                     statusElement.textContent = interimTranscript ? 'Processing...' : 'Listening...';
+                 }
+             };
+            
+            recognition.onstart = function() {
+                console.log('Voice recognition started');
+                if (statusElement) {
+                    statusElement.textContent = 'Listening... Speak now';
+                }
+            };
+            
+                         recognition.onend = function() {
+                 console.log('Voice recognition ended');
+                 
+                 // Set final text (starting text + final transcript only, no interim)
+                 let finalText = startingText;
+                 if (finalTranscript) {
+                     const correctedFinal = correctMedicalTerms(finalTranscript);
+                     finalText += (finalText && !finalText.endsWith(' ') ? ' ' : '') + correctedFinal;
+                 }
+                 field.value = finalText;
+                 
+                 stopVoiceInput(fieldId);
+             };
+            
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+                stopVoiceInput(fieldId);
+                
+                let errorMessage = 'Voice recognition error.';
+                switch (event.error) {
+                    case 'no-speech':
+                        errorMessage = 'No speech detected. Please try again.';
+                        break;
+                    case 'audio-capture':
+                        errorMessage = 'Microphone not available.';
+                        break;
+                    case 'not-allowed':
+                        errorMessage = 'Microphone permission denied.';
+                        break;
+                    case 'network':
+                        errorMessage = 'Network error. Check your connection.';
+                        break;
+                }
+                
+                if (statusElement) {
+                    statusElement.textContent = errorMessage;
+                    setTimeout(() => {
+                        statusElement.textContent = '';
+                    }, 3000);
+                }
+            };
+            
+            // Add click handler to stop recording
+            const stopRecording = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                recognition.stop();
+            };
+            
+            button.onclick = stopRecording;
+            
+            // Start recognition
+            try {
+                recognition.start();
+            } catch (error) {
+                console.error('Failed to start recognition:', error);
+                stopVoiceInput(fieldId);
+            }
+        }
+        
+        // Stop voice input and reset UI
+        function stopVoiceInput(fieldId) {
+            const button = document.querySelector(`button[onclick="startVoiceInput('${fieldId}')"]`);
+            const statusElement = document.getElementById(fieldId + '-status');
+            
+            if (button) {
+                button.classList.remove('recording', 'processing');
+                button.innerHTML = `
+                    <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                        <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
+                        <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                    </svg>
+                    🎤 Speak ${getFieldLabel(fieldId)}
+                `;
+                
+                // Restore original onclick handler
+                button.onclick = function() { startVoiceInput(fieldId); };
+            }
+            
+            if (statusElement) {
+                statusElement.textContent = '';
+            }
+            
+            currentRecognition = null;
+        }
+        
+        // Get appropriate label for field
+        function getFieldLabel(fieldId) {
+            const labels = {
+                'case-description': 'Description',
+                'case-symptoms': 'Symptoms', 
+                'expert-diagnosis': 'Assessment',
+                'additional-tests': 'Tests',
+                'follow-up': 'Instructions'
+            };
+            return labels[fieldId] || 'Text';
+        }
+        
+        // Initialize voice support check when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            checkVoiceSupport();
+        });
+
+        // PWA Install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('PWA install prompt available');
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button
+            const installBtn = document.getElementById('install-btn');
+            if (installBtn) {
+                installBtn.style.display = 'inline-flex';
+            }
+        });
+
+
     </script>
 </body>
 </html> 

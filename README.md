@@ -1,4 +1,4 @@
-# 🏥 Medbridge 🚀
+# 🏥 ShifaLink 🚀
 
 ## Project Goal
 

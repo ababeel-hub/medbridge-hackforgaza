@@ -1,6 +1,6 @@
 {
-  "name": "MedBridge Gaza",
-  "short_name": "MedBridge",
+  "name": "ShifaLink",
+  "short_name": "ShifaLink",
   "description": "A progressive web application for medical personnel in Gaza to seek expert medical opinions and guidance",
   "start_url": "/",
   "display": "standalone",
