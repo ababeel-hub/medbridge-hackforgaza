@@ -468,18 +468,20 @@
         /* Responsive grid */
         .grid-responsive {
             display: grid;
-            gap: 20px;
-            grid-template-columns: 1fr;
+            gap: 6px;
+            grid-template-columns: repeat(3, 1fr);
         }
         
         @media (min-width: 768px) {
             .grid-responsive {
-                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                grid-template-columns: repeat(3, 1fr);
             }
         }
         
         @media (min-width: 1024px) {
             .grid-responsive {
+                gap: 24px;
                 grid-template-columns: repeat(3, 1fr);
             }
         }
@@ -495,6 +497,151 @@
         .card:focus {
             outline: 2px solid var(--primary-olive);
             outline-offset: 2px;
+        }
+        
+        /* Mobile-specific styles */
+        @media (max-width: 767px) {
+            /* Tighter container padding */
+            .container {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+            
+            /* Compact navigation bar */
+            .nav-bar {
+                padding: 12px 16px;
+            }
+            
+            /* Smaller logo */
+            .logo {
+                height: 28px;
+            }
+            
+            /* Compact avatar */
+            .doctor-avatar {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .doctor-avatar.large {
+                width: 36px;
+                height: 36px;
+            }
+            
+            /* Compact stat cards */
+            .stat-card {
+                padding: 8px 6px;
+                border-radius: 8px;
+            }
+            
+            .stat-number {
+                font-size: 1.1rem;
+                margin-bottom: 2px;
+                line-height: 1;
+            }
+            
+            .stat-label {
+                font-size: 0.6rem;
+                line-height: 1.1;
+            }
+            
+            /* Compact cards */
+            .card {
+                padding: 12px;
+                margin-bottom: 12px;
+                border-radius: 12px;
+            }
+            
+            /* Compact buttons */
+            .btn {
+                padding: 10px 16px;
+                font-size: 13px;
+                min-height: 40px;
+                border-radius: 8px;
+            }
+            
+            /* Compact form inputs */
+            .form-input {
+                padding: 10px 12px;
+                font-size: 16px;
+                border-radius: 8px;
+            }
+            
+            /* Compact headings */
+            h1 { font-size: 1.25rem; }
+            h2 { font-size: 1.125rem; }
+            h3 { font-size: 1rem; }
+            
+            /* Compact welcome section */
+            .text-3xl { font-size: 1.25rem; }
+            .text-2xl { font-size: 1.125rem; }
+            .text-xl { font-size: 1rem; }
+            
+            /* Much tighter spacing */
+            .mb-10 { margin-bottom: 1.5rem; }
+            .mb-8 { margin-bottom: 1rem; }
+            .mb-6 { margin-bottom: 0.75rem; }
+            .mb-4 { margin-bottom: 0.5rem; }
+            
+            /* Tighter gaps */
+            .space-x-4 > * + * { margin-left: 0.5rem; }
+            .space-x-3 > * + * { margin-left: 0.375rem; }
+            
+            /* Touch-friendly button spacing */
+            .btn + .btn {
+                margin-left: 6px;
+            }
+            
+            /* Compact grid with smaller gaps */
+            .grid-responsive {
+                gap: 8px;
+            }
+            
+            /* Ensure minimum touch target size */
+            button, .btn, input[type="button"], input[type="submit"] {
+                min-height: 40px;
+                min-width: 40px;
+            }
+            
+            /* Much tighter card spacing */
+            .space-y-6 > * + * {
+                margin-top: 0.75rem;
+            }
+            
+            /* Compact text sizes */
+            .text-sm { font-size: 0.8rem; }
+            .text-base { font-size: 0.9rem; }
+            .text-lg { font-size: 1rem; }
+            
+            /* Compact case cards */
+            .card h4 {
+                font-size: 0.95rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .card p {
+                font-size: 0.85rem;
+                margin-bottom: 0.75rem;
+                line-height: 1.4;
+            }
+            
+            /* Compact status badges */
+            .status-badge {
+                padding: 4px 8px;
+                font-size: 0.7rem;
+                border-radius: 12px;
+            }
+            
+            /* Compact welcome section */
+            .fade-in-up {
+                margin-bottom: 1rem;
+            }
+            
+            /* Compact quick actions */
+            .btn-primary {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
         }
         
         /* Modern gradient backgrounds */
