@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="ShifaLink - Medical consultation platform for healthcare professionals">
-    <meta name="theme-color" content="#2c5aa0">
+    <meta name="theme-color" content="#6b7744">
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
     
     <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjMmM1YWEwIi8+CjxyZWN0IHg9Ijc3IiB5PSIzOCIgd2lkdGg9IjM4IiBoZWlnaHQ9IjExNiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iMzgiIHk9Ijc3IiB3aWR0aD0iMTE2IiBoZWlnaHQ9IjM4IiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjNmI3NzQ0Ii8+CjxyZWN0IHg9Ijc3IiB5PSIzOCIgd2lkdGg9IjM4IiBoZWlnaHQ9IjExNiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iMzgiIHk9Ijc3IiB3aWR0aD0iMTE2IiBoZWlnaHQ9IjM4IiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjMmM1YWEwIi8+CjxyZWN0IHg9Ijc3IiB5PSIzOCIgd2lkdGg9IjM4IiBoZWlnaHQ9IjExNiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iMzgiIHk9Ijc3IiB3aWR0aD0iMTE2IiBoZWlnaHQ9IjM4IiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjNmI3NzQ0Ii8+CjxyZWN0IHg9Ijc3IiB5PSIzOCIgd2lkdGg9IjM4IiBoZWlnaHQ9IjExNiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iMzgiIHk9Ijc3IiB3aWR0aD0iMTE2IiBoZWlnaHQ9IjM4IiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
     
     <title>ShifaLink</title>
     
@@ -23,15 +23,30 @@
     <!-- Custom CSS Variables and Base Styles -->
     <style>
         :root {
-            --primary-olive: #6b7744;
-            --primary-olive-dark: #556032;
-            --primary-olive-light: #8b9b5f;
+            --primary-olive: #7a8a4f;
+            --primary-olive-dark: #5d6b3d;
+            --primary-olive-light: #9aab6a;
+            --primary-olive-lighter: #b3c47d;
             --success-green: #7ba05b;
             --warning-yellow: #b8a068;
             --danger-red: #a0544b;
-            --light-olive: #f5f6f2;
+            --light-olive: #faf9f6;
+            --light-olive-bg: #f7f6f3;
             --dark-olive: #3d4229;
-            --accent-olive: #9aab7a;
+            --accent-olive: #a8b97c;
+            --cream: #fefcf8;
+            --off-white: #faf8f4;
+            --warm-white: #fdfbf7;
+            --gray-50: #faf9f6;
+            --gray-100: #f5f4f1;
+            --gray-200: #ebe9e4;
+            --gray-300: #d6d4ce;
+            --gray-400: #a8a6a0;
+            --gray-500: #7a7872;
+            --gray-600: #5a5852;
+            --gray-700: #3d3b35;
+            --gray-800: #2a2822;
+            --gray-900: #1a1812;
         }
         
         * {
@@ -42,9 +57,16 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
             color: var(--dark-olive);
-            background-color: var(--light-olive);
+            background-color: var(--off-white);
             margin: 0;
             padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
         }
         
         /* View Management */
@@ -56,21 +78,51 @@
             display: block !important;
         }
         
-        /* Touch-friendly buttons */
+        /* Modern Button Styles with 3D effects */
         .btn {
-            min-height: 44px;
-            min-width: 44px;
+            min-height: 48px;
+            min-width: 48px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 14px 24px;
+            border-radius: 16px;
             font-weight: 600;
             text-decoration: none;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             border: none;
             font-size: 16px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            border-radius: 16px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .btn:hover::before {
+            opacity: 1;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         
         /* Voice Input Styles */
@@ -79,41 +131,44 @@
         }
         
         .voice-btn {
-            background: var(--accent-olive);
+            background: linear-gradient(135deg, var(--accent-olive), var(--primary-olive-light));
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 8px 16px;
+            border-radius: 12px;
+            padding: 10px 18px;
             cursor: pointer;
             font-size: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         
         .voice-btn:hover {
-            background: var(--primary-olive);
+            background: linear-gradient(135deg, var(--primary-olive-light), var(--primary-olive));
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15);
         }
         
         .voice-btn.recording {
-            background: #ef4444;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
             animation: pulse 1.5s infinite;
         }
         
         .voice-btn.processing {
-            background: #f59e0b;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
         }
         
         @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.02); }
+            100% { opacity: 1; transform: scale(1); }
         }
         
         .voice-status {
             font-size: 12px;
-            color: #6b7280;
+            color: var(--gray-500);
             margin-top: 4px;
         }
         
@@ -123,68 +178,212 @@
         }
         
         .btn-primary {
-            background-color: var(--primary-olive);
+            background: linear-gradient(135deg, var(--primary-olive), var(--primary-olive-dark));
             color: white;
+            box-shadow: 0 4px 12px rgba(122, 138, 79, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
         
         .btn-primary:hover {
-            background-color: var(--primary-olive-dark);
-            transform: translateY(-1px);
+            background: linear-gradient(135deg, var(--primary-olive-dark), var(--dark-olive));
+            box-shadow: 0 8px 20px rgba(122, 138, 79, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
         
         .btn-success {
-            background-color: var(--success-green);
+            background: linear-gradient(135deg, var(--success-green), #6b8e4a);
             color: white;
         }
         
         .btn-warning {
-            background-color: var(--warning-yellow);
-            color: #333;
-        }
-        
-        .btn-secondary {
-            background-color: #6c757d;
+            background: linear-gradient(135deg, var(--warning-yellow), #a08a5a);
             color: white;
         }
         
-        /* Card styles */
-        .card {
-            background: white;
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--gray-500), var(--gray-600));
+            color: white;
+        }
+        
+        /* Cream button with olive green text */
+        .btn-cream {
+            background: var(--cream);
+            color: var(--primary-olive);
+            border: 2px solid var(--gray-200);
+            min-height: 48px;
+            min-width: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 24px;
+            border-radius: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .btn-cream:hover {
+            background: var(--warm-white);
+            color: var(--primary-olive-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Voice button icon only */
+        .voice-btn-icon {
+            background: linear-gradient(135deg, var(--accent-olive), var(--primary-olive-light));
+            color: white;
+            border: none;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 16px;
-            transition: box-shadow 0.2s ease;
+            padding: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            min-width: 44px;
+            min-height: 44px;
+        }
+        
+        .voice-btn-icon:hover {
+            background: linear-gradient(135deg, var(--primary-olive-light), var(--primary-olive));
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15);
+        }
+        
+        .voice-btn-icon.recording {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .voice-btn-icon.processing {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        /* Medical Doctor Avatars */
+        .doctor-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid var(--primary-olive);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            background: var(--off-white);
+            z-index: 1;
+        }
+        
+        .doctor-avatar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('male.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .doctor-avatar.large {
+            width: 48px;
+            height: 48px;
+        }
+        
+
+        
+        .stethoscope-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            font-size: 12px;
+            background: var(--cream);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Modern Card styles with 3D effects */
+        .card {
+            background: var(--cream);
+            border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(107, 119, 68, 0.1), transparent);
         }
         
         .card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
         
-        /* Status badges */
+        /* Status badges with modern design */
         .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 16px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
-        .status-draft { background: var(--warning-yellow); color: #333; }
-        .status-submitted { background: #17a2b8; color: white; }
-        .status-in-review { background: #fd7e14; color: white; }
-        .status-completed { background: var(--success-green); color: white; }
+        .status-draft { 
+            background: linear-gradient(135deg, var(--warning-yellow), #a08a5a); 
+            color: white; 
+        }
+        .status-submitted { 
+            background: linear-gradient(135deg, #17a2b8, #138496); 
+            color: white; 
+        }
+        .status-in-review { 
+            background: linear-gradient(135deg, #fd7e14, #e8690b); 
+            color: white; 
+        }
+        .status-completed { 
+            background: linear-gradient(135deg, var(--success-green), #6b8e4a); 
+            color: white; 
+        }
         
-        /* Navigation */
+        /* Modern Navigation */
         .nav-bar {
             background: linear-gradient(135deg, var(--primary-olive), var(--primary-olive-dark));
             color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 16px 20px;
+            box-shadow: 0 8px 32px rgba(122, 138, 79, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            padding: 20px 24px;
             position: sticky;
             top: 0;
             z-index: 100;
+            backdrop-filter: blur(20px);
         }
         
         /* Logo Styles */
@@ -192,6 +391,7 @@
             height: 40px;
             width: auto;
             margin-right: 12px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
         
         .logo-container {
@@ -199,31 +399,76 @@
             align-items: center;
         }
         
-        /* Stats cards */
+        /* Modern Stats cards with 3D effects */
         .stat-card {
             background: linear-gradient(135deg, var(--primary-olive), var(--primary-olive-dark));
             color: white;
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 20px;
+            padding: 28px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px -3px rgba(122, 138, 79, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
         
         .stat-number {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: bold;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         .stat-label {
             font-size: 0.875rem;
             opacity: 0.9;
+            font-weight: 500;
+        }
+        
+        /* Modern Form Inputs */
+        .form-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--gray-200);
+            border-radius: 16px;
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--warm-white);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-olive);
+            box-shadow: 0 0 0 3px rgba(107, 119, 68, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
         }
         
         /* Responsive grid */
         .grid-responsive {
             display: grid;
-            gap: 16px;
+            gap: 20px;
             grid-template-columns: 1fr;
         }
         
@@ -248,73 +493,203 @@
         /* Focus states for accessibility */
         .btn:focus,
         .card:focus {
-            outline: 2px solid var(--primary-blue);
+            outline: 2px solid var(--primary-olive);
             outline-offset: 2px;
+        }
+        
+        /* Modern gradient backgrounds */
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--off-white), var(--light-olive));
+        }
+        
+        .gradient-bg-alt {
+            background: linear-gradient(135deg, var(--cream), var(--warm-white));
+        }
+        
+        /* Smooth animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Modern shadows */
+        .shadow-soft {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .shadow-medium {
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .shadow-large {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Enhanced animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Glass morphism effect */
+        .glass {
+            background: rgba(254, 252, 248, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Enhanced button hover effects */
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-olive-dark), var(--dark-olive));
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(122, 138, 79, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Enhanced card hover effects */
+        .card:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.12);
+        }
+        
+        /* Smooth transitions for all interactive elements */
+        * {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Enhanced form focus states */
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-olive);
+            box-shadow: 0 0 0 4px rgba(122, 138, 79, 0.1), 0 8px 16px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        /* Status badge animations */
+        .status-badge {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .status-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+        }
+        
+        /* Enhanced navigation bar */
+        .nav-bar {
+            background: linear-gradient(135deg, var(--primary-olive), var(--primary-olive-dark));
+            box-shadow: 0 8px 32px rgba(122, 138, 79, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+        }
+        
+        /* Loading animation */
+        @keyframes shimmer {
+            0% { background-position: -200px 0; }
+            100% { background-position: calc(200px + 100%) 0; }
+        }
+        
+        .loading-shimmer {
+            background: linear-gradient(90deg, var(--warm-white) 25%, var(--gray-100) 50%, var(--warm-white) 75%);
+            background-size: 200px 100%;
+            animation: shimmer 1.5s infinite;
         }
     </style>
 </head>
 <body>
     <!-- Login View -->
-    <div id="login-view" class="view active min-h-screen flex items-center justify-center" style="background: linear-gradient(135deg, var(--light-olive), var(--accent-olive));">
-        <div class="card max-w-md w-full mx-4">
+    <div id="login-view" class="view active min-h-screen flex items-center justify-center gradient-bg">
+        <!-- Decorative 3D Elements -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-white/20 to-transparent rounded-full blur-xl float-animation"></div>
+            <div class="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-tl from-white/15 to-transparent rounded-full blur-xl float-animation" style="animation-delay: 1s;"></div>
+            <div class="absolute top-1/2 left-1/4 w-24 h-24 bg-gradient-to-r from-white/10 to-transparent rounded-full blur-lg float-animation" style="animation-delay: 2s;"></div>
+            <div class="absolute top-1/3 right-1/4 w-20 h-20 bg-gradient-to-bl from-primary-olive/10 to-transparent rounded-full blur-lg float-animation" style="animation-delay: 0.5s;"></div>
+            <div class="absolute bottom-1/3 left-1/3 w-16 h-16 bg-gradient-to-tr from-accent-olive/15 to-transparent rounded-full blur-md float-animation" style="animation-delay: 1.5s;"></div>
+        </div>
+        
+        <div class="card max-w-md w-full mx-4 fade-in-up shadow-large" style="backdrop-filter: blur(10px); background: rgba(254, 252, 248, 0.95);">
             <div class="text-center mb-8">
-                <div class="logo-variation mb-6">
-                    <div class="logo-container justify-center mb-4">
-                        <img src="logo.png?v=3" alt="ShifaLink Logo" class="logo" style="height: 100px;">
+                <div class="logo-variation mb-8">
+                    <div class="logo-container justify-center mb-6">
+                        <div class="relative">
+                            <img src="logo.png?v=3" alt="ShifaLink Logo" class="logo" style="height: 120px; filter: drop-shadow(0 8px 16px rgba(122, 138, 79, 0.25));">
+                            <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-full blur-2xl"></div>
+                        </div>
                     </div>
                     <div class="tagline-v4" style="
-                        font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
-                        font-size: 14px;
-                        font-weight: 400;
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        font-size: 16px;
+                        font-weight: 500;
                         color: var(--primary-olive-dark);
-                        letter-spacing: 0.3px;
-                        margin-bottom: 8px;
+                        letter-spacing: 0.5px;
+                        margin-bottom: 12px;
                     ">Healing Beyond Borders</div>
                     <div class="accent-line" style="
-                        width: 50px;
-                        height: 2px;
+                        width: 60px;
+                        height: 3px;
                         background: linear-gradient(90deg, var(--primary-olive-light), var(--primary-olive-dark));
-                        margin: 8px auto 0;
-                        border-radius: 1px;
+                        margin: 12px auto 0;
+                        border-radius: 2px;
+                        box-shadow: 0 2px 4px rgba(122, 138, 79, 0.25);
                     "></div>
                 </div>
             </div>
             
             <form id="login-form" class="space-y-6">
                 <div>
-                    <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                    <label for="username" class="block text-sm font-semibold text-gray-700 mb-3">Username</label>
                     <input type="text" id="username" name="username" required 
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
-                           style="--tw-ring-color: var(--primary-olive);"
+                           class="form-input"
                            placeholder="Enter your username">
                 </div>
                 
                 <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <label for="password" class="block text-sm font-semibold text-gray-700 mb-3">Password</label>
                     <input type="password" id="password" name="password" required 
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
-                           style="--tw-ring-color: var(--primary-olive);"
+                           class="form-input"
                            placeholder="Enter your password">
                 </div>
                 
                 <div>
-                    <label for="role" class="block text-sm font-medium text-gray-700 mb-2">Role</label>
-                    <select id="role" name="role" required 
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="">Select your role</option>
-                        <option value="internal">Internal Doctor</option>
-                        <option value="external">External Doctor</option>
-                    </select>
+                    <label class="block text-sm font-semibold text-gray-700 mb-3">Doctor Type *</label>
+                    <div class="flex space-x-6">
+                        <label class="flex items-center">
+                            <input type="radio" name="role" id="role-internal" value="internal" required 
+                                   class="w-4 h-4 text-primary-olive border-gray-300 focus:ring-primary-olive">
+                            <span class="ml-2 text-sm text-gray-700">Internal Doctor</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="role" id="role-external" value="external" required 
+                                   class="w-4 h-4 text-primary-olive border-gray-300 focus:ring-primary-olive">
+                            <span class="ml-2 text-sm text-gray-700">External Doctor</span>
+                        </label>
+                    </div>
                 </div>
                 
-                <button type="submit" class="btn btn-primary w-full" id="signin-btn">
+                <button type="submit" class="btn btn-primary w-full text-lg py-4" id="signin-btn">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                    </svg>
                     Sign In
                 </button>
             </form>
             
-            <div class="mt-6 text-center">
+            <div class="mt-8 text-center">
                 <p class="text-sm text-gray-600">Don't have an account? 
-                    <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Contact Admin</a>
+                    <a href="#" class="text-primary-olive hover:text-primary-olive-dark font-semibold transition-colors">Contact Admin</a>
                 </p>
             </div>
         </div>
@@ -332,24 +707,32 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <button id="install-btn" class="btn btn-success text-sm" style="display: none;">📱 Install App</button>
-                    <span class="text-sm text-white">Dr. <span id="doctor-name">Loading...</span></span>
-                    <button id="logout-btn" class="btn btn-secondary text-sm">Logout</button>
+                    <div class="flex items-center space-x-3">
+                        <div class="doctor-avatar"></div>
+                        <span class="text-sm text-white">Dr. <span id="doctor-name">Loading...</span></span>
+                    </div>
+                    <button id="logout-btn" class="btn-cream text-sm">Logout</button>
                 </div>
             </div>
         </nav>
 
         <!-- Main Content -->
-        <div class="container mx-auto px-4 py-6 max-w-6xl">
+        <div class="container mx-auto px-4 py-8 max-w-6xl">
             <!-- Welcome Section -->
-            <div class="mb-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome back, Dr. <span id="welcome-name">Loading...</span></h2>
-                <p class="text-gray-600">Manage your cases and seek expert consultations</p>
+            <div class="mb-10 fade-in-up">
+                <div class="flex items-center mb-4">
+                    <div class="doctor-avatar large mr-4"></div>
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-1">Hello, Dr. <span id="welcome-name">Loading...</span></h2>
+                        <p class="text-gray-600 text-lg">Let's check your cases for today</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Quick Actions -->
-            <div class="mb-8">
-                <button id="create-case-btn" class="btn btn-primary text-lg px-8 py-4">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="mb-10 fade-in-up">
+                <button id="create-case-btn" class="btn btn-primary text-lg px-10 py-5 shadow-large">
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
                     Create New Case
@@ -357,69 +740,129 @@
             </div>
 
             <!-- Stats Cards -->
-            <div class="grid-responsive mb-8">
-                <div class="stat-card">
+            <div class="grid-responsive mb-10">
+                <div class="stat-card fade-in-up" style="animation-delay: 0.1s;">
                     <div class="stat-number" id="total-cases">24</div>
                     <div class="stat-label">Total Cases</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card fade-in-up" style="animation-delay: 0.2s;">
                     <div class="stat-number" id="pending-cases">8</div>
                     <div class="stat-label">Pending Review</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card fade-in-up" style="animation-delay: 0.3s;">
                     <div class="stat-number" id="completed-cases">16</div>
                     <div class="stat-label">Completed</div>
                 </div>
             </div>
 
             <!-- Recent Cases Section -->
-            <div class="mb-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-semibold text-gray-900">My Recent Cases</h3>
-                    <button id="view-all-cases-btn" class="btn btn-secondary text-sm">View All</button>
+            <div class="mb-8 fade-in-up" style="animation-delay: 0.4s;">
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-gradient-to-br from-primary-olive to-primary-olive-dark rounded-lg flex items-center justify-center mr-3 shadow-soft">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">My Recent Cases</h3>
+                    </div>
+                    <button id="view-all-cases-btn" class="btn-cream text-sm shadow-soft">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                        View All
+                    </button>
                 </div>
                 
-                <div id="recent-cases-container" class="space-y-4">
+                <div id="recent-cases-container" class="space-y-6">
                     <!-- Case cards will be populated by JavaScript -->
-                    <div class="card">
+                    <div class="card hover:shadow-large transition-all duration-300">
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 mb-2">Trauma Case - Compound Fracture</h4>
-                                <p class="text-gray-600 text-sm mb-3">Patient with severe compound fracture of the right tibia requiring immediate surgical intervention...</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500">
-                                    <span>Submitted: 2 hours ago</span>
-                                    <span class="status-badge status-in-review">In Review</span>
+                                <div class="flex items-center mb-3">
+                                    <div class="w-3 h-3 bg-gradient-to-r from-orange-400 to-orange-500 rounded-full mr-3"></div>
+                                    <h4 class="font-bold text-gray-900 text-lg">Trauma Case - Compound Fracture</h4>
+                                </div>
+                                <p class="text-gray-600 text-base mb-4 leading-relaxed">Patient with severe compound fracture of the right tibia requiring immediate surgical intervention and specialized orthopedic consultation.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                        <span class="flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            2 hours ago
+                                        </span>
+                                        <span class="status-badge status-in-review">In Review</span>
+                                    </div>
+                                    <button class="btn btn-primary text-sm shadow-soft">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                        View Details
+                                    </button>
                                 </div>
                             </div>
-                            <button class="btn btn-primary text-sm">View Details</button>
                         </div>
                     </div>
                     
-                    <div class="card">
+                    <div class="card hover:shadow-large transition-all duration-300">
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 mb-2">Pediatric Emergency - Respiratory Distress</h4>
-                                <p class="text-gray-600 text-sm mb-3">3-year-old patient presenting with severe respiratory distress and suspected pneumonia...</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500">
-                                    <span>Submitted: 1 day ago</span>
-                                    <span class="status-badge status-completed">Completed</span>
+                                <div class="flex items-center mb-3">
+                                    <div class="w-3 h-3 bg-gradient-to-r from-green-400 to-green-500 rounded-full mr-3"></div>
+                                    <h4 class="font-bold text-gray-900 text-lg">Pediatric Emergency - Respiratory Distress</h4>
+                                </div>
+                                <p class="text-gray-600 text-base mb-4 leading-relaxed">3-year-old patient presenting with severe respiratory distress and suspected pneumonia requiring immediate pediatric consultation.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                        <span class="flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            1 day ago
+                                        </span>
+                                        <span class="status-badge status-completed">Completed</span>
+                                    </div>
+                                    <button class="btn btn-primary text-sm shadow-soft">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                        View Details
+                                    </button>
                                 </div>
                             </div>
-                            <button class="btn btn-primary text-sm">View Details</button>
                         </div>
                     </div>
                     
-                    <div class="card">
+                    <div class="card hover:shadow-large transition-all duration-300">
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 mb-2">Burn Case - Thermal Injury</h4>
-                                <p class="text-gray-600 text-sm mb-3">Adult patient with 15% body surface area thermal burns requiring specialized treatment...</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500">
-                                    <span>Submitted: 3 days ago</span>
-                                    <span class="status-badge status-submitted">Submitted</span>
+                                <div class="flex items-center mb-3">
+                                    <div class="w-3 h-3 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full mr-3"></div>
+                                    <h4 class="font-bold text-gray-900 text-lg">Burn Case - Thermal Injury</h4>
+                                </div>
+                                <p class="text-gray-600 text-base mb-4 leading-relaxed">Adult patient with 15% body surface area thermal burns requiring specialized treatment and burn unit consultation.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                        <span class="flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            3 days ago
+                                        </span>
+                                        <span class="status-badge status-submitted">Submitted</span>
+                                    </div>
+                                    <button class="btn btn-primary text-sm shadow-soft">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                        View Details
+                                    </button>
                                 </div>
                             </div>
-                            <button class="btn btn-primary text-sm">View Details</button>
                         </div>
                     </div>
                 </div>
@@ -443,7 +886,7 @@
                     <div class="logo-container">
                         <img src="logo.png?v=2" alt="ShifaLink Logo" class="logo" style="height: 50px;">
                     </div>
-                    <button id="back-to-dashboard" class="btn btn-secondary text-sm">← Back to Dashboard</button>
+                    <button id="back-to-dashboard" class="btn-cream text-sm">← Back to Dashboard</button>
                     <h1 class="text-xl font-bold text-white">Create New Case</h1>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -453,20 +896,34 @@
         </nav>
 
         <!-- Case Creation Form -->
-        <div class="container mx-auto px-4 py-6 max-w-4xl">
-            <div class="card">
-                <form id="case-creation-form" class="space-y-6">
+        <div class="container mx-auto px-4 py-8 max-w-4xl">
+            <div class="card shadow-large fade-in-up">
+                <div class="mb-8">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-primary-olive to-primary-olive-dark rounded-xl flex items-center justify-center mr-4 shadow-soft">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">Create New Case</h2>
+                            <p class="text-gray-600">Fill in the details below to submit your case for expert consultation</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <form id="case-creation-form" class="space-y-8">
                     <div>
-                        <label for="case-title" class="block text-sm font-medium text-gray-700 mb-2">Case Title *</label>
+                        <label for="case-title" class="block text-sm font-semibold text-gray-700 mb-3">Case Title *</label>
                         <input type="text" id="case-title" name="title" required 
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               class="form-input"
                                placeholder="Brief case description">
                     </div>
                     
                     <div>
-                        <label for="age-range" class="block text-sm font-medium text-gray-700 mb-2">Age Range *</label>
+                        <label for="age-range" class="block text-sm font-semibold text-gray-700 mb-3">Age Range *</label>
                         <select id="age-range" name="age_range" required 
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                class="form-input">
                             <option value="">Select age range</option>
                             <option value="0-5">0-5 years</option>
                             <option value="6-12">6-12 years</option>
@@ -478,25 +935,25 @@
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Gender *</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Gender *</label>
                         <div class="flex space-x-6">
                             <label class="flex items-center">
                                 <input type="radio" name="gender" value="male" required 
-                                       class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                       class="w-4 h-4 text-primary-olive border-gray-300 focus:ring-primary-olive">
                                 <span class="ml-2 text-sm text-gray-700">Male</span>
                             </label>
                             <label class="flex items-center">
                                 <input type="radio" name="gender" value="female" required 
-                                       class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                       class="w-4 h-4 text-primary-olive border-gray-300 focus:ring-primary-olive">
                                 <span class="ml-2 text-sm text-gray-700">Female</span>
                             </label>
                         </div>
                     </div>
                     
                     <div>
-                        <label for="case-type" class="block text-sm font-medium text-gray-700 mb-2">Case Type *</label>
+                        <label for="case-type" class="block text-sm font-semibold text-gray-700 mb-3">Case Type *</label>
                         <select id="case-type" name="case_type" required 
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                class="form-input">
                             <option value="">Select case type</option>
                             <option value="cardiology">Cardiology</option>
                             <option value="orthopedics">Orthopedics</option>
@@ -508,45 +965,39 @@
                     </div>
                     
                     <div>
-                        <label for="case-symptoms" class="block text-sm font-medium text-gray-700 mb-2">Symptoms *</label>
+                        <label for="case-symptoms" class="block text-sm font-semibold text-gray-700 mb-3">Symptoms *</label>
                         <div class="voice-input-container">
                             <textarea id="case-symptoms" name="symptoms" rows="4" required 
-                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                      class="form-input"
                                       placeholder="Describe symptoms and presentation..."></textarea>
-                            <button type="button" onclick="startVoiceInput('case-symptoms')" class="voice-btn mt-2">
-                                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
-                                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 00-1-1z"/>
+                            <button type="button" onclick="startVoiceInput('case-symptoms')" class="voice-btn-icon mt-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
                                 </svg>
-                                🎤 Speak Symptoms
                             </button>
                             <div id="case-symptoms-status" class="voice-status"></div>
                         </div>
                     </div>
                     
                     <div>
-                        <label for="medical-history" class="block text-sm font-medium text-gray-700 mb-2">Medical History *</label>
+                        <label for="medical-history" class="block text-sm font-semibold text-gray-700 mb-3">Medical History *</label>
                         <div class="voice-input-container">
-                            <textarea id="medical-history" name="medical_history" rows="4" required 
-                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            <textarea id="medical-history" name="symptoms" rows="4" required 
+                                      class="form-input"
                                       placeholder="Relevant medical history..."></textarea>
-                            <button type="button" onclick="startVoiceInput('medical-history')" class="voice-btn mt-2">
-                                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
-                                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                            <button type="button" onclick="startVoiceInput('medical-history')" class="voice-btn-icon mt-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
                                 </svg>
-                                🎤 Speak Medical History
                             </button>
                             <div id="medical-history-status" class="voice-status"></div>
                         </div>
                     </div>
                     
                     <div>
-                        <label for="case-urgency" class="block text-sm font-medium text-gray-700 mb-2">Urgency Level *</label>
+                        <label for="case-urgency" class="block text-sm font-semibold text-gray-700 mb-3">Urgency Level *</label>
                         <select id="case-urgency" name="urgency" required 
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                class="form-input">
                             <option value="">Select urgency level</option>
                             <option value="low">Low - Routine consultation</option>
                             <option value="medium">Medium - Requires attention within 24 hours</option>
@@ -556,7 +1007,7 @@
                     </div>
                     
                     <div class="flex space-x-4 pt-6">
-                        <button type="button" id="save-draft-btn" class="btn btn-secondary flex-1">
+                        <button type="button" id="save-draft-btn" class="btn-cream flex-1">
                             Save Draft
                         </button>
                         <button type="submit" class="btn btn-primary flex-1">
@@ -574,8 +1025,7 @@
         <nav class="nav-bar">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <button id="back-to-cases" class="btn btn-secondary text-sm">← Back to Cases</button>
-                    <h1 class="text-xl font-bold text-blue-900">Case Details</h1>
+                    <button id="back-to-cases" class="btn-cream text-sm">← Back to Cases</button>
                 </div>
                 <div class="flex items-center space-x-4">
                     <span class="text-sm text-gray-600">Dr. <span id="detail-doctor-name">Ahmed Hassan</span></span>
@@ -1233,7 +1683,8 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const role = document.getElementById('role').value;
+            const roleInput = document.querySelector('input[name="role"]:checked');
+            const role = roleInput ? roleInput.value : '';
             
             console.log('Form values:', { username, password, role });
             
@@ -1529,12 +1980,9 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
             // Update UI for recording state
             button.classList.add('recording');
             button.innerHTML = `
-                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
-                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
                 </svg>
-                🔴 Recording... (Click to stop)
             `;
             
             if (statusElement) {
@@ -1657,12 +2105,9 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
             if (button) {
                 button.classList.remove('recording', 'processing');
                 button.innerHTML = `
-                    <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                        <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
-                        <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
                     </svg>
-                    🎤 Speak ${getFieldLabel(fieldId)}
                 `;
                 
                 // Restore original onclick handler
@@ -1705,6 +2150,56 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
             if (installBtn) {
                 installBtn.style.display = 'inline-flex';
             }
+        });
+
+        // Doctor Avatar Management
+        function setDoctorAvatar(gender = 'male', variant = 1) {
+            const avatarElements = document.querySelectorAll('.doctor-avatar');
+            
+            avatarElements.forEach(element => {
+                // Remove existing avatar classes
+                element.classList.remove('male-1', 'male-2', 'female-1', 'female-2');
+                
+                // Add new avatar class
+                const avatarClass = `${gender}-${variant}`;
+                element.classList.add(avatarClass);
+            });
+        }
+
+        // Function to get random avatar variant
+        function getRandomAvatarVariant() {
+            return Math.random() < 0.5 ? 1 : 2;
+        }
+
+        // Function to set avatar based on doctor name or preference
+        function initializeDoctorAvatar() {
+            // You can customize this logic based on your needs
+            // For now, we'll use a simple random assignment
+            const gender = Math.random() < 0.5 ? 'male' : 'female';
+            const variant = getRandomAvatarVariant();
+            
+            setDoctorAvatar(gender, variant);
+            
+            // Store the avatar preference (you can save this to localStorage or your backend)
+            localStorage.setItem('doctorAvatar', JSON.stringify({ gender, variant }));
+        }
+
+        // Load saved avatar preference
+        function loadDoctorAvatar() {
+            const savedAvatar = localStorage.getItem('doctorAvatar');
+            if (savedAvatar) {
+                const { gender, variant } = JSON.parse(savedAvatar);
+                setDoctorAvatar(gender, variant);
+            } else {
+                // Default to male doctor if no preference is saved
+                setDoctorAvatar('male', 1);
+            }
+        }
+
+        // Initialize avatar when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            checkVoiceSupport();
+            loadDoctorAvatar();
         });
 
 
