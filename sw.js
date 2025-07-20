@@ -1,12 +1,12 @@
-const CACHE_NAME = 'medbridge-gaza-v1';
+const CACHE_NAME = 'medbridge-gaza-v7-dev'; // Updated version for development
 const urlsToCache = [
   '/',
   '/index.html',
+  '/app.js',           // Add app.js to cache
+  '/mock-data.js',     // Add mock-data.js to cache
   '/manifest.json',
-  'https://cdn.tailwindcss.com',
-  'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js',
-  'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js',
-  'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js'
+  'https://cdn.tailwindcss.com'
+  // Removed Firebase URLs since we're in demo mode
 ];
 
 // Install event - cache resources
@@ -48,13 +48,42 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch event - serve from cache when offline
+// Fetch event - development-friendly caching
 self.addEventListener('fetch', (event) => {
-  // Skip Firebase SDK requests as they need to be fresh
+  // Skip Firebase SDK requests and external CDNs as they need to be fresh
   if (event.request.url.includes('firebasejs') || 
       event.request.url.includes('firebaseapp.com') ||
-      event.request.url.includes('googleapis.com')) {
+      event.request.url.includes('googleapis.com') ||
+      event.request.url.includes('cdn.tailwindcss.com')) {
     return;
+  }
+
+  // For development: Always fetch fresh for local files
+  if (event.request.url.includes(self.location.origin)) {
+    const url = new URL(event.request.url);
+    
+    // Always fetch fresh for JS files during development
+    if (url.pathname.endsWith('.js') || url.pathname.endsWith('.html')) {
+      console.log('Service Worker: Fetching fresh for development:', event.request.url);
+      event.respondWith(
+        fetch(event.request)
+          .then((response) => {
+            if (response.ok) {
+              // Update cache with fresh version
+              const responseToCache = response.clone();
+              caches.open(CACHE_NAME).then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
+            }
+            return response;
+          })
+          .catch(() => {
+            // Fallback to cache if network fails
+            return caches.match(event.request);
+          })
+      );
+      return;
+    }
   }
 
   event.respondWith(

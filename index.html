@@ -110,6 +110,53 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
+        /* Tab styles */
+        .tab-button {
+            padding: 12px 24px;
+            font-weight: 600;
+            color: #6b7280;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .tab-button.active {
+            color: var(--primary-blue);
+            border-bottom-color: var(--primary-blue);
+        }
+        
+        .tab-button:hover {
+            color: var(--primary-blue);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Filter styles */
+        .filter-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background-color: white;
+            font-size: 14px;
+            color: #374151;
+            transition: border-color 0.2s ease;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
         /* Status badges */
         .status-badge {
             display: inline-block;
@@ -217,14 +264,14 @@
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
                         <input type="email" id="email" name="email" required 
                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                               placeholder="doctor@example.com">
+                               placeholder="demo@medbridge.ps">
                     </div>
                     
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                        <input type="password" id="password" name="password" required minlength="6"
+                        <input type="password" id="password" name="password" required
                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                               placeholder="••••••••">
+                               placeholder="Enter any password">
                     </div>
                     
                     <div>
@@ -244,59 +291,7 @@
                 
                 <div class="mt-6 text-center">
                     <p class="text-sm text-gray-600">
-                        Don't have an account? 
-                        <a href="#" id="show-register" class="text-blue-600 hover:text-blue-700 font-medium">Create Account</a>
-                    </p>
-                </div>
-            </div>
-
-            <!-- Register Card -->
-            <div id="register-card" class="hidden bg-white rounded-xl shadow-lg p-8 border border-gray-100">
-                <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Create Account</h2>
-                
-                <form id="register-form" class="space-y-6">
-                    <div>
-                        <label for="register-email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                        <input type="email" id="register-email" name="email" required 
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                               placeholder="doctor@example.com">
-                    </div>
-                    
-                    <div>
-                        <label for="register-password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                        <input type="password" id="register-password" name="password" required minlength="6"
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                               placeholder="••••••••">
-                        <p class="text-xs text-gray-500 mt-1">Minimum 6 characters</p>
-                    </div>
-                    
-                    <div>
-                        <label for="register-confirm-password" class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
-                        <input type="password" id="register-confirm-password" name="confirmPassword" required minlength="6"
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                               placeholder="••••••••">
-                    </div>
-                    
-                    <div>
-                        <label for="register-role" class="block text-sm font-medium text-gray-700 mb-2">Role</label>
-                        <select id="register-role" name="role" required 
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
-                            <option value="">Select your role</option>
-                            <option value="internal">Internal Doctor (Gaza)</option>
-                            <option value="external">External Doctor (Expert)</option>
-                        </select>
-                        <p class="text-xs text-gray-500 mt-1">Internal doctors submit cases, external doctors provide expert reviews</p>
-                    </div>
-                    
-                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                        Create Account
-                    </button>
-                </form>
-                
-                <div class="mt-6 text-center">
-                    <p class="text-sm text-gray-600">
-                        Already have an account? 
-                        <a href="#" id="show-login" class="text-blue-600 hover:text-blue-700 font-medium">Sign In</a>
+                        Demo Mode: Enter any email and password to test the app
                     </p>
                 </div>
             </div>
@@ -340,79 +335,141 @@
             <!-- Stats Cards -->
             <div class="grid-responsive mb-8">
                 <div class="stat-card">
-                    <div class="stat-number" id="total-cases">24</div>
-                    <div class="stat-label">Total Cases</div>
+                    <div class="stat-number" id="total-cases">0</div>
+                    <div class="stat-label">Total Recent Cases</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" id="pending-cases">8</div>
-                    <div class="stat-label">Pending Review</div>
+                    <div class="stat-number" id="pending-cases">0</div>
+                    <div class="stat-label">In Review</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" id="completed-cases">16</div>
+                    <div class="stat-number" id="completed-cases">0</div>
                     <div class="stat-label">Completed</div>
                 </div>
             </div>
 
-            <!-- Recent Cases Section -->
-            <div class="mb-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-semibold text-gray-900">My Recent Cases</h3>
-                    <button id="view-all-cases-btn" class="btn btn-secondary text-sm">View All</button>
+            <!-- Navigation Tabs -->
+            <div class="mb-6">
+                <div class="flex space-x-4 border-b border-gray-200">
+                    <button id="recent-cases-tab" class="tab-button active" data-view="recent">
+                        All Cases
+                    </button>
+                    <button id="my-cases-tab" class="tab-button" data-view="my-cases">
+                        My Cases
+                    </button>
                 </div>
-                
-                <div id="recent-cases-container" class="space-y-4">
-                    <!-- Case cards will be populated by JavaScript -->
-                    <div class="card">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 mb-2">Trauma Case - Compound Fracture</h4>
-                                <p class="text-gray-600 text-sm mb-3">Patient with severe compound fracture of the right tibia requiring immediate surgical intervention...</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500">
-                                    <span>Submitted: 2 hours ago</span>
-                                    <span class="status-badge status-in-review">In Review</span>
-                                </div>
+            </div>
+
+            <!-- All Cases Tab Content -->
+            <div id="recent-cases-content" class="tab-content active">
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 id="all-cases-heading" class="text-xl font-semibold text-gray-900">All Cases</h3>
+                        <p id="all-cases-subtitle" class="text-gray-600">Cases in review or completed</p>
+                    </div>
+                    
+                    <!-- Filters for Recent Cases -->
+                    <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                <select id="status-filter" class="filter-select">
+                                    <option value="all">All Statuses</option>
+                                    <option value="in_review">In Review</option>
+                                    <option value="completed">Completed</option>
+                                </select>
                             </div>
-                            <button class="btn btn-primary text-sm">View Details</button>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Tag</label>
+                                <select id="tag-filter" class="filter-select">
+                                    <option value="all">All Tags</option>
+                                    <option value="emergency">Emergency</option>
+                                    <option value="acute">Acute</option>
+                                    <option value="cardiology">Cardiology</option>
+                                    <option value="orthopedics">Orthopedics</option>
+                                    <option value="pediatrics">Pediatrics</option>
+                                    <option value="trauma">Trauma</option>
+                                    <option value="chronic">Chronic</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+                                <select id="sort-filter" class="filter-select">
+                                    <option value="recent">Most Recent</option>
+                                    <option value="oldest">Oldest First</option>
+                                    <option value="priority-high">Priority: High to Low</option>
+                                    <option value="priority-low">Priority: Low to High</option>
+                                </select>
+                            </div>
+                            <div class="flex items-end">
+                                <button id="clear-filters-btn" class="btn btn-secondary text-sm w-full">
+                                    Clear Filters
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="card">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 mb-2">Pediatric Emergency - Respiratory Distress</h4>
-                                <p class="text-gray-600 text-sm mb-3">3-year-old patient presenting with severe respiratory distress and suspected pneumonia...</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500">
-                                    <span>Submitted: 1 day ago</span>
-                                    <span class="status-badge status-completed">Completed</span>
-                                </div>
+                    <div id="internal-cases-list" class="space-y-4">
+                        <!-- Cases will be loaded dynamically from Firestore -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Cases Tab Content -->
+            <div id="my-cases-content" class="tab-content">
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 id="my-cases-heading" class="text-xl font-semibold text-gray-900">My Cases</h3>
+                        <p id="my-cases-subtitle" class="text-gray-600">Draft and submitted cases</p>
+                    </div>
+                    
+                    <!-- Filters for My Cases -->
+                    <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                <select id="my-status-filter" class="filter-select">
+                                    <option value="all">All Statuses</option>
+                                    <option value="draft">Draft</option>
+                                    <option value="submitted">Submitted</option>
+                                </select>
                             </div>
-                            <button class="btn btn-primary text-sm">View Details</button>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Tag</label>
+                                <select id="my-tag-filter" class="filter-select">
+                                    <option value="all">All Tags</option>
+                                    <option value="emergency">Emergency</option>
+                                    <option value="acute">Acute</option>
+                                    <option value="cardiology">Cardiology</option>
+                                    <option value="orthopedics">Orthopedics</option>
+                                    <option value="pediatrics">Pediatrics</option>
+                                    <option value="trauma">Trauma</option>
+                                    <option value="chronic">Chronic</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+                                <select id="my-sort-filter" class="filter-select">
+                                    <option value="recent">Most Recent</option>
+                                    <option value="oldest">Oldest First</option>
+                                    <option value="priority-high">Priority: High to Low</option>
+                                    <option value="priority-low">Priority: Low to High</option>
+                                </select>
+                            </div>
+                            <div class="flex items-end">
+                                <button id="clear-my-filters-btn" class="btn btn-secondary text-sm w-full">
+                                    Clear Filters
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="card">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 mb-2">Burn Case - Thermal Injury</h4>
-                                <p class="text-gray-600 text-sm mb-3">Adult patient with 15% body surface area thermal burns requiring specialized treatment...</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500">
-                                    <span>Submitted: 3 days ago</span>
-                                    <span class="status-badge status-submitted">Submitted</span>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary text-sm">View Details</button>
-                        </div>
+                    <div id="my-cases-list" class="space-y-4">
+                        <!-- My draft and submitted cases will be loaded here -->
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Footer -->
-        <footer class="bg-white border-t border-gray-200 py-6 mt-12">
-            <div class="container mx-auto px-4 text-center">
-                <p class="text-gray-600 text-sm">© 2024 MedBridge Gaza. Medical consultation platform for healthcare professionals.</p>
-            </div>
-        </footer>
     </div>
 
     <!-- Case Creation View -->
@@ -464,14 +521,13 @@
                     </div>
                     
                     <div>
-                        <label for="case-urgency" class="block text-sm font-medium text-gray-700 mb-2">Urgency Level *</label>
+                        <label for="case-urgency" class="block text-sm font-medium text-gray-700 mb-2">Priority Level *</label>
                         <select id="case-urgency" name="urgency" required 
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            <option value="">Select urgency level</option>
+                            <option value="">Select priority level</option>
                             <option value="low">Low - Routine consultation</option>
                             <option value="medium">Medium - Requires attention within 24 hours</option>
                             <option value="high">High - Urgent, requires immediate attention</option>
-                            <option value="critical">Critical - Life-threatening situation</option>
                         </select>
                     </div>
                     
@@ -660,74 +716,12 @@
                     <span class="text-sm text-gray-600">Click any case to review and assign</span>
                 </div>
                 
-                <div id="available-cases-container" class="space-y-4">
-                    <!-- Case cards will be populated by JavaScript -->
-                    <div class="card">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 mb-2">Trauma Case - Compound Fracture</h4>
-                                <p class="text-gray-600 text-sm mb-3">Patient with severe compound fracture of the right tibia requiring immediate surgical intervention...</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
-                                    <span>Submitted: 2 hours ago</span>
-                                    <span class="status-badge status-submitted">Awaiting Review</span>
-                                    <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">High Priority</span>
-                                </div>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">trauma</span>
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">orthopedics</span>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary text-sm" onclick="showCaseAssignment('case-1')">Review & Assign</button>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 mb-2">Pediatric Emergency - Respiratory Distress</h4>
-                                <p class="text-gray-600 text-sm mb-3">3-year-old patient presenting with severe respiratory distress and suspected pneumonia...</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
-                                    <span>Submitted: 4 hours ago</span>
-                                    <span class="status-badge status-submitted">Awaiting Review</span>
-                                    <span class="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs">Medium Priority</span>
-                                </div>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">pediatrics</span>
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary text-sm" onclick="showCaseAssignment('case-2')">Review & Assign</button>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 mb-2">Cardiac Event - Chest Pain Assessment</h4>
-                                <p class="text-gray-600 text-sm mb-3">45-year-old male presenting with acute chest pain, possible MI, requiring immediate assessment...</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
-                                    <span>Submitted: 1 day ago</span>
-                                    <span class="status-badge status-submitted">Awaiting Review</span>
-                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Standard Priority</span>
-                                </div>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">cardiology</span>
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary text-sm" onclick="showCaseAssignment('case-3')">Review & Assign</button>
-                        </div>
-                    </div>
+                <div id="external-cases-list" class="space-y-4">
+                    <!-- Cases will be loaded dynamically from Firestore -->
                 </div>
             </div>
         </div>
 
-        <!-- Footer -->
-        <footer class="bg-white border-t border-gray-200 py-6 mt-12">
-            <div class="container mx-auto px-4 text-center">
-                <p class="text-gray-600 text-sm">© 2024 MedBridge Gaza. Medical consultation platform for healthcare professionals.</p>
-            </div>
-        </footer>
     </div>
 
     <!-- Case Assignment View -->
@@ -979,45 +973,9 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
                     <h3 class="text-xl font-semibold text-gray-900">My Assigned Cases</h3>
                 </div>
                 
-                <div id="assigned-cases-container" class="space-y-4">
-                    <!-- Case cards will be populated by JavaScript -->
-                    <div class="card">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 mb-2">Trauma Case - Compound Fracture</h4>
-                                <p class="text-gray-600 text-sm mb-3">Patient with severe compound fracture of the right tibia requiring immediate surgical intervention...</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
-                                    <span>Assigned: 1 hour ago</span>
-                                    <span class="status-badge status-in-review">In Review</span>
-                                    <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">High Priority</span>
-                                </div>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">trauma</span>
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">orthopedics</span>
-                                </div>
-                            </div>
-                            <button class="btn btn-success text-sm" onclick="showCaseReview('case-1')">Continue Review</button>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 mb-2">Pediatric Emergency - Respiratory Distress</h4>
-                                <p class="text-gray-600 text-sm mb-3">3-year-old patient presenting with severe respiratory distress and suspected pneumonia...</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
-                                    <span>Assigned: 3 hours ago</span>
-                                    <span class="status-badge status-draft">Draft Saved</span>
-                                    <span class="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs">Medium Priority</span>
-                                </div>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">pediatrics</span>
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
-                                </div>
-                            </div>
-                            <button class="btn btn-warning text-sm" onclick="showCaseReview('case-2')">Continue Review</button>
-                        </div>
-                    </div>
+                <div id="assigned-cases-list" class="space-y-4">
+                    <!-- Assigned cases will be loaded dynamically from Firestore -->
+                </div>
                     
                     <div class="card">
                         <div class="flex items-start justify-between">
@@ -1040,20 +998,20 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
                 </div>
             </div>
         </div>
-
-        <!-- Footer -->
-        <footer class="bg-white border-t border-gray-200 py-6 mt-12">
-            <div class="container mx-auto px-4 text-center">
-                <p class="text-gray-600 text-sm">© 2024 MedBridge Gaza. Medical consultation platform for healthcare professionals.</p>
-            </div>
-        </footer>
     </div>
 
+    <!-- Global Footer -->
+    <footer class="bg-white border-t border-gray-200 py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-600 text-sm">© 2024 MedBridge Gaza. Medical consultation platform for healthcare professionals.</p>
+        </div>
+    </footer>
+
     <!-- Mock Data Script -->
-    <script src="mock-data.js"></script>
+    <script src="mock-data.js?v=14"></script>
     
     <!-- Main App Script -->
-    <script src="app.js"></script>
+    <script src="app.js?v=14"></script>
 
     <!-- Service Worker Registration -->
     <script>
