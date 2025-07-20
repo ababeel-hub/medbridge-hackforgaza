@@ -1,4 +1,4 @@
-const CACHE_NAME = 'shifalink-v7-dev'; // Updated version for development
+const CACHE_NAME = 'shifalink-v16-dev'; // Fixed counters, header colors, enhanced feedback form with case reassignment
 const urlsToCache = [
   '/',
   '/index.html',
@@ -50,6 +50,11 @@ self.addEventListener('activate', (event) => {
 
 // Fetch event - development-friendly caching
 self.addEventListener('fetch', (event) => {
+  // Skip non-HTTP schemes (chrome-extension, etc)
+  if (!event.request.url.startsWith('http')) {
+    return;
+  }
+  
   // Skip Firebase SDK requests and external CDNs as they need to be fresh
   if (event.request.url.includes('firebasejs') || 
       event.request.url.includes('firebaseapp.com') ||
@@ -62,23 +67,32 @@ self.addEventListener('fetch', (event) => {
   if (event.request.url.includes(self.location.origin)) {
     const url = new URL(event.request.url);
     
-    // Always fetch fresh for JS files during development
+    // Development mode: Network-first strategy for JS/HTML files
     if (url.pathname.endsWith('.js') || url.pathname.endsWith('.html')) {
-      console.log('Service Worker: Fetching fresh for development:', event.request.url);
+      console.log('Service Worker: Network-first strategy for:', event.request.url);
       event.respondWith(
         fetch(event.request)
           .then((response) => {
             if (response.ok) {
-              // Update cache with fresh version
-              const responseToCache = response.clone();
-              caches.open(CACHE_NAME).then((cache) => {
-                cache.put(event.request, responseToCache);
+              // Only cache if content has changed (check last-modified header)
+              return caches.match(event.request).then((cachedResponse) => {
+                const shouldUpdate = !cachedResponse || 
+                  response.headers.get('last-modified') !== cachedResponse.headers.get('last-modified');
+                
+                if (shouldUpdate) {
+                  console.log('Service Worker: Updating cache for:', event.request.url);
+                  const responseToCache = response.clone();
+                  caches.open(CACHE_NAME).then((cache) => {
+                    cache.put(event.request, responseToCache);
+                  });
+                }
+                return response;
               });
             }
             return response;
           })
           .catch(() => {
-            // Fallback to cache if network fails
+            console.log('Service Worker: Network failed, serving from cache:', event.request.url);
             return caches.match(event.request);
           })
       );
@@ -86,43 +100,46 @@ self.addEventListener('fetch', (event) => {
     }
   }
 
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Return cached version or fetch from network
-        if (response) {
-          console.log('Service Worker: Serving from cache:', event.request.url);
-          return response;
-        }
-
-        console.log('Service Worker: Fetching from network:', event.request.url);
-        return fetch(event.request)
-          .then((response) => {
-            // Check if we received a valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            // Clone the response
-            const responseToCache = response.clone();
-
-            // Cache the fetched resource
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-                console.log('Service Worker: Cached new resource:', event.request.url);
-              });
-
+  // Only handle HTTP requests for caching
+  if (event.request.url.startsWith('http')) {
+    event.respondWith(
+      caches.match(event.request)
+        .then((response) => {
+          // Return cached version or fetch from network
+          if (response) {
+            console.log('Service Worker: Serving from cache:', event.request.url);
             return response;
-          })
-          .catch(() => {
-            // If network fails and it's a navigation request, serve the cached index.html
-            if (event.request.mode === 'navigate') {
-              return caches.match('/index.html');
-            }
-          });
-      })
-  );
+          }
+
+          console.log('Service Worker: Fetching from network:', event.request.url);
+          return fetch(event.request)
+            .then((response) => {
+              // Check if we received a valid response
+              if (!response || response.status !== 200 || response.type !== 'basic') {
+                return response;
+              }
+
+              // Clone the response
+              const responseToCache = response.clone();
+
+              // Cache the fetched resource
+              caches.open(CACHE_NAME)
+                .then((cache) => {
+                  cache.put(event.request, responseToCache);
+                  console.log('Service Worker: Cached new resource:', event.request.url);
+                });
+
+              return response;
+            })
+            .catch(() => {
+              // If network fails and it's a navigation request, serve the cached index.html
+              if (event.request.mode === 'navigate') {
+                return caches.match('/index.html');
+              }
+            });
+        })
+    );
+  }
 });
 
 // Background sync for offline data

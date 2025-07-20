@@ -36,7 +36,7 @@ def main():
         os.makedirs('icons')
     
     # Icon sizes needed for PWA
-    sizes = [16, 32, 96, 152, 192, 512]
+    sizes = [16, 32, 72, 96, 128, 144, 152, 192, 384, 512]
     
     for size in sizes:
         try:

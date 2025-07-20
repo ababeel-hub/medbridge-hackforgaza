@@ -6,7 +6,14 @@
       "**/.*",
       "**/node_modules/**",
       "README.md",
-      "medbridge_wireframes.html"
+      "PWA-README.md", 
+      "medbridge_wireframes.html",
+      "create-icons.py",
+      "generate-icons.html",
+      "firebase-debug.log",
+      "pglite-debug.log",
+      "firestore.rules",
+      "firestore.indexes.json"
     ],
     "rewrites": [
       {
@@ -43,4 +50,4 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   }
-} 
+}

@@ -16,6 +16,13 @@ let firebaseApp, auth, db;
 document.addEventListener('DOMContentLoaded', async function() {
     console.log('DEMO MODE: Starting app with Firebase data but demo auth');
     
+    // Wait a bit for mock data to load
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    console.log('Mock data available:', typeof window.MOCK_DATA !== 'undefined');
+    console.log('Current user in localStorage:', localStorage.getItem('currentUser'));
+    console.log('User type in localStorage:', localStorage.getItem('userType'));
+    
     try {
         // Import Firebase modules for data access
         const { initializeApp: initFirebaseApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
@@ -31,6 +38,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         window.db = db; // Also set window.db for compatibility
 
         console.log('Firebase initialized for data access');
+        console.log('Firebase DB available:', !!window.firebaseDb);
+        console.log('Window DB available:', !!window.db);
 
         // Load app data and populate if empty
         await loadAppData();
@@ -41,6 +50,21 @@ document.addEventListener('DOMContentLoaded', async function() {
     } catch (error) {
         console.error('Firebase initialization failed:', error);
         console.log('Falling back to mock data only');
+        
+        // Check if mock data is available
+        if (typeof window.MOCK_DATA !== 'undefined') {
+            console.log('Mock data available, using fallback');
+            window.APP_DATA = {
+                cases: window.MOCK_DATA.cases || [],
+                users: window.MOCK_DATA.users || [],
+                answers: window.MOCK_DATA.answers || [],
+                votes: window.MOCK_DATA.votes || [],
+                source: 'mock'
+            };
+        } else {
+            console.error('Mock data also not available!');
+        }
+        
         // Initialize app even if Firebase fails
         initializeApp();
     }
@@ -137,6 +161,24 @@ function showView(viewId) {
             }, 100);
         }
         
+        // For internal dashboard, also trigger the initial tab load
+        if (viewId === 'internal-dashboard-view') {
+            setTimeout(() => {
+                console.log('Loading initial tab content for internal dashboard');
+                const activeTab = document.querySelector('.tab-button.active')?.getAttribute('data-view') || 'recent';
+                loadAndDisplayFilteredCases(activeTab);
+            }, 200);
+        }
+        
+        // For external dashboard, also trigger the initial tab load
+        if (viewId === 'external-dashboard-view') {
+            setTimeout(() => {
+                console.log('Loading initial tab content for external dashboard');
+                const activeTab = document.querySelector('#available-cases-tab.active, #my-assigned-tab.active')?.getAttribute('data-view') || 'available';
+                loadAndDisplayExternalCases(activeTab);
+            }, 200);
+        }
+        
         // Re-setup event listeners for the new view
         setTimeout(() => {
             setupEventListenersForCurrentView(viewId);
@@ -204,6 +246,18 @@ function setupTabsAndFilters() {
     const mySortFilter = document.getElementById('my-sort-filter');
     const clearMyFiltersBtn = document.getElementById('clear-my-filters-btn');
     
+    // External doctor filter listeners
+    const extStatusFilter = document.getElementById('ext-status-filter');
+    const extSpecialtyFilter = document.getElementById('ext-specialty-filter');
+    const extPriorityFilter = document.getElementById('ext-priority-filter');
+    const extSortFilter = document.getElementById('ext-sort-filter');
+    const clearExtFiltersBtn = document.getElementById('clear-ext-filters-btn');
+    
+    const myExtStatusFilter = document.getElementById('my-ext-status-filter');
+    const myExtSpecialtyFilter = document.getElementById('my-ext-specialty-filter');
+    const myExtSortFilter = document.getElementById('my-ext-sort-filter');
+    const clearMyExtFiltersBtn = document.getElementById('clear-my-ext-filters-btn');
+    
     if (myStatusFilter) myStatusFilter.addEventListener('change', () => loadAndDisplayFilteredCases('my-cases'));
     if (myTagFilter) myTagFilter.addEventListener('change', () => loadAndDisplayFilteredCases('my-cases'));
     if (mySortFilter) mySortFilter.addEventListener('change', () => loadAndDisplayFilteredCases('my-cases'));
@@ -216,17 +270,75 @@ function setupTabsAndFilters() {
         });
     }
     
+    // External doctor filter listeners
+    if (extStatusFilter) extStatusFilter.addEventListener('change', () => loadAndDisplayExternalCases('available'));
+    if (extSpecialtyFilter) extSpecialtyFilter.addEventListener('change', () => loadAndDisplayExternalCases('available'));
+    if (extPriorityFilter) extPriorityFilter.addEventListener('change', () => loadAndDisplayExternalCases('available'));
+    if (extSortFilter) extSortFilter.addEventListener('change', () => loadAndDisplayExternalCases('available'));
+    if (clearExtFiltersBtn) {
+        clearExtFiltersBtn.addEventListener('click', () => {
+            extStatusFilter.value = 'all';
+            extSpecialtyFilter.value = 'all';
+            extPriorityFilter.value = 'all';
+            extSortFilter.value = 'recent';
+            loadAndDisplayExternalCases('available');
+        });
+    }
+    
+    if (myExtStatusFilter) myExtStatusFilter.addEventListener('change', () => loadAndDisplayExternalCases('assigned'));
+    if (myExtSpecialtyFilter) myExtSpecialtyFilter.addEventListener('change', () => loadAndDisplayExternalCases('assigned'));
+    if (myExtSortFilter) myExtSortFilter.addEventListener('change', () => loadAndDisplayExternalCases('assigned'));
+    if (clearMyExtFiltersBtn) {
+        clearMyExtFiltersBtn.addEventListener('click', () => {
+            myExtStatusFilter.value = 'all';
+            myExtSpecialtyFilter.value = 'all';
+            myExtSortFilter.value = 'recent';
+            loadAndDisplayExternalCases('assigned');
+        });
+    }
+    
+    // External doctor tab switching
+    const extTabButtons = document.querySelectorAll('#available-cases-tab, #my-assigned-tab');
+    const extTabContents = document.querySelectorAll('#available-cases-content, #assigned-cases-content');
+    
+    extTabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetView = this.getAttribute('data-view');
+            
+            // Remove active class from all tabs and contents
+            extTabButtons.forEach(btn => btn.classList.remove('active'));
+            extTabContents.forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // Show corresponding content
+            if (targetView === 'available') {
+                document.getElementById('available-cases-content').classList.add('active');
+                loadAndDisplayExternalCases('available');
+            } else if (targetView === 'assigned') {
+                document.getElementById('assigned-cases-content').classList.add('active');
+                loadAndDisplayExternalCases('assigned');
+            }
+        });
+    });
+    
     console.log('Tabs and filters setup complete');
 }
 
 // Load and display filtered cases
 async function loadAndDisplayFilteredCases(tabType) {
     try {
+        console.log('loadAndDisplayFilteredCases called with tabType:', tabType);
+        
         // Ensure we have data
         if (!window.APP_DATA || !window.APP_DATA.cases) {
             console.log('No app data available, loading from Firebase...');
             await loadAppData();
         }
+        
+        console.log('APP_DATA after loading:', window.APP_DATA);
+        console.log('Number of cases:', window.APP_DATA?.cases?.length || 0);
         
         const cases = window.APP_DATA.cases || [];
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -252,7 +364,9 @@ async function loadAndDisplayFilteredCases(tabType) {
             }
             if (tagFilter !== 'all') {
                 filteredCases = filteredCases.filter(c => 
-                    c.tags && c.tags.includes(tagFilter)
+                    // Check both specialty field (new cases) and tags field (old cases)
+                    (c.specialty && c.specialty === tagFilter) ||
+                    (c.tags && c.tags.includes(tagFilter))
                 );
             }
             
@@ -277,7 +391,9 @@ async function loadAndDisplayFilteredCases(tabType) {
             }
             if (tagFilter !== 'all') {
                 filteredCases = filteredCases.filter(c => 
-                    c.tags && c.tags.includes(tagFilter)
+                    // Check both specialty field (new cases) and tags field (old cases)
+                    (c.specialty && c.specialty === tagFilter) ||
+                    (c.tags && c.tags.includes(tagFilter))
                 );
             }
             
@@ -296,6 +412,93 @@ async function loadAndDisplayFilteredCases(tabType) {
         
     } catch (error) {
         console.error('Error loading filtered cases:', error);
+        showErrorState();
+    }
+}
+
+// Load and display filtered cases for external doctors
+async function loadAndDisplayExternalCases(tabType) {
+    try {
+        console.log('loadAndDisplayExternalCases called with tabType:', tabType);
+        
+        // Ensure we have data
+        if (!window.APP_DATA || !window.APP_DATA.cases) {
+            console.log('No app data available, loading from Firebase...');
+            await loadAppData();
+        }
+        
+        console.log('APP_DATA after loading:', window.APP_DATA);
+        console.log('Number of cases:', window.APP_DATA?.cases?.length || 0);
+        
+        const cases = window.APP_DATA.cases || [];
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const userEmail = currentUser.email?.split('@')[0] || 'external_001';
+        
+        let filteredCases = [];
+        let containerId = '';
+        
+        if (tabType === 'available') {
+            // Available Cases: submitted or in_review cases not assigned to current user
+            filteredCases = cases.filter(c => 
+                (c.status === 'submitted' || c.status === 'in_review') &&
+                c.assignedTo !== userEmail
+            );
+            containerId = 'external-cases-list';
+            
+            // Apply filters
+            const statusFilter = document.getElementById('ext-status-filter')?.value || 'all';
+            const specialtyFilter = document.getElementById('ext-specialty-filter')?.value || 'all';
+            const priorityFilter = document.getElementById('ext-priority-filter')?.value || 'all';
+            const sortFilter = document.getElementById('ext-sort-filter')?.value || 'recent';
+            
+            if (statusFilter !== 'all') {
+                filteredCases = filteredCases.filter(c => c.status === statusFilter);
+            }
+            if (specialtyFilter !== 'all') {
+                filteredCases = filteredCases.filter(c => 
+                    (c.specialty && c.specialty === specialtyFilter) ||
+                    (c.tags && c.tags.includes(specialtyFilter))
+                );
+            }
+            if (priorityFilter !== 'all') {
+                filteredCases = filteredCases.filter(c => c.priority === priorityFilter);
+            }
+            
+            // Apply sorting
+            filteredCases = applySorting(filteredCases, sortFilter);
+            
+        } else if (tabType === 'assigned') {
+            // My Assigned Cases
+            filteredCases = cases.filter(c => c.assignedTo === userEmail);
+            containerId = 'my-assigned-cases-list';
+            
+            // Apply filters
+            const statusFilter = document.getElementById('my-ext-status-filter')?.value || 'all';
+            const specialtyFilter = document.getElementById('my-ext-specialty-filter')?.value || 'all';
+            const sortFilter = document.getElementById('my-ext-sort-filter')?.value || 'recent';
+            
+            if (statusFilter !== 'all') {
+                filteredCases = filteredCases.filter(c => c.status === statusFilter);
+            }
+            if (specialtyFilter !== 'all') {
+                filteredCases = filteredCases.filter(c => 
+                    (c.specialty && c.specialty === specialtyFilter) ||
+                    (c.tags && c.tags.includes(specialtyFilter))
+                );
+            }
+            
+            // Apply sorting
+            filteredCases = applySorting(filteredCases, sortFilter);
+        }
+        
+        console.log(`Rendering ${filteredCases.length} filtered cases for external ${tabType}`);
+        renderCases(filteredCases, containerId, 'external');
+        
+        // Update counts
+        updateExternalCaseCounts(cases, userEmail);
+        
+    } catch (error) {
+        console.error('Error loading external cases:', error);
         showErrorState();
     }
 }
@@ -433,15 +636,17 @@ async function submitCase(status) {
         
         // Get form data
         const title = document.getElementById('case-title')?.value?.trim();
-        const description = document.getElementById('case-description')?.value?.trim();
+        const ageRange = document.getElementById('age-range')?.value;
+        const gender = document.querySelector('input[name="gender"]:checked')?.value;
+        const caseType = document.getElementById('case-type')?.value;
         const symptoms = document.getElementById('case-symptoms')?.value?.trim();
-        const tagsInput = document.getElementById('case-tags')?.value?.trim();
+        const medicalHistory = document.getElementById('medical-history')?.value?.trim();
         const urgency = document.getElementById('case-urgency')?.value;
         const researchConsent = document.getElementById('research-consent')?.checked;
         
         // Validation
-        if (!title || !description) {
-            showErrorMessage('Please fill in all required fields (Title and Description).');
+        if (!title || !ageRange || !gender || !caseType || !symptoms || !medicalHistory) {
+            showErrorMessage('Please fill in all required fields.');
             return;
         }
         
@@ -454,26 +659,27 @@ async function submitCase(status) {
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
         const userEmail = currentUser.email?.split('@')[0] || 'internal_001';
         
-        // Process tags
-        const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim().toLowerCase()).filter(tag => tag) : [];
-        
-        // Create case object
+        // Create case object compatible with existing structure
         const caseData = {
             id: generateCaseId(),
             title: title,
-            description: description,
-            symptoms: symptoms || '',
-            tags: tags,
-            priority: urgency || 'medium',
-            status: status,
             createdBy: userEmail,
+            assignedTo: null,
+            status: status,
+            specialty: caseType, // Map case_type to specialty for compatibility
+            patientAge: ageRange,
+            patientGender: gender,
+            symptoms: symptoms,
+            medicalHistory: medicalHistory,
+            vitalSigns: {}, // Will be filled later by medical staff
+            labResults: {}, // Will be filled later by medical staff
+            imaging: '', // Will be filled later by medical staff
+            treatmentGiven: '', // Will be filled later by medical staff
+            tags: [caseType], // Use case_type as primary tag for compatibility
+            priority: urgency || 'medium',
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
-            researchConsent: researchConsent || false,
-            assignedTo: null,
-            medicalData: {},
-            comments: [],
-            votes: []
+            researchConsent: researchConsent || false
         };
         
         console.log('Saving case to Firestore:', caseData);
@@ -629,6 +835,11 @@ function setupEventListenersForCurrentView(viewId) {
     
     // Setup tabs and filters for internal dashboard
     if (viewId === 'internal-dashboard-view') {
+        setupTabsAndFilters();
+    }
+    
+    // Setup tabs and filters for external dashboard
+    if (viewId === 'external-dashboard-view') {
         setupTabsAndFilters();
     }
     
@@ -922,7 +1133,7 @@ function setupAdditionalNavigationButtons() {
     // Set up any additional navigation buttons that might exist
     const additionalButtons = [
         { id: 'back-to-cases', view: 'internal-dashboard-view', name: 'back to cases' },
-        { id: 'back-to-assigned-cases', view: 'my-assigned-cases-view', name: 'back to assigned cases' },
+        { id: 'back-to-assigned-cases', action: () => { showView('external-dashboard-view'); setTimeout(() => { document.getElementById('my-assigned-tab')?.click(); }, 200); }, name: 'back to assigned cases' },
         { id: 'back-to-ext-main', view: 'external-dashboard-view', name: 'back to external main' }
     ];
     
@@ -956,11 +1167,10 @@ function setupCaseForms() {
     // Expert review form
     const expertReviewForm = document.getElementById('expert-review-form');
     if (expertReviewForm) {
-        expertReviewForm.addEventListener('submit', function(e) {
+        expertReviewForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             console.log('Expert review form submitted');
-            alert('Expert review submitted successfully!');
-            showView('my-assigned-cases-view');
+            await submitExpertReview('final');
         });
         console.log('Expert review form listener attached');
     }
@@ -977,9 +1187,10 @@ function setupAllOtherButtons() {
         // Action buttons (removed view-all-cases-btn as it's replaced with tabs and filters)
         { id: 'view-my-assigned-btn', action: () => { showView('my-assigned-cases-view'); loadAndDisplayCases(); }, name: 'view my assigned cases' },
         { id: 'save-draft-btn', action: async () => { console.log('Saving draft...'); await submitCase('draft'); }, name: 'save draft' },
-        { id: 'save-draft-review-btn', action: () => { console.log('Review draft saved'); alert('Review draft saved!'); }, name: 'save review draft' },
-        { id: 'assign-to-me-btn', action: () => { console.log('Case assigned'); alert('Case assigned to you!'); showView('my-assigned-cases-view'); loadAndDisplayCases(); }, name: 'assign to me' },
-        { id: 'decline-case-btn', action: () => { console.log('Case declined'); alert('Case declined.'); showView('external-dashboard-view'); loadAndDisplayCases(); }, name: 'decline case' },
+        { id: 'save-draft-review-btn', action: () => submitExpertReview('draft'), name: 'save review draft' },
+        { id: 'assign-to-me-btn', action: () => toggleCaseAssignment(), name: 'assign to me' },
+        { id: 'provide-feedback-btn', action: () => { showView('case-review-view'); loadCaseIntoReviewView(window.currentCaseData); }, name: 'provide feedback' },
+        { id: 'view-my-cases-btn', action: () => { showView('external-dashboard-view'); setTimeout(() => { document.getElementById('my-assigned-tab')?.click(); }, 200); }, name: 'view my cases' },
         { id: 'install-btn', action: handleInstallApp, name: 'install app' }
     ];
     
@@ -1038,23 +1249,7 @@ async function loadAppData() {
                 };
                 return cases;
             } else {
-                console.log('No cases found in Firebase, will populate with mock data');
-                // Auto-populate if empty
-                await populateMockData();
-                // Try loading again
-                const newSnapshot = await getDocs(collection(window.firebaseDb, 'cases'));
-                const newCases = [];
-                newSnapshot.forEach((doc) => {
-                    newCases.push({ id: doc.id, ...doc.data() });
-                });
-                
-                if (newCases.length > 0) {
-                    window.APP_DATA = {
-                        cases: newCases,
-                        source: 'firebase'
-                    };
-                    return newCases;
-                }
+                console.log('No cases found in Firebase, using existing database data');
             }
         }
     } catch (error) {
@@ -1063,7 +1258,10 @@ async function loadAppData() {
     
     // Fallback to mock data
     console.log('Using mock data as fallback');
+    console.log('MOCK_DATA available:', typeof window.MOCK_DATA !== 'undefined');
     if (typeof window.MOCK_DATA !== 'undefined') {
+        console.log('MOCK_DATA structure:', window.MOCK_DATA);
+        console.log('MOCK_DATA cases length:', window.MOCK_DATA.cases?.length || 0);
         window.APP_DATA = {
             cases: window.MOCK_DATA.cases || [],
             users: window.MOCK_DATA.users || [],
@@ -1071,61 +1269,16 @@ async function loadAppData() {
             votes: window.MOCK_DATA.votes || [],
             source: 'mock'
         };
+        console.log('APP_DATA set from mock data:', window.APP_DATA);
         return window.MOCK_DATA.cases || [];
+    } else {
+        console.error('MOCK_DATA is not available!');
     }
     
     return [];
 }
 
-// Populate mock data function (if needed)
-async function populateMockData() {
-    try {
-        if (typeof window.MOCK_DATA !== 'undefined' && window.firebaseDb) {
-            const { setDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
-            
-            const mockData = window.MOCK_DATA;
-            console.log('Populating mock data to Firebase...');
-            console.log('Mock data structure:', mockData);
-            
-            // Add users
-            console.log(`Adding ${mockData.users.length} users...`);
-            for (const user of mockData.users) {
-                await setDoc(doc(window.firebaseDb, 'users', user.uid), user);
-                console.log(`✅ Added user: ${user.displayName}`);
-            }
-            
-            // Add cases
-            console.log(`Adding ${mockData.cases.length} cases...`);
-            for (const caseData of mockData.cases) {
-                await setDoc(doc(window.firebaseDb, 'cases', caseData.id), caseData);
-                console.log(`✅ Added case: ${caseData.title}`);
-            }
-            
-            // Add answers
-            console.log(`Adding ${mockData.answers.length} answers...`);
-            for (const answer of mockData.answers) {
-                await setDoc(doc(window.firebaseDb, 'answers', answer.id), answer);
-                console.log(`✅ Added answer: ${answer.id}`);
-            }
-            
-            // Add votes
-            console.log(`Adding ${mockData.votes.length} votes...`);
-            for (const vote of mockData.votes) {
-                await setDoc(doc(window.firebaseDb, 'votes', vote.id), vote);
-                console.log(`✅ Added vote: ${vote.id}`);
-            }
-            
-            console.log('🎉 Mock data populated to Firebase successfully!');
-            return true;
-        } else {
-            console.error('Mock data or Firebase DB not available');
-            return false;
-        }
-    } catch (error) {
-        console.error('Error populating mock data:', error);
-        return false;
-    }
-}
+// Mock data population removed - data already exists in database
 
 // Render cases dynamically from Firestore data
 function renderCases(cases, containerId, userType = 'internal') {
@@ -1256,27 +1409,18 @@ async function loadAndDisplayCases() {
             updateCaseCounts(cases, userEmail);
             
         } else {
-            // External doctors see all submitted and in-review cases
-            const pendingCases = cases.filter(c => c.status === 'submitted');
-            const inReviewCases = cases.filter(c => c.status === 'in_review');
-            const allAvailableCases = cases.filter(c => c.status === 'submitted' || c.status === 'in_review');
-            const assignedCases = cases.filter(c => c.assignedTo === 'external_001'); // For demo, use a default external user
+            // External doctors - use new filtering system
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const userEmail = currentUser.email?.split('@')[0] || 'external_001';
             
-            // Determine which cases to show based on current view
-            const currentView = getCurrentView();
-            if (currentView === 'my-assigned-cases-view') {
-                renderCases(assignedCases, 'assigned-cases-list', 'external');
-            } else {
-                // Show all available cases in external dashboard
-                renderCases(allAvailableCases, 'external-cases-list', 'external');
-            }
+            // Check which tab is active
+            const activeTab = document.querySelector('#available-cases-tab.active, #my-assigned-tab.active')?.getAttribute('data-view') || 'available';
             
-            // Update case counts with correct numbers
-            updateCaseCount('available-cases', pendingCases.length); // Only submitted cases
-            updateCaseCount('pending-review', inReviewCases.length); // Only in-review cases  
-            updateCaseCount('my-assigned-cases', assignedCases.length);
-            updateCaseCount('pending-cases-count', pendingCases.length);
-            updateCaseCount('assigned-cases-count', assignedCases.length);
+            // Load appropriate cases for the active tab
+            loadAndDisplayExternalCases(activeTab);
+            
+            // Update overall counts
+            updateExternalCaseCounts(cases, userEmail);
         }
         
     } catch (error) {
@@ -1372,6 +1516,126 @@ function updateCaseCount(elementId, count) {
     }
 }
 
+function updateExternalCaseCounts(cases, userEmail) {
+    console.log('Updating external case counts for user:', userEmail);
+    console.log('Total cases:', cases.length);
+    
+    const availableCases = cases.filter(c => 
+        (c.status === 'submitted' || c.status === 'in_review') &&
+        (!c.assignedTo || c.assignedTo !== userEmail)
+    ).length;
+    
+    const assignedCases = cases.filter(c => c.assignedTo === userEmail).length;
+    
+    console.log('Available cases:', availableCases);
+    console.log('Assigned cases:', assignedCases);
+    
+    // Update stat cards instead of tab counters
+    updateCaseCount('available-cases', availableCases);
+    updateCaseCount('my-assigned-cases', assignedCases);
+}
+
+// Toggle case assignment (assign/unassign)
+async function toggleCaseAssignment() {
+    try {
+        const caseId = window.currentCaseId;
+        if (!caseId) {
+            console.error('No case ID available');
+            showErrorMessage('Error: No case selected');
+            return;
+        }
+        
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const userEmail = currentUser.email?.split('@')[0] || 'external_001';
+        
+        // Get current case data
+        const cases = window.APP_DATA?.cases || [];
+        const caseData = cases.find(c => c.id === caseId);
+        
+        if (!caseData) {
+            console.error('Case not found:', caseId);
+            showErrorMessage('Error: Case not found');
+            return;
+        }
+        
+        console.log('Current case assignment:', caseData.assignedTo);
+        console.log('Current user:', userEmail);
+        
+        // Determine if assigning or unassigning
+        const isCurrentlyAssigned = caseData.assignedTo === userEmail;
+        const newAssignedTo = isCurrentlyAssigned ? null : userEmail;
+        const newStatus = isCurrentlyAssigned ? 'submitted' : 'in_review';
+        
+        // Update case in Firestore
+        const db = window.db || window.firebaseDb;
+        if (db) {
+            const { doc, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+            
+            await updateDoc(doc(db, 'cases', caseId), {
+                assignedTo: newAssignedTo,
+                status: newStatus,
+                updatedAt: new Date().toISOString()
+            });
+            
+            console.log('Case assignment updated in Firestore');
+        }
+        
+        // Update local data
+        caseData.assignedTo = newAssignedTo;
+        caseData.status = newStatus;
+        caseData.updatedAt = new Date().toISOString();
+        
+        // Show success message
+        const actionText = isCurrentlyAssigned ? 'unassigned from' : 'assigned to';
+        showSuccessMessage(`Case ${actionText} you successfully!`);
+        
+        // Update the assignment button
+        updateAssignmentButton(caseData, userEmail);
+        
+        // Show/hide feedback section
+        updateFeedbackSection(caseData, userEmail);
+        
+        // Refresh the dashboard if we're going back
+        setTimeout(() => {
+            loadAndDisplayExternalCases('available');
+        }, 100);
+        
+    } catch (error) {
+        console.error('Error toggling case assignment:', error);
+        showErrorMessage('Error updating case assignment. Please try again.');
+    }
+}
+
+// Update the assignment button based on current state
+function updateAssignmentButton(caseData, userEmail) {
+    const button = document.getElementById('assign-to-me-btn');
+    if (!button) return;
+    
+    const isAssigned = caseData.assignedTo === userEmail;
+    
+    if (isAssigned) {
+        button.textContent = 'Unassign from Me';
+        button.className = 'btn btn-secondary px-8';
+    } else {
+        button.textContent = 'Assign Case to Myself';
+        button.className = 'btn btn-primary px-8';
+    }
+}
+
+// Update feedback section visibility
+function updateFeedbackSection(caseData, userEmail) {
+    const feedbackSection = document.getElementById('assignment-feedback-section');
+    if (!feedbackSection) return;
+    
+    const isAssigned = caseData.assignedTo === userEmail;
+    
+    if (isAssigned) {
+        feedbackSection.classList.remove('hidden');
+    } else {
+        feedbackSection.classList.add('hidden');
+    }
+}
+
 // Show case details with specific case data
 function showCaseDetails(caseId) {
     console.log('Showing case details for case ID:', caseId);
@@ -1449,6 +1713,9 @@ function loadCaseIntoDetailView(caseData) {
 function loadCaseIntoAssignmentView(caseData) {
     console.log('Loading case into assignment view:', caseData);
     
+    // Store current case ID for assignment functions
+    window.currentCaseId = caseData.id;
+    
     // Update assignment view elements
     const elements = {
         'assign-case-title': caseData.title,
@@ -1470,15 +1737,204 @@ function loadCaseIntoAssignmentView(caseData) {
         }
     });
     
-    // Update tags if element exists
+    // Update tags/specialty if element exists
     const assignTagsElement = document.getElementById('assign-case-tags');
-    if (assignTagsElement && caseData.tags && caseData.tags.length > 0) {
-        assignTagsElement.innerHTML = caseData.tags.map(tag => 
-            `<span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">${tag}</span>`
-        ).join(' ');
-        console.log('Updated assignment tags:', caseData.tags);
-    } else if (assignTagsElement) {
-        assignTagsElement.innerHTML = '<span class="text-gray-500 text-sm">No tags</span>';
+    if (assignTagsElement) {
+        if (caseData.specialty) {
+            assignTagsElement.innerHTML = `<span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">${caseData.specialty}</span>`;
+        } else if (caseData.tags && caseData.tags.length > 0) {
+            assignTagsElement.innerHTML = caseData.tags.map(tag => 
+                `<span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">${tag}</span>`
+            ).join(' ');
+        } else {
+            assignTagsElement.innerHTML = '<span class="text-gray-500 text-sm">No specialty specified</span>';
+        }
+        console.log('Updated assignment tags/specialty');
+    }
+    
+    // Update assignment button and feedback section based on current state
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const userEmail = currentUser.email?.split('@')[0] || 'external_001';
+    updateAssignmentButton(caseData, userEmail);
+    updateFeedbackSection(caseData, userEmail);
+}
+
+// Submit expert review/feedback
+async function submitExpertReview(status = 'final') {
+    try {
+        const caseId = window.currentCaseId;
+        if (!caseId) {
+            console.error('No case ID available');
+            showErrorMessage('Error: No case selected');
+            return;
+        }
+        
+        const form = document.getElementById('expert-review-form');
+        if (!form) {
+            console.error('Expert review form not found');
+            return;
+        }
+        
+        const formData = new FormData(form);
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const reviewerEmail = currentUser.email?.split('@')[0] || 'external_001';
+        const reviewerName = currentUser.name || 'External Doctor';
+        
+        // Create review object
+        const review = {
+            id: Date.now().toString(),
+            caseId: caseId,
+            reviewerEmail: reviewerEmail,
+            reviewerName: reviewerName,
+            diagnosis: formData.get('diagnosis'),
+            additionalTests: formData.get('tests'),
+            followUp: formData.get('followup'),
+            urgency: formData.get('urgency'),
+            confidence: formData.get('confidence'),
+            status: status, // 'draft' or 'final'
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        };
+        
+        // Handle specialty reassignment
+        const newSpecialty = formData.get('new_specialty');
+        let specialtyChanged = false;
+        
+        if (newSpecialty && newSpecialty.trim()) {
+            // Get current case data
+            const cases = window.APP_DATA?.cases || [];
+            const caseData = cases.find(c => c.id === caseId);
+            
+            if (caseData) {
+                const currentSpecialty = caseData.specialty || (caseData.tags && caseData.tags[0]) || 'general';
+                
+                if (newSpecialty !== currentSpecialty) {
+                    specialtyChanged = true;
+                    
+                    // Update case specialty in Firestore
+                    const db = window.db || window.firebaseDb;
+                    if (db) {
+                        const { doc, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                        
+                        await updateDoc(doc(db, 'cases', caseId), {
+                            specialty: newSpecialty,
+                            specialtyChangedBy: reviewerEmail,
+                            specialtyChangedAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString()
+                        });
+                        
+                        console.log('Case specialty updated:', newSpecialty);
+                    }
+                    
+                    // Update local data
+                    caseData.specialty = newSpecialty;
+                    caseData.specialtyChangedBy = reviewerEmail;
+                    caseData.specialtyChangedAt = new Date().toISOString();
+                    caseData.updatedAt = new Date().toISOString();
+                    
+                    // Add to review
+                    review.specialtyReassignment = {
+                        from: currentSpecialty,
+                        to: newSpecialty,
+                        changedAt: new Date().toISOString()
+                    };
+                }
+            }
+        }
+        
+        // Save review to Firestore
+        const db = window.db || window.firebaseDb;
+        if (db) {
+            const { collection, addDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+            
+            await addDoc(collection(db, 'reviews'), review);
+            console.log('Review saved to Firestore');
+        }
+        
+        // Add to local data
+        if (!window.APP_DATA) window.APP_DATA = {};
+        if (!window.APP_DATA.reviews) window.APP_DATA.reviews = [];
+        window.APP_DATA.reviews.push(review);
+        
+        // Show success message
+        const statusText = status === 'draft' ? 'saved as draft' : 'submitted successfully';
+        let message = `Expert review ${statusText}!`;
+        if (specialtyChanged) {
+            message += ` Case specialty updated to ${newSpecialty}.`;
+        }
+        showSuccessMessage(message);
+        
+        // Clear form if final submission
+        if (status === 'final') {
+            form.reset();
+            
+            // Go back to assigned cases
+            setTimeout(() => {
+                showView('external-dashboard-view');
+                setTimeout(() => { 
+                    document.getElementById('my-assigned-tab')?.click(); 
+                }, 200);
+            }, 1000);
+        }
+        
+    } catch (error) {
+        console.error('Error submitting expert review:', error);
+        showErrorMessage('Error submitting review. Please try again.');
+    }
+}
+
+// Load case data into review view for providing feedback
+function loadCaseIntoReviewView(caseData) {
+    console.log('Loading case into review view:', caseData);
+    
+    if (!caseData) {
+        console.error('No case data provided to review view');
+        return;
+    }
+    
+    // Store current case ID for review functions
+    window.currentCaseId = caseData.id;
+    
+    // Update review view elements
+    const elements = {
+        'review-case-title': caseData.title,
+        'review-case-description': caseData.description,
+        'review-case-symptoms': caseData.symptoms || 'Not specified',
+    };
+    
+    Object.entries(elements).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) {
+            if (element.tagName === 'TEXTAREA') {
+                element.value = value;
+            } else {
+                element.textContent = value;
+            }
+            console.log(`Updated ${id} with:`, value);
+        } else {
+            console.warn(`Element not found: ${id}`);
+        }
+    });
+    
+    // Update tags/specialty if element exists
+    const reviewTagsElement = document.getElementById('review-case-tags');
+    if (reviewTagsElement) {
+        if (caseData.specialty) {
+            reviewTagsElement.innerHTML = `<span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">${caseData.specialty}</span>`;
+        } else if (caseData.tags && caseData.tags.length > 0) {
+            reviewTagsElement.innerHTML = caseData.tags.map(tag => 
+                `<span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">${tag}</span>`
+            ).join(' ');
+        } else {
+            reviewTagsElement.innerHTML = '<span class="text-gray-500 text-sm">No specialty specified</span>';
+        }
+    }
+    
+    // Update current specialty for reassignment
+    const currentSpecialtyElement = document.getElementById('current-specialty');
+    if (currentSpecialtyElement) {
+        const currentSpecialty = caseData.specialty || (caseData.tags && caseData.tags[0]) || 'General Medicine';
+        currentSpecialtyElement.textContent = currentSpecialty;
     }
 }
 
@@ -1625,8 +2081,9 @@ function showConfirmDialog(title, message, confirmText = 'Confirm', cancelText =
 
 // Export functions for global use
 window.showView = showView;
-window.populateMockData = populateMockData;
+// populateMockData function removed
 window.loadAndDisplayCases = loadAndDisplayCases;
+window.loadAndDisplayExternalCases = loadAndDisplayExternalCases;
 window.renderCases = renderCases;
 window.showCaseDetails = showCaseDetails;
 window.deleteCase = deleteCase; 

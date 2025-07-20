@@ -495,51 +495,7 @@ const MOCK_DATA = {
   }
 };
 
-// Function to populate Firestore with mock data
-async function populateFirestore() {
-  const { collection, addDoc, setDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
-  
-  if (!window.firebaseDb) {
-    console.error('Firebase not initialized');
-    return;
-  }
+// Firestore population function removed - data already exists in database
 
-  const db = window.firebaseDb;
-  
-  try {
-    console.log('Starting to populate Firestore with mock data...');
-    
-    // Add users
-    for (const user of MOCK_DATA.users) {
-      await setDoc(doc(db, 'users', user.uid), user);
-      console.log(`Added user: ${user.displayName}`);
-    }
-    
-    // Add cases
-    for (const caseData of MOCK_DATA.cases) {
-      await setDoc(doc(db, 'cases', caseData.id), caseData);
-      console.log(`Added case: ${caseData.title}`);
-    }
-    
-    // Add answers
-    for (const answer of MOCK_DATA.answers) {
-      await setDoc(doc(db, 'answers', answer.id), answer);
-      console.log(`Added answer: ${answer.id}`);
-    }
-    
-    // Add votes
-    for (const vote of MOCK_DATA.votes) {
-      await setDoc(doc(db, 'votes', vote.id), vote);
-      console.log(`Added vote: ${vote.id}`);
-    }
-    
-    console.log('✅ Firestore population completed successfully!');
-    
-  } catch (error) {
-    console.error('Error populating Firestore:', error);
-  }
-}
-
-// Make functions available globally
-window.MOCK_DATA = MOCK_DATA;
-window.populateFirestore = populateFirestore; 
+// Make mock data available globally
+window.MOCK_DATA = MOCK_DATA; 
