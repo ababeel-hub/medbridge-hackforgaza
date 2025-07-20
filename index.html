@@ -527,6 +527,459 @@
         </div>
     </div>
 
+    <!-- External Doctor Dashboard View -->
+    <div id="external-dashboard-view" class="view">
+        <!-- Navigation Bar -->
+        <nav class="nav-bar">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-xl font-bold text-blue-900">MedBridge Gaza</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="install-btn-ext" class="btn btn-success text-sm" style="display: none;">📱 Install App</button>
+                    <span class="text-sm text-gray-600">Dr. <span id="ext-doctor-name">Loading...</span></span>
+                    <button id="ext-logout-btn" class="btn btn-secondary text-sm">Logout</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container mx-auto px-4 py-6 max-w-6xl">
+            <!-- Welcome Section -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome back, Dr. <span id="ext-welcome-name">Loading...</span></h2>
+                <p class="text-gray-600">Review cases and provide expert consultations</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid-responsive mb-8">
+                <div class="stat-card">
+                    <div class="stat-number" id="available-cases">12</div>
+                    <div class="stat-label">Available Cases</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="my-assigned-cases">5</div>
+                    <div class="stat-label">My Assigned Cases</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completed-reviews">23</div>
+                    <div class="stat-label">Completed Reviews</div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="mb-6">
+                <div class="flex items-center space-x-4">
+                    <div class="form-group mb-0">
+                        <label for="case-filter" class="form-label text-sm">Filter by Specialty:</label>
+                        <select id="case-filter" class="form-input">
+                            <option value="">All Cases</option>
+                            <option value="trauma">Trauma</option>
+                            <option value="pediatrics">Pediatrics</option>
+                            <option value="cardiology">Cardiology</option>
+                            <option value="orthopedics">Orthopedics</option>
+                        </select>
+                    </div>
+                    <button id="view-my-assigned-btn" class="btn btn-secondary text-sm">View My Assigned Cases</button>
+                </div>
+            </div>
+
+            <!-- Available Cases Section -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Available Cases</h3>
+                    <span class="text-sm text-gray-600">Click any case to review and assign</span>
+                </div>
+                
+                <div id="available-cases-container" class="space-y-4">
+                    <!-- Case cards will be populated by JavaScript -->
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-2">Trauma Case - Compound Fracture</h4>
+                                <p class="text-gray-600 text-sm mb-3">Patient with severe compound fracture of the right tibia requiring immediate surgical intervention...</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
+                                    <span>Submitted: 2 hours ago</span>
+                                    <span class="status-badge status-submitted">Awaiting Review</span>
+                                    <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">High Priority</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">trauma</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">orthopedics</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary text-sm" onclick="showCaseAssignment('case-1')">Review & Assign</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-2">Pediatric Emergency - Respiratory Distress</h4>
+                                <p class="text-gray-600 text-sm mb-3">3-year-old patient presenting with severe respiratory distress and suspected pneumonia...</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
+                                    <span>Submitted: 4 hours ago</span>
+                                    <span class="status-badge status-submitted">Awaiting Review</span>
+                                    <span class="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs">Medium Priority</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">pediatrics</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary text-sm" onclick="showCaseAssignment('case-2')">Review & Assign</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-2">Cardiac Event - Chest Pain Assessment</h4>
+                                <p class="text-gray-600 text-sm mb-3">45-year-old male presenting with acute chest pain, possible MI, requiring immediate assessment...</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
+                                    <span>Submitted: 1 day ago</span>
+                                    <span class="status-badge status-submitted">Awaiting Review</span>
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Standard Priority</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">cardiology</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary text-sm" onclick="showCaseAssignment('case-3')">Review & Assign</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-200 py-6 mt-12">
+            <div class="container mx-auto px-4 text-center">
+                <p class="text-gray-600 text-sm">© 2024 MedBridge Gaza. Medical consultation platform for healthcare professionals.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Case Assignment View -->
+    <div id="case-assignment-view" class="view">
+        <!-- Navigation Bar -->
+        <nav class="nav-bar">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button id="back-to-ext-dashboard" class="btn btn-secondary text-sm">← Back to Dashboard</button>
+                    <h1 class="text-xl font-bold text-blue-900">Review Case</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Dr. <span id="assign-doctor-name">Loading...</span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Case Assignment Content -->
+        <div class="container mx-auto px-4 py-6 max-w-4xl">
+            <div class="card">
+                <div class="mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h2 id="assign-case-title" class="text-2xl font-bold text-gray-900 mb-2">Trauma Case - Compound Fracture</h2>
+                            <div class="flex items-center space-x-4 text-sm text-gray-600 mb-4">
+                                <span>Case ID: #MB-2024-001</span>
+                                <span>Submitted: 2 hours ago</span>
+                                <span>Priority: <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">High</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="form-group">
+                        <label class="form-label">Case Description</label>
+                        <textarea id="assign-case-description" rows="4" class="form-input" readonly>
+Patient with severe compound fracture of the right tibia requiring immediate surgical intervention. The fracture is open with significant soft tissue damage and potential vascular compromise.
+                        </textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Key Symptoms</label>
+                        <textarea id="assign-case-symptoms" rows="3" class="form-input" readonly>
+Severe pain, swelling, deformity, open wound with bone exposure, decreased sensation in foot
+                        </textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Medical Tags</label>
+                        <div id="assign-case-tags" class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">trauma</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">orthopedics</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Urgency Level</label>
+                        <div class="px-4 py-2 bg-red-50 border border-red-200 rounded-lg">
+                            <span class="font-semibold text-red-800">High - Urgent, requires immediate attention</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex space-x-4 pt-6 mt-6 border-t">
+                    <button type="button" id="decline-case-btn" class="btn btn-secondary flex-1">
+                        Decline Case
+                    </button>
+                    <button type="button" id="assign-to-me-btn" class="btn btn-primary flex-1">
+                        Assign Case to Myself
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Case Review View -->
+    <div id="case-review-view" class="view">
+        <!-- Navigation Bar -->
+        <nav class="nav-bar">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button id="back-to-assigned-cases" class="btn btn-secondary text-sm">← Back to Assigned Cases</button>
+                    <h1 class="text-xl font-bold text-blue-900">Provide Expert Review</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Dr. <span id="review-doctor-name">Loading...</span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Case Review Content -->
+        <div class="container mx-auto px-4 py-6 max-w-4xl">
+            <!-- Case Info Card -->
+            <div class="card mb-6">
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <h2 id="review-case-title" class="text-2xl font-bold text-gray-900 mb-2">Trauma Case - Compound Fracture</h2>
+                        <div class="flex items-center space-x-4 text-sm text-gray-600">
+                            <span>Case ID: #MB-2024-001</span>
+                            <span>Assigned: 1 hour ago</span>
+                            <span class="status-badge status-in-review">In Review</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="form-group">
+                        <label class="form-label">Case Description</label>
+                        <div class="px-4 py-3 bg-gray-50 border rounded-lg">
+                            <p id="review-case-description" class="text-gray-700">
+                                Patient with severe compound fracture of the right tibia requiring immediate surgical intervention. 
+                                The fracture is open with significant soft tissue damage and potential vascular compromise.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Key Symptoms</label>
+                        <div class="px-4 py-3 bg-gray-50 border rounded-lg">
+                            <p id="review-case-symptoms" class="text-gray-700">
+                                Severe pain, swelling, deformity, open wound with bone exposure, decreased sensation in foot
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expert Review Form -->
+            <div class="card">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Provide Expert Review</h3>
+                
+                <form id="expert-review-form" class="space-y-6">
+                    <div class="form-group">
+                        <label for="expert-diagnosis" class="form-label">Primary Assessment & Recommendations *</label>
+                        <textarea id="expert-diagnosis" name="diagnosis" rows="6" required 
+                                  class="form-input"
+                                  placeholder="Provide your expert assessment, recommended treatment plan, and any immediate actions required..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="additional-tests" class="form-label">Recommended Additional Tests/Imaging</label>
+                        <textarea id="additional-tests" name="tests" rows="3" 
+                                  class="form-input"
+                                  placeholder="List any additional diagnostic tests, imaging, or lab work needed..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="follow-up" class="form-label">Follow-up Instructions</label>
+                        <textarea id="follow-up" name="followup" rows="3" 
+                                  class="form-input"
+                                  placeholder="Provide follow-up care instructions and monitoring guidelines..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="urgency-level" class="form-label">Case Urgency Assessment *</label>
+                        <select id="urgency-level" name="urgency" required class="form-input">
+                            <option value="">Select urgency level</option>
+                            <option value="immediate">Immediate - Life threatening, act within minutes</option>
+                            <option value="urgent">Urgent - Serious condition, act within hours</option>
+                            <option value="standard">Standard - Stable condition, routine care</option>
+                            <option value="routine">Routine - Non-urgent, can wait for scheduled care</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Confidence Level</label>
+                        <div class="radio-group">
+                            <label class="flex items-center">
+                                <input type="radio" name="confidence" value="high" class="mr-2">
+                                <span>High - Very confident in assessment</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="confidence" value="moderate" class="mr-2">
+                                <span>Moderate - Additional consultation may help</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="confidence" value="low" class="mr-2">
+                                <span>Low - Recommend second opinion</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-4 pt-6">
+                        <button type="button" id="save-draft-review-btn" class="btn btn-secondary flex-1">
+                            Save Draft
+                        </button>
+                        <button type="submit" class="btn btn-success flex-1">
+                            Submit Expert Review
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Assigned Cases View -->
+    <div id="my-assigned-cases-view" class="view">
+        <!-- Navigation Bar -->
+        <nav class="nav-bar">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button id="back-to-ext-main" class="btn btn-secondary text-sm">← Back to Dashboard</button>
+                    <h1 class="text-xl font-bold text-blue-900">My Assigned Cases</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Dr. <span id="assigned-doctor-name">Loading...</span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- My Assigned Cases Content -->
+        <div class="container mx-auto px-4 py-6 max-w-6xl">
+            <!-- Stats Cards -->
+            <div class="grid-responsive mb-8">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-assigned">5</div>
+                    <div class="stat-label">Total Assigned</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="in-review-count">3</div>
+                    <div class="stat-label">In Review</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completed-today">2</div>
+                    <div class="stat-label">Completed Today</div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="mb-6">
+                <div class="flex items-center space-x-4">
+                    <div class="form-group mb-0">
+                        <label for="status-filter" class="form-label text-sm">Filter by Status:</label>
+                        <select id="status-filter" class="form-input">
+                            <option value="">All Cases</option>
+                            <option value="in-review">In Review</option>
+                            <option value="draft">Draft</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assigned Cases Section -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold text-gray-900">My Assigned Cases</h3>
+                </div>
+                
+                <div id="assigned-cases-container" class="space-y-4">
+                    <!-- Case cards will be populated by JavaScript -->
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-2">Trauma Case - Compound Fracture</h4>
+                                <p class="text-gray-600 text-sm mb-3">Patient with severe compound fracture of the right tibia requiring immediate surgical intervention...</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
+                                    <span>Assigned: 1 hour ago</span>
+                                    <span class="status-badge status-in-review">In Review</span>
+                                    <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">High Priority</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">trauma</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">orthopedics</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-success text-sm" onclick="showCaseReview('case-1')">Continue Review</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-2">Pediatric Emergency - Respiratory Distress</h4>
+                                <p class="text-gray-600 text-sm mb-3">3-year-old patient presenting with severe respiratory distress and suspected pneumonia...</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
+                                    <span>Assigned: 3 hours ago</span>
+                                    <span class="status-badge status-draft">Draft Saved</span>
+                                    <span class="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs">Medium Priority</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">pediatrics</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-warning text-sm" onclick="showCaseReview('case-2')">Continue Review</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-2">Cardiac Event - Chest Pain Assessment</h4>
+                                <p class="text-gray-600 text-sm mb-3">45-year-old male presenting with acute chest pain, possible MI, requiring immediate assessment...</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
+                                    <span>Completed: Yesterday</span>
+                                    <span class="status-badge status-completed">Review Completed</span>
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Standard Priority</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">cardiology</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary text-sm" onclick="showCaseReview('case-3')">View Review</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-200 py-6 mt-12">
+            <div class="container mx-auto px-4 text-center">
+                <p class="text-gray-600 text-sm">© 2024 MedBridge Gaza. Medical consultation platform for healthcare professionals.</p>
+            </div>
+        </footer>
+    </div>
+
     <!-- Service Worker Registration -->
     <script>
         // Register service worker for PWA functionality
@@ -561,7 +1014,8 @@
                 console.log('Showing view:', targetView.id);
                 
                 // Load user info for dashboard views
-                if (viewId === 'internal-dashboard-view' || viewId === 'case-creation-view' || viewId === 'case-detail-view') {
+                if (viewId === 'internal-dashboard-view' || viewId === 'case-creation-view' || viewId === 'case-detail-view' || 
+                    viewId === 'external-dashboard-view' || viewId === 'case-assignment-view' || viewId === 'case-review-view' || viewId === 'my-assigned-cases-view') {
                     loadUserInfo();
                 }
                 
@@ -574,10 +1028,10 @@
         // Load and display user information
         function loadUserInfo() {
             const userInfo = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            const username = userInfo.username || 'Ahmed Hassan';
+            const username = userInfo.username || 'Default User';
             
-            // Update all username displays
-            const doctorNameElements = document.querySelectorAll('#doctor-name, #welcome-name, #case-doctor-name, #detail-doctor-name');
+            // Update all username displays (both internal and external doctor elements)
+            const doctorNameElements = document.querySelectorAll('#doctor-name, #welcome-name, #case-doctor-name, #detail-doctor-name, #ext-doctor-name, #ext-welcome-name, #assign-doctor-name, #review-doctor-name, #assigned-doctor-name');
             doctorNameElements.forEach(element => {
                 if (element) {
                     element.textContent = username;
@@ -644,8 +1098,13 @@
                     console.error('Error calling showView:', error);
                 }
             } else if (role === 'external') {
-                // TODO: Implement external doctor view
-                alert('External doctor view coming soon!');
+                console.log('About to call showView for external dashboard');
+                try {
+                    showView('external-dashboard-view');
+                    console.log('External dashboard view shown');
+                } catch (error) {
+                    console.error('Error showing external dashboard:', error);
+                }
             }
         }
         
@@ -725,7 +1184,89 @@
                     }
                 });
             }
+
+            // External Doctor Navigation Events
+            const extLogoutBtn = document.getElementById('ext-logout-btn');
+            if (extLogoutBtn) {
+                extLogoutBtn.addEventListener('click', function() {
+                    localStorage.removeItem('currentUser');
+                    showView('login-view');
+                });
+            }
+
+            const viewMyAssignedBtn = document.getElementById('view-my-assigned-btn');
+            if (viewMyAssignedBtn) {
+                viewMyAssignedBtn.addEventListener('click', function() {
+                    showView('my-assigned-cases-view');
+                });
+            }
+
+            const backToExtDashboard = document.getElementById('back-to-ext-dashboard');
+            if (backToExtDashboard) {
+                backToExtDashboard.addEventListener('click', function() {
+                    showView('external-dashboard-view');
+                });
+            }
+
+            const backToAssignedCases = document.getElementById('back-to-assigned-cases');
+            if (backToAssignedCases) {
+                backToAssignedCases.addEventListener('click', function() {
+                    showView('my-assigned-cases-view');
+                });
+            }
+
+            const backToExtMain = document.getElementById('back-to-ext-main');
+            if (backToExtMain) {
+                backToExtMain.addEventListener('click', function() {
+                    showView('external-dashboard-view');
+                });
+            }
+
+            // Case Assignment Events
+            const assignToMeBtn = document.getElementById('assign-to-me-btn');
+            if (assignToMeBtn) {
+                assignToMeBtn.addEventListener('click', function() {
+                    alert('Case assigned successfully!');
+                    showView('my-assigned-cases-view');
+                });
+            }
+
+            const declineCaseBtn = document.getElementById('decline-case-btn');
+            if (declineCaseBtn) {
+                declineCaseBtn.addEventListener('click', function() {
+                    alert('Case declined.');
+                    showView('external-dashboard-view');
+                });
+            }
+
+            // Expert Review Form
+            const expertReviewForm = document.getElementById('expert-review-form');
+            if (expertReviewForm) {
+                expertReviewForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Expert review submitted successfully!');
+                    showView('my-assigned-cases-view');
+                });
+            }
+
+            const saveDraftReviewBtn = document.getElementById('save-draft-review-btn');
+            if (saveDraftReviewBtn) {
+                saveDraftReviewBtn.addEventListener('click', function() {
+                    alert('Review draft saved successfully!');
+                });
+            }
         });
+
+        // External Doctor Navigation Functions
+        function showCaseAssignment(caseId) {
+            console.log('Showing case assignment for:', caseId);
+            showView('case-assignment-view');
+        }
+
+        function showCaseReview(caseId) {
+            console.log('Showing case review for:', caseId);
+            showView('case-review-view');
+        }
 
         // PWA Install prompt
         let deferredPrompt;
