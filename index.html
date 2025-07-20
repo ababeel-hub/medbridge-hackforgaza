@@ -46,11 +46,11 @@
         
         /* View Management */
         .view {
-            display: none;
+            display: none !important;
         }
         
         .view.active {
-            display: block;
+            display: block !important;
         }
         
         /* Touch-friendly buttons */
@@ -544,27 +544,37 @@
 
         // View Management
         function showView(viewId) {
+            console.log('showView called with:', viewId);
+            
             // Hide all views
             document.querySelectorAll('.view').forEach(view => {
                 view.classList.remove('active');
+                console.log('Hiding view:', view.id);
             });
             
             // Show the target view
             const targetView = document.getElementById(viewId);
+            console.log('Target view found:', !!targetView);
+            
             if (targetView) {
                 targetView.classList.add('active');
+                console.log('Showing view:', targetView.id);
                 
                 // Load user info for dashboard views
                 if (viewId === 'internal-dashboard-view' || viewId === 'case-creation-view' || viewId === 'case-detail-view') {
                     loadUserInfo();
                 }
+                
+                console.log('View switch completed successfully');
+            } else {
+                console.error('Target view not found:', viewId);
             }
         }
 
         // Load and display user information
         function loadUserInfo() {
             const userInfo = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            const username = userInfo.username || 'User';
+            const username = userInfo.username || 'Ahmed Hassan';
             
             // Update all username displays
             const doctorNameElements = document.querySelectorAll('#doctor-name, #welcome-name, #case-doctor-name, #detail-doctor-name');
@@ -579,34 +589,26 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM loaded, setting up event listeners');
             
-            // Login form submission
+            // Test that views exist
+            const loginView = document.getElementById('login-view');
+            const dashboardView = document.getElementById('internal-dashboard-view');
+            console.log('Login view exists:', !!loginView);
+            console.log('Dashboard view exists:', !!dashboardView);
+            
+            // Initialize user info on page load
+            loadUserInfo();
+            
+            // Login form submission - ONLY handle form submit, not button click
             const loginForm = document.getElementById('login-form');
             console.log('Login form found:', !!loginForm);
             
             if (loginForm) {
                 loginForm.addEventListener('submit', function(e) {
                     e.preventDefault();
-                    console.log('Login form submitted via form event');
+                    console.log('Login form submitted');
                     handleLogin();
                 });
             }
-            
-            // Backup button click handler
-            const signinBtn = document.getElementById('signin-btn');
-            console.log('Signin button found:', !!signinBtn);
-            
-            if (signinBtn) {
-                signinBtn.addEventListener('click', function(e) {
-                    console.log('Signin button clicked');
-                    if (e.target.type === 'submit') {
-                        // Let form submission handle it
-                        return;
-                    }
-                    e.preventDefault();
-                    handleLogin();
-                });
-            }
-        });
         
         // Login handler function
         function handleLogin() {
@@ -633,16 +635,20 @@
             console.log('Switching to dashboard for role:', role);
             
             if (role === 'internal') {
-                showView('internal-dashboard-view');
+                console.log('About to call showView for internal dashboard');
+                console.log('showView function exists:', typeof showView);
+                try {
+                    showView('internal-dashboard-view');
+                    console.log('showView call completed');
+                } catch (error) {
+                    console.error('Error calling showView:', error);
+                }
             } else if (role === 'external') {
                 // TODO: Implement external doctor view
                 alert('External doctor view coming soon!');
             }
         }
         
-        // Continue with other event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-
             // Navigation buttons
             const createCaseBtn = document.getElementById('create-case-btn');
             if (createCaseBtn) {
@@ -701,24 +707,8 @@
                     showView('case-detail-view');
                 });
             });
-        });
-
-        // PWA Install prompt
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            console.log('PWA install prompt available');
-            e.preventDefault();
-            deferredPrompt = e;
             
-            // Show install button
-            const installBtn = document.getElementById('install-btn');
-            if (installBtn) {
-                installBtn.style.display = 'inline-flex';
-            }
-        });
-
-        // Handle install button click
-        document.addEventListener('DOMContentLoaded', function() {
+            // Handle install button click
             const installBtn = document.getElementById('install-btn');
             if (installBtn) {
                 installBtn.addEventListener('click', async () => {
@@ -736,6 +726,22 @@
                 });
             }
         });
+
+        // PWA Install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('PWA install prompt available');
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button
+            const installBtn = document.getElementById('install-btn');
+            if (installBtn) {
+                installBtn.style.display = 'inline-flex';
+            }
+        });
+
+
     </script>
 </body>
 </html> 
