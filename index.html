@@ -70,6 +70,55 @@
             font-size: 16px;
         }
         
+        /* Voice Input Styles */
+        .voice-input-container {
+            position: relative;
+        }
+        
+        .voice-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .voice-btn:hover {
+            background: #2563eb;
+        }
+        
+        .voice-btn.recording {
+            background: #ef4444;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .voice-btn.processing {
+            background: #f59e0b;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .voice-status {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        
+        .microphone-icon {
+            width: 16px;
+            height: 16px;
+        }
+        
         .btn-primary {
             background-color: var(--primary-blue);
             color: white;
@@ -374,16 +423,38 @@
                     
                     <div>
                         <label for="case-description" class="block text-sm font-medium text-gray-700 mb-2">Detailed Description *</label>
-                        <textarea id="case-description" name="description" rows="6" required 
-                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                  placeholder="Provide detailed information about the patient's condition, symptoms, and your concerns"></textarea>
+                        <div class="voice-input-container">
+                            <textarea id="case-description" name="description" rows="6" required 
+                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                      placeholder="Provide detailed information about the patient's condition, symptoms, and your concerns"></textarea>
+                            <button type="button" onclick="startVoiceInput('case-description')" class="voice-btn mt-2">
+                                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
+                                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                                </svg>
+                                🎤 Speak Description
+                            </button>
+                            <div id="case-description-status" class="voice-status"></div>
+                        </div>
                     </div>
                     
                     <div>
                         <label for="case-symptoms" class="block text-sm font-medium text-gray-700 mb-2">Key Symptoms</label>
-                        <textarea id="case-symptoms" name="symptoms" rows="3" 
-                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                  placeholder="List the main symptoms observed"></textarea>
+                        <div class="voice-input-container">
+                            <textarea id="case-symptoms" name="symptoms" rows="3" 
+                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                      placeholder="List the main symptoms observed"></textarea>
+                            <button type="button" onclick="startVoiceInput('case-symptoms')" class="voice-btn mt-2">
+                                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
+                                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 00-1-1z"/>
+                                </svg>
+                                🎤 Speak Symptoms
+                            </button>
+                            <div id="case-symptoms-status" class="voice-status"></div>
+                        </div>
                     </div>
                     
                     <div>
@@ -795,23 +866,56 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
                 <form id="expert-review-form" class="space-y-6">
                     <div class="form-group">
                         <label for="expert-diagnosis" class="form-label">Primary Assessment & Recommendations *</label>
-                        <textarea id="expert-diagnosis" name="diagnosis" rows="6" required 
-                                  class="form-input"
-                                  placeholder="Provide your expert assessment, recommended treatment plan, and any immediate actions required..."></textarea>
+                        <div class="voice-input-container">
+                            <textarea id="expert-diagnosis" name="diagnosis" rows="6" required 
+                                      class="form-input"
+                                      placeholder="Provide your expert assessment, recommended treatment plan, and any immediate actions required..."></textarea>
+                            <button type="button" onclick="startVoiceInput('expert-diagnosis')" class="voice-btn mt-2">
+                                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
+                                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                                </svg>
+                                🎤 Speak Assessment
+                            </button>
+                            <div id="expert-diagnosis-status" class="voice-status"></div>
+                        </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="additional-tests" class="form-label">Recommended Additional Tests/Imaging</label>
-                        <textarea id="additional-tests" name="tests" rows="3" 
-                                  class="form-input"
-                                  placeholder="List any additional diagnostic tests, imaging, or lab work needed..."></textarea>
+                        <div class="voice-input-container">
+                            <textarea id="additional-tests" name="tests" rows="3" 
+                                      class="form-input"
+                                      placeholder="List any additional diagnostic tests, imaging, or lab work needed..."></textarea>
+                            <button type="button" onclick="startVoiceInput('additional-tests')" class="voice-btn mt-2">
+                                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
+                                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                                </svg>
+                                🎤 Speak Tests
+                            </button>
+                            <div id="additional-tests-status" class="voice-status"></div>
+                        </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="follow-up" class="form-label">Follow-up Instructions</label>
-                        <textarea id="follow-up" name="followup" rows="3" 
-                                  class="form-input"
-                                  placeholder="Provide follow-up care instructions and monitoring guidelines..."></textarea>
+                        <div class="voice-input-container">
+                            <textarea id="follow-up" name="followup" rows="3" 
+                                      class="form-input"
+                                      placeholder="Provide follow-up care instructions and monitoring guidelines..."></textarea>
+                            <button type="button" onclick="startVoiceInput('follow-up')" class="voice-btn mt-2">
+                                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
+                                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                                </svg>
+                                🎤 Speak Instructions
+                            </button>
+                            <div id="follow-up-status" class="voice-status"></div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -1267,6 +1371,268 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
             console.log('Showing case review for:', caseId);
             showView('case-review-view');
         }
+
+        // Voice Input Functionality
+        let currentRecognition = null;
+        let isVoiceSupported = false;
+        
+        // Check for Web Speech API support
+        function checkVoiceSupport() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                isVoiceSupported = true;
+                console.log('Voice recognition supported');
+            } else {
+                isVoiceSupported = false;
+                console.log('Voice recognition not supported');
+                // Hide all voice buttons if not supported
+                document.querySelectorAll('.voice-btn').forEach(btn => {
+                    btn.style.display = 'none';
+                });
+            }
+        }
+        
+        // Medical terminology correction dictionary
+        const medicalTerms = {
+            'fracture': ['fracture', 'brake', 'break'],
+            'pneumonia': ['pneumonia', 'new monia', 'pneumonic'],
+            'cardiovascular': ['cardiovascular', 'cardio vascular', 'heart blood vessel'],
+            'hypertension': ['hypertension', 'high blood pressure', 'hyper tension'],
+            'diabetes': ['diabetes', 'diabetic', 'sugar disease'],
+            'myocardial infarction': ['heart attack', 'myocardial infarction', 'mi'],
+            'tachycardia': ['tachycardia', 'fast heart rate', 'rapid pulse'],
+            'bradycardia': ['bradycardia', 'slow heart rate', 'slow pulse'],
+            'dyspnea': ['dyspnea', 'shortness of breath', 'difficulty breathing'],
+            'syncope': ['syncope', 'fainting', 'passing out'],
+            'thrombosis': ['thrombosis', 'blood clot', 'clotting'],
+            'hemorrhage': ['hemorrhage', 'bleeding', 'blood loss'],
+            'contusion': ['contusion', 'bruise', 'bruising'],
+            'laceration': ['laceration', 'cut', 'tear'],
+            'abrasion': ['abrasion', 'scrape', 'scratch'],
+            'edema': ['edema', 'swelling', 'fluid retention'],
+            'sepsis': ['sepsis', 'blood poisoning', 'infection'],
+            'hypoxia': ['hypoxia', 'low oxygen', 'oxygen deficiency'],
+            'anemia': ['anemia', 'low blood count', 'iron deficiency'],
+            'arrhythmia': ['arrhythmia', 'irregular heartbeat', 'heart rhythm problem']
+        };
+        
+        // Correct medical terminology in transcribed text
+        function correctMedicalTerms(text) {
+            let correctedText = text.toLowerCase();
+            
+            Object.entries(medicalTerms).forEach(([correct, variations]) => {
+                variations.forEach(variation => {
+                    const regex = new RegExp(`\\b${variation.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
+                    correctedText = correctedText.replace(regex, correct);
+                });
+            });
+            
+            // Capitalize first letter of sentences
+            correctedText = correctedText.replace(/(^\w|[.!?]\s*\w)/g, (match) => match.toUpperCase());
+            
+            return correctedText;
+        }
+        
+        // Start voice input for a specific field
+        function startVoiceInput(fieldId) {
+            if (!isVoiceSupported) {
+                alert('Voice recognition is not supported in your browser. Please try Chrome or Edge.');
+                return;
+            }
+            
+            // Stop any existing recognition
+            if (currentRecognition) {
+                currentRecognition.stop();
+            }
+            
+            const field = document.getElementById(fieldId);
+            const button = document.querySelector(`button[onclick="startVoiceInput('${fieldId}')"]`);
+            const statusElement = document.getElementById(fieldId + '-status');
+            
+            if (!field || !button) {
+                console.error('Field or button not found:', fieldId);
+                return;
+            }
+            
+            // Initialize speech recognition
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            currentRecognition = recognition;
+            
+            // Configure recognition
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+            recognition.maxAlternatives = 1;
+            
+            let finalTranscript = '';
+            let interimTranscript = '';
+            
+            // Update UI for recording state
+            button.classList.add('recording');
+            button.innerHTML = `
+                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
+                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                </svg>
+                🔴 Recording... (Click to stop)
+            `;
+            
+            if (statusElement) {
+                statusElement.textContent = 'Listening... Speak now';
+            }
+            
+                         let startingText = field.value; // Store the original text
+             
+             recognition.onresult = function(event) {
+                 interimTranscript = '';
+                 let currentFinalTranscript = '';
+                 
+                 for (let i = event.resultIndex; i < event.results.length; i++) {
+                     const transcript = event.results[i][0].transcript;
+                     
+                     if (event.results[i].isFinal) {
+                         currentFinalTranscript += transcript + ' ';
+                     } else {
+                         interimTranscript += transcript;
+                     }
+                 }
+                 
+                 // Only add final results to our permanent transcript
+                 if (currentFinalTranscript) {
+                     finalTranscript += currentFinalTranscript;
+                 }
+                 
+                 // Show real-time preview with interim results
+                 const correctedFinal = correctMedicalTerms(finalTranscript);
+                 const correctedInterim = correctMedicalTerms(interimTranscript);
+                 
+                 // Combine starting text + final + interim (interim is temporary)
+                 let displayText = startingText;
+                 if (correctedFinal) {
+                     displayText += (displayText && !displayText.endsWith(' ') ? ' ' : '') + correctedFinal;
+                 }
+                 if (correctedInterim) {
+                     displayText += (displayText && !displayText.endsWith(' ') ? ' ' : '') + correctedInterim;
+                 }
+                 
+                 field.value = displayText;
+                 
+                 if (statusElement) {
+                     statusElement.textContent = interimTranscript ? 'Processing...' : 'Listening...';
+                 }
+             };
+            
+            recognition.onstart = function() {
+                console.log('Voice recognition started');
+                if (statusElement) {
+                    statusElement.textContent = 'Listening... Speak now';
+                }
+            };
+            
+                         recognition.onend = function() {
+                 console.log('Voice recognition ended');
+                 
+                 // Set final text (starting text + final transcript only, no interim)
+                 let finalText = startingText;
+                 if (finalTranscript) {
+                     const correctedFinal = correctMedicalTerms(finalTranscript);
+                     finalText += (finalText && !finalText.endsWith(' ') ? ' ' : '') + correctedFinal;
+                 }
+                 field.value = finalText;
+                 
+                 stopVoiceInput(fieldId);
+             };
+            
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+                stopVoiceInput(fieldId);
+                
+                let errorMessage = 'Voice recognition error.';
+                switch (event.error) {
+                    case 'no-speech':
+                        errorMessage = 'No speech detected. Please try again.';
+                        break;
+                    case 'audio-capture':
+                        errorMessage = 'Microphone not available.';
+                        break;
+                    case 'not-allowed':
+                        errorMessage = 'Microphone permission denied.';
+                        break;
+                    case 'network':
+                        errorMessage = 'Network error. Check your connection.';
+                        break;
+                }
+                
+                if (statusElement) {
+                    statusElement.textContent = errorMessage;
+                    setTimeout(() => {
+                        statusElement.textContent = '';
+                    }, 3000);
+                }
+            };
+            
+            // Add click handler to stop recording
+            const stopRecording = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                recognition.stop();
+            };
+            
+            button.onclick = stopRecording;
+            
+            // Start recognition
+            try {
+                recognition.start();
+            } catch (error) {
+                console.error('Failed to start recognition:', error);
+                stopVoiceInput(fieldId);
+            }
+        }
+        
+        // Stop voice input and reset UI
+        function stopVoiceInput(fieldId) {
+            const button = document.querySelector(`button[onclick="startVoiceInput('${fieldId}')"]`);
+            const statusElement = document.getElementById(fieldId + '-status');
+            
+            if (button) {
+                button.classList.remove('recording', 'processing');
+                button.innerHTML = `
+                    <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                        <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
+                        <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                    </svg>
+                    🎤 Speak ${getFieldLabel(fieldId)}
+                `;
+                
+                // Restore original onclick handler
+                button.onclick = function() { startVoiceInput(fieldId); };
+            }
+            
+            if (statusElement) {
+                statusElement.textContent = '';
+            }
+            
+            currentRecognition = null;
+        }
+        
+        // Get appropriate label for field
+        function getFieldLabel(fieldId) {
+            const labels = {
+                'case-description': 'Description',
+                'case-symptoms': 'Symptoms', 
+                'expert-diagnosis': 'Assessment',
+                'additional-tests': 'Tests',
+                'follow-up': 'Instructions'
+            };
+            return labels[fieldId] || 'Text';
+        }
+        
+        // Initialize voice support check when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            checkVoiceSupport();
+        });
 
         // PWA Install prompt
         let deferredPrompt;
