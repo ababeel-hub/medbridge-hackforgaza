@@ -1,7 +1,7 @@
 {
-  "name": "MedBridge Gaza",
-  "short_name": "MedBridge",
-  "description": "Medical consultation platform for healthcare professionals in Gaza",
+  "name": "ShifaLink",
+  "short_name": "ShifaLink",
+  "description": "Medical consultation platform for healthcare professionals",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

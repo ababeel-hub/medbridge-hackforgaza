@@ -1,4 +1,4 @@
-// Firebase configuration for MedBridge Gaza
+// Firebase configuration for ShifaLink
 // Replace with your actual Firebase project configuration
 const firebaseConfig = {
   apiKey: "your-api-key-here",
@@ -20,7 +20,7 @@ const firebaseConfig = {
 // export { auth, db };
 
 // Placeholder functions for future implementation
-const MedBridgeFirebase = {
+const ShifaLinkFirebase = {
   // Authentication
   signIn: async (email, password, role) => {
     console.log('Sign in:', { email, role });
@@ -75,4 +75,4 @@ const MedBridgeFirebase = {
 };
 
 // Make available globally
-window.MedBridgeFirebase = MedBridgeFirebase; 
+window.ShifaLinkFirebase = ShifaLinkFirebase; 
