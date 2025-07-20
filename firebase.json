@@ -6,7 +6,7 @@
       "**/.*",
       "**/node_modules/**",
       "README.md",
-      "PWA-README.md", 
+      "PWA-README.md",
       "medbridge_wireframes.html",
       "create-icons.py",
       "generate-icons.html",

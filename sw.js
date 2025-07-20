@@ -1,4 +1,4 @@
-const CACHE_NAME = 'shifalink-v16-dev'; // Fixed counters, header colors, enhanced feedback form with case reassignment
+const CACHE_NAME = 'shifalink-v17-dev'; // Removed duplicate my-assigned-cases-view, fixed navigation flow
 const urlsToCache = [
   '/',
   '/index.html',

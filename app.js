@@ -153,8 +153,8 @@ function showView(viewId) {
         targetView.classList.add('active');
         console.log('View shown:', viewId);
         
-        // Load cases data for dashboard views and assigned cases view
-        if (viewId.includes('dashboard') || viewId === 'my-assigned-cases-view') {
+        // Load cases data for dashboard views
+        if (viewId.includes('dashboard')) {
             setTimeout(() => {
                 console.log('Auto-loading cases for view:', viewId);
                 loadAndDisplayCases();
@@ -1185,7 +1185,7 @@ function setupAllOtherButtons() {
     // Define all buttons with their actions
     const buttons = [
         // Action buttons (removed view-all-cases-btn as it's replaced with tabs and filters)
-        { id: 'view-my-assigned-btn', action: () => { showView('my-assigned-cases-view'); loadAndDisplayCases(); }, name: 'view my assigned cases' },
+        { id: 'view-my-assigned-btn', action: () => { showView('external-dashboard-view'); setTimeout(() => { document.getElementById('my-assigned-tab')?.click(); }, 200); }, name: 'view my assigned cases' },
         { id: 'save-draft-btn', action: async () => { console.log('Saving draft...'); await submitCase('draft'); }, name: 'save draft' },
         { id: 'save-draft-review-btn', action: () => submitExpertReview('draft'), name: 'save review draft' },
         { id: 'assign-to-me-btn', action: () => toggleCaseAssignment(), name: 'assign to me' },
@@ -1435,8 +1435,6 @@ function showLoadingState() {
     
     if (currentView === 'external-dashboard-view') {
         containerId = 'external-cases-list';
-    } else if (currentView === 'my-assigned-cases-view') {
-        containerId = 'assigned-cases-list';
     } else if (currentView === 'internal-dashboard-view') {
         containerId = 'internal-cases-list';
     }
@@ -1458,8 +1456,6 @@ function showEmptyState() {
     
     if (currentView === 'external-dashboard-view') {
         containerId = 'external-cases-list';
-    } else if (currentView === 'my-assigned-cases-view') {
-        containerId = 'assigned-cases-list';
     } else if (currentView === 'internal-dashboard-view') {
         containerId = 'internal-cases-list';
     }
@@ -1486,8 +1482,6 @@ function showErrorState() {
     
     if (currentView === 'external-dashboard-view') {
         containerId = 'external-cases-list';
-    } else if (currentView === 'my-assigned-cases-view') {
-        containerId = 'assigned-cases-list';
     } else if (currentView === 'internal-dashboard-view') {
         containerId = 'internal-cases-list';
     }

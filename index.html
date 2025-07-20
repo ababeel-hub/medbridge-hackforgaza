@@ -1223,84 +1223,7 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
         </div>
     </div>
 
-    <!-- My Assigned Cases View -->
-    <div id="my-assigned-cases-view" class="view">
-        <!-- Navigation Bar -->
-        <nav class="nav-bar">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <button id="back-to-ext-main" class="btn btn-secondary text-sm">← Back to Dashboard</button>
-                    <h1 class="text-xl font-bold text-white">My Assigned Cases</h1>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-600">Dr. <span id="assigned-doctor-name">Loading...</span></span>
-                </div>
-            </div>
-        </nav>
 
-        <!-- My Assigned Cases Content -->
-        <div class="container mx-auto px-4 py-6 max-w-6xl">
-            <!-- Stats Cards -->
-            <div class="grid-responsive mb-8">
-                <div class="stat-card">
-                    <div class="stat-number" id="total-assigned">5</div>
-                    <div class="stat-label">Total Assigned</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="in-review-count">3</div>
-                    <div class="stat-label">In Review</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="completed-today">2</div>
-                    <div class="stat-label">Completed Today</div>
-                </div>
-            </div>
-
-            <!-- Filter Section -->
-            <div class="mb-6">
-                <div class="flex items-center space-x-3">
-                    <select id="status-filter" class="form-input" style="width: auto;">
-                        <option value="">All Cases</option>
-                        <option value="in-review">In Review</option>
-                        <option value="draft">Draft</option>
-                        <option value="completed">Completed</option>
-                    </select>
-                    <button class="btn btn-secondary text-sm">Filter</button>
-                </div>
-            </div>
-
-            <!-- Assigned Cases Section -->
-            <div class="mb-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-semibold text-gray-900">My Assigned Cases</h3>
-                </div>
-                
-                <div id="assigned-cases-list" class="space-y-4">
-                    <!-- Assigned cases will be loaded dynamically from Firestore -->
-                </div>
-                    
-                    <div class="card">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 mb-2">Cardiac Event - Chest Pain Assessment</h4>
-                                <p class="text-gray-600 text-sm mb-3">45-year-old male presenting with acute chest pain, possible MI, requiring immediate assessment...</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
-                                    <span>Completed: Yesterday</span>
-                                    <span class="status-badge status-completed">Review Completed</span>
-                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Standard Priority</span>
-                                </div>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">cardiology</span>
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
-                                </div>
-                            </div>
-                            <button class="btn btn-secondary text-sm" onclick="showCaseReview('case-3')">View Review</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Global Footer -->
     <footer class="bg-white border-t border-gray-200 py-6 mt-12">
@@ -1501,12 +1424,7 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
                 });
             }
 
-            const viewMyAssignedBtn = document.getElementById('view-my-assigned-btn');
-            if (viewMyAssignedBtn) {
-                viewMyAssignedBtn.addEventListener('click', function() {
-                    showView('my-assigned-cases-view');
-                });
-            }
+
 
             const backToExtDashboard = document.getElementById('back-to-ext-dashboard');
             if (backToExtDashboard) {
@@ -1515,12 +1433,7 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
                 });
             }
 
-            const backToAssignedCases = document.getElementById('back-to-assigned-cases');
-            if (backToAssignedCases) {
-                backToAssignedCases.addEventListener('click', function() {
-                    showView('my-assigned-cases-view');
-                });
-            }
+
 
             const backToExtMain = document.getElementById('back-to-ext-main');
             if (backToExtMain) {
@@ -1529,14 +1442,7 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
                 });
             }
 
-            // Case Assignment Events
-            const assignToMeBtn = document.getElementById('assign-to-me-btn');
-            if (assignToMeBtn) {
-                assignToMeBtn.addEventListener('click', function() {
-                    alert('Case assigned successfully!');
-                    showView('my-assigned-cases-view');
-                });
-            }
+
 
             const declineCaseBtn = document.getElementById('decline-case-btn');
             if (declineCaseBtn) {
@@ -1546,15 +1452,7 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
                 });
             }
 
-            // Expert Review Form
-            const expertReviewForm = document.getElementById('expert-review-form');
-            if (expertReviewForm) {
-                expertReviewForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    alert('Expert review submitted successfully!');
-                    showView('my-assigned-cases-view');
-                });
-            }
+
 
             const saveDraftReviewBtn = document.getElementById('save-draft-review-btn');
             if (saveDraftReviewBtn) {
