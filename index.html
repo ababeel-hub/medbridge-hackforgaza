@@ -19,114 +19,7 @@
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com/3.3.0"></script>
-    
-    <!-- Firebase SDK -->
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, enableNetwork, disableNetwork } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCVE0UlE4gGSYNiRbt_QhwkuN_ebeNZFCc",
-            authDomain: "medbridge-hackforgaza.firebaseapp.com",
-            projectId: "medbridge-hackforgaza",
-            storageBucket: "medbridge-hackforgaza.firebasestorage.app",
-            messagingSenderId: "750494963580",
-            appId: "1:750494963580:web:f72e4caf4764aa0a6276f9",
-            measurementId: "G-BHJ03BEXXG"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // Global Firebase objects for use in other scripts
-        window.firebaseApp = app;
-        window.firebaseAuth = auth;
-        window.firebaseDb = db;
-
-        // Authentication state listener
-        onAuthStateChanged(auth, (user) => {
-            console.log('Auth state changed:', user ? 'User logged in' : 'No user');
-            if (user) {
-                console.log('User ID:', user.uid);
-                // Update UI based on authentication state
-                updateAuthUI(user);
-            } else {
-                // User is signed out
-                updateAuthUI(null);
-            }
-        });
-
-        // Authentication functions
-        async function signInWithEmail(email, password) {
-            try {
-                const result = await signInWithEmailAndPassword(auth, email, password);
-                console.log('Email sign-in successful:', result.user.uid);
-                return result.user;
-            } catch (error) {
-                console.error('Email sign-in failed:', error);
-                throw error;
-            }
-        }
-
-        async function createUserWithEmail(email, password) {
-            try {
-                const result = await createUserWithEmailAndPassword(auth, email, password);
-                console.log('User creation successful:', result.user.uid);
-                return result.user;
-            } catch (error) {
-                console.error('User creation failed:', error);
-                throw error;
-            }
-        }
-
-        async function signOutUser() {
-            try {
-                await signOut(auth);
-                console.log('Sign out successful');
-            } catch (error) {
-                console.error('Sign out failed:', error);
-            }
-        }
-
-        // Update UI based on authentication state
-        function updateAuthUI(user) {
-            if (user) {
-                // User is signed in - show appropriate dashboard based on user type
-                const userType = localStorage.getItem('userType') || 'internal';
-                if (userType === 'internal') {
-                    showView('internal-dashboard');
-                } else {
-                    showView('external-dashboard');
-                }
-            } else {
-                // User is signed out - show login
-                showView('login-view');
-            }
-        }
-
-        // Network status handling for offline capability
-        window.addEventListener('online', () => {
-            console.log('App is online');
-            enableNetwork(db);
-        });
-
-        window.addEventListener('offline', () => {
-            console.log('App is offline');
-        });
-
-        // Export for use in other scripts
-        window.firebaseUtils = {
-            signInWithEmail,
-            createUserWithEmail,
-            signOutUser,
-            updateAuthUI
-        };
-    </script>
     
     <!-- Custom CSS Variables and Base Styles -->
     <style>
@@ -297,48 +190,115 @@
 </head>
 <body>
     <!-- Login View -->
-    <div id="login-view" class="view active min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
-        <div class="card max-w-md w-full mx-4">
+    <div id="login-view" class="view active min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-50">
+        <div class="w-full max-w-md mx-4">
+            <!-- Logo and Title -->
             <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-blue-900 mb-2">MedBridge Gaza</h1>
-                <p class="text-gray-600">Medical consultation platform</p>
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">MedBridge Gaza</h1>
+                <p class="text-gray-600">Connecting medical expertise worldwide</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="auth-error" class="hidden mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                <p class="text-red-600 text-sm text-center"></p>
             </div>
             
-            <form id="login-form" class="space-y-6">
-                <div id="auth-error" class="text-red-600 text-sm text-center hidden"></div>
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                    <input type="email" id="email" name="email" required 
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                           placeholder="doctor@example.com">
-                </div>
+            <!-- Login Card -->
+            <div id="login-card" class="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Sign In</h2>
                 
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                    <input type="password" id="password" name="password" required 
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                           placeholder="Enter your password">
-                </div>
+                <form id="login-form" class="space-y-6">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                        <input type="email" id="email" name="email" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                               placeholder="doctor@example.com">
+                    </div>
+                    
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input type="password" id="password" name="password" required minlength="6"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                               placeholder="••••••••">
+                    </div>
+                    
+                    <div>
+                        <label for="role" class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                        <select id="role" name="role" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                            <option value="">Select your role</option>
+                            <option value="internal">Internal Doctor (Gaza)</option>
+                            <option value="external">External Doctor (Expert)</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        Sign In
+                    </button>
+                </form>
                 
-                <div>
-                    <label for="role" class="block text-sm font-medium text-gray-700 mb-2">Role</label>
-                    <select id="role" name="role" required 
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="">Select your role</option>
-                        <option value="internal">Internal Doctor</option>
-                        <option value="external">External Doctor</option>
-                    </select>
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-gray-600">
+                        Don't have an account? 
+                        <a href="#" id="show-register" class="text-blue-600 hover:text-blue-700 font-medium">Create Account</a>
+                    </p>
                 </div>
+            </div>
+
+            <!-- Register Card -->
+            <div id="register-card" class="hidden bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Create Account</h2>
                 
-                <button type="submit" class="btn btn-primary w-full" id="signin-btn">
-                    Sign In
-                </button>
-            </form>
-            
-            <div class="mt-6 text-center">
-                <p class="text-sm text-gray-600">Don't have an account? 
-                    <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Contact Admin</a>
-                </p>
+                <form id="register-form" class="space-y-6">
+                    <div>
+                        <label for="register-email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                        <input type="email" id="register-email" name="email" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                               placeholder="doctor@example.com">
+                    </div>
+                    
+                    <div>
+                        <label for="register-password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input type="password" id="register-password" name="password" required minlength="6"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                               placeholder="••••••••">
+                        <p class="text-xs text-gray-500 mt-1">Minimum 6 characters</p>
+                    </div>
+                    
+                    <div>
+                        <label for="register-confirm-password" class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                        <input type="password" id="register-confirm-password" name="confirmPassword" required minlength="6"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                               placeholder="••••••••">
+                    </div>
+                    
+                    <div>
+                        <label for="register-role" class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                        <select id="register-role" name="role" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                            <option value="">Select your role</option>
+                            <option value="internal">Internal Doctor (Gaza)</option>
+                            <option value="external">External Doctor (Expert)</option>
+                        </select>
+                        <p class="text-xs text-gray-500 mt-1">Internal doctors submit cases, external doctors provide expert reviews</p>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                        Create Account
+                    </button>
+                </form>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-gray-600">
+                        Already have an account? 
+                        <a href="#" id="show-login" class="text-blue-600 hover:text-blue-700 font-medium">Sign In</a>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -1091,6 +1051,9 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
 
     <!-- Mock Data Script -->
     <script src="mock-data.js"></script>
+    
+    <!-- Main App Script -->
+    <script src="app.js"></script>
 
     <!-- Service Worker Registration -->
     <script>
@@ -1106,365 +1069,6 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
                     });
             });
         }
-
-        // View Management
-        function showView(viewId) {
-            console.log('showView called with:', viewId);
-            
-            // Hide all views
-            document.querySelectorAll('.view').forEach(view => {
-                view.classList.remove('active');
-                console.log('Hiding view:', view.id);
-            });
-            
-            // Show the target view
-            const targetView = document.getElementById(viewId);
-            console.log('Target view found:', !!targetView);
-            
-            if (targetView) {
-                targetView.classList.add('active');
-                console.log('Showing view:', targetView.id);
-                
-                // Load user info for dashboard views
-                if (viewId === 'internal-dashboard-view' || viewId === 'case-creation-view' || viewId === 'case-detail-view' || 
-                    viewId === 'external-dashboard-view' || viewId === 'case-assignment-view' || viewId === 'case-review-view' || viewId === 'my-assigned-cases-view') {
-                    loadUserInfo();
-                }
-                
-                console.log('View switch completed successfully');
-            } else {
-                console.error('Target view not found:', viewId);
-            }
-        }
-
-        // Load and display user information
-        function loadUserInfo() {
-            const userInfo = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            const username = userInfo.username || 'Default User';
-            
-            // Update all username displays (both internal and external doctor elements)
-            const doctorNameElements = document.querySelectorAll('#doctor-name, #welcome-name, #case-doctor-name, #detail-doctor-name, #ext-doctor-name, #ext-welcome-name, #assign-doctor-name, #review-doctor-name, #assigned-doctor-name');
-            doctorNameElements.forEach(element => {
-                if (element) {
-                    element.textContent = username;
-                }
-            });
-        }
-
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, setting up event listeners');
-            
-            // Test that views exist
-            const loginView = document.getElementById('login-view');
-            const dashboardView = document.getElementById('internal-dashboard-view');
-            console.log('Login view exists:', !!loginView);
-            console.log('Dashboard view exists:', !!dashboardView);
-            
-            // Initialize user info on page load
-            loadUserInfo();
-            
-            // Login form submission - ONLY handle form submit, not button click
-            const loginForm = document.getElementById('login-form');
-            console.log('Login form found:', !!loginForm);
-            
-            if (loginForm) {
-                loginForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    console.log('Login form submitted');
-                    handleLogin();
-                });
-            }
-        
-        // Login handler function
-        async function handleLogin() {
-            console.log('handleLogin called');
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const role = document.getElementById('role').value;
-            const errorDiv = document.getElementById('auth-error');
-            
-            console.log('Form values:', { email, password, role });
-            
-            // Basic validation
-            if (!email || !password || !role) {
-                errorDiv.textContent = 'Please fill in all fields';
-                errorDiv.classList.remove('hidden');
-                return;
-            }
-            
-            try {
-                // Try to sign in with Firebase
-                const user = await window.firebaseUtils.signInWithEmail(email, password);
-                
-                // Store user info for display
-                localStorage.setItem('currentUser', JSON.stringify({
-                    email: user.email,
-                    role: role
-                }));
-                localStorage.setItem('userType', role);
-                
-                errorDiv.classList.add('hidden');
-                console.log('Firebase login successful');
-                
-            } catch (error) {
-                // If login fails, try to create a new user
-                try {
-                    console.log('Login failed, trying to create new user...');
-                    const user = await window.firebaseUtils.createUserWithEmail(email, password);
-                    
-                    // Create user profile in Firestore
-                    const { setDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
-                    await setDoc(doc(window.firebaseDb, 'users', user.uid), {
-                        uid: user.uid,
-                        email: user.email,
-                        displayName: user.email.split('@')[0],
-                        userType: role,
-                        specialty: 'General Medicine',
-                        hospital: 'To be updated',
-                        location: 'Gaza',
-                        experience: 'To be updated',
-                        phone: '',
-                        isVerified: false,
-                        createdAt: new Date(),
-                        lastActive: new Date()
-                    });
-                    
-                    // Store user info for display
-                    localStorage.setItem('currentUser', JSON.stringify({
-                        email: user.email,
-                        role: role
-                    }));
-                    localStorage.setItem('userType', role);
-                    
-                    errorDiv.classList.add('hidden');
-                    console.log('Firebase registration successful');
-                    
-                } catch (createError) {
-                    console.error('Registration failed:', createError);
-                    errorDiv.textContent = `Authentication failed: ${createError.message}`;
-                    errorDiv.classList.remove('hidden');
-                    return;
-                }
-            }
-            
-            console.log('Switching to dashboard for role:', role);
-            
-            if (role === 'internal') {
-                console.log('About to call showView for internal dashboard');
-                console.log('showView function exists:', typeof showView);
-                try {
-                    showView('internal-dashboard-view');
-                    console.log('showView call completed');
-                } catch (error) {
-                    console.error('Error calling showView:', error);
-                }
-            } else if (role === 'external') {
-                console.log('About to call showView for external dashboard');
-                try {
-                    showView('external-dashboard-view');
-                    console.log('External dashboard view shown');
-                } catch (error) {
-                    console.error('Error showing external dashboard:', error);
-                }
-            }
-        }
-        
-            // Navigation buttons
-            const createCaseBtn = document.getElementById('create-case-btn');
-            if (createCaseBtn) {
-                createCaseBtn.addEventListener('click', function() {
-                    showView('case-creation-view');
-                });
-            }
-
-            const backToDashboard = document.getElementById('back-to-dashboard');
-            if (backToDashboard) {
-                backToDashboard.addEventListener('click', function() {
-                    showView('internal-dashboard-view');
-                });
-            }
-
-            const backToCases = document.getElementById('back-to-cases');
-            if (backToCases) {
-                backToCases.addEventListener('click', function() {
-                    showView('internal-dashboard-view');
-                });
-            }
-
-            const logoutBtn = document.getElementById('logout-btn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', async function() {
-                    try {
-                        await window.firebaseUtils.signOutUser();
-                        // Clear stored user information
-                        localStorage.removeItem('currentUser');
-                        localStorage.removeItem('userType');
-                        showView('login-view');
-                    } catch (error) {
-                        console.error('Logout failed:', error);
-                        // Still clear local storage and show login
-                        localStorage.removeItem('currentUser');
-                        localStorage.removeItem('userType');
-                        showView('login-view');
-                    }
-                });
-            }
-
-            // Case creation form
-            const caseForm = document.getElementById('case-creation-form');
-            if (caseForm) {
-                caseForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    // TODO: Implement case submission to Firebase
-                    alert('Case submitted successfully!');
-                    showView('internal-dashboard-view');
-                });
-            }
-
-            // Save draft button
-            const saveDraftBtn = document.getElementById('save-draft-btn');
-            if (saveDraftBtn) {
-                saveDraftBtn.addEventListener('click', function() {
-                    // TODO: Implement draft saving
-                    alert('Draft saved successfully!');
-                });
-            }
-
-            // Case detail buttons
-            const viewDetailsBtns = document.querySelectorAll('.card .btn-primary');
-            viewDetailsBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    showView('case-detail-view');
-                });
-            });
-            
-            // Handle install button click
-            const installBtn = document.getElementById('install-btn');
-            if (installBtn) {
-                installBtn.addEventListener('click', async () => {
-                    console.log('Install button clicked');
-                    if (deferredPrompt) {
-                        deferredPrompt.prompt();
-                        const { outcome } = await deferredPrompt.userChoice;
-                        console.log('Install outcome:', outcome);
-                        if (outcome === 'accepted') {
-                            console.log('PWA installed successfully');
-                        }
-                        deferredPrompt = null;
-                        installBtn.style.display = 'none';
-                    }
-                });
-            }
-
-            // External Doctor Navigation Events
-            const extLogoutBtn = document.getElementById('ext-logout-btn');
-            if (extLogoutBtn) {
-                extLogoutBtn.addEventListener('click', async function() {
-                    try {
-                        await window.firebaseUtils.signOutUser();
-                        localStorage.removeItem('currentUser');
-                        localStorage.removeItem('userType');
-                        showView('login-view');
-                    } catch (error) {
-                        console.error('Logout failed:', error);
-                        localStorage.removeItem('currentUser');
-                        localStorage.removeItem('userType');
-                        showView('login-view');
-                    }
-                });
-            }
-
-            const viewMyAssignedBtn = document.getElementById('view-my-assigned-btn');
-            if (viewMyAssignedBtn) {
-                viewMyAssignedBtn.addEventListener('click', function() {
-                    showView('my-assigned-cases-view');
-                });
-            }
-
-            const backToExtDashboard = document.getElementById('back-to-ext-dashboard');
-            if (backToExtDashboard) {
-                backToExtDashboard.addEventListener('click', function() {
-                    showView('external-dashboard-view');
-                });
-            }
-
-            const backToAssignedCases = document.getElementById('back-to-assigned-cases');
-            if (backToAssignedCases) {
-                backToAssignedCases.addEventListener('click', function() {
-                    showView('my-assigned-cases-view');
-                });
-            }
-
-            const backToExtMain = document.getElementById('back-to-ext-main');
-            if (backToExtMain) {
-                backToExtMain.addEventListener('click', function() {
-                    showView('external-dashboard-view');
-                });
-            }
-
-            // Case Assignment Events
-            const assignToMeBtn = document.getElementById('assign-to-me-btn');
-            if (assignToMeBtn) {
-                assignToMeBtn.addEventListener('click', function() {
-                    alert('Case assigned successfully!');
-                    showView('my-assigned-cases-view');
-                });
-            }
-
-            const declineCaseBtn = document.getElementById('decline-case-btn');
-            if (declineCaseBtn) {
-                declineCaseBtn.addEventListener('click', function() {
-                    alert('Case declined.');
-                    showView('external-dashboard-view');
-                });
-            }
-
-            // Expert Review Form
-            const expertReviewForm = document.getElementById('expert-review-form');
-            if (expertReviewForm) {
-                expertReviewForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    alert('Expert review submitted successfully!');
-                    showView('my-assigned-cases-view');
-                });
-            }
-
-            const saveDraftReviewBtn = document.getElementById('save-draft-review-btn');
-            if (saveDraftReviewBtn) {
-                saveDraftReviewBtn.addEventListener('click', function() {
-                    alert('Review draft saved successfully!');
-                });
-            }
-        });
-
-        // External Doctor Navigation Functions
-        function showCaseAssignment(caseId) {
-            console.log('Showing case assignment for:', caseId);
-            showView('case-assignment-view');
-        }
-
-        function showCaseReview(caseId) {
-            console.log('Showing case review for:', caseId);
-            showView('case-review-view');
-        }
-
-        // PWA Install prompt
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            console.log('PWA install prompt available');
-            e.preventDefault();
-            deferredPrompt = e;
-            
-            // Show install button
-            const installBtn = document.getElementById('install-btn');
-            if (installBtn) {
-                installBtn.style.display = 'inline-flex';
-            }
-        });
-
-
     </script>
 </body>
 </html> 
