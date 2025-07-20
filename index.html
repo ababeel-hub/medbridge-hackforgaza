@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MedBridge Gaza - Medical consultation platform for healthcare professionals">
+    <meta name="description" content="ShifaLink - Medical consultation platform for healthcare professionals">
     <meta name="theme-color" content="#2c5aa0">
     
     <!-- PWA Manifest -->
@@ -15,7 +15,7 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjMmM1YWEwIi8+CjxyZWN0IHg9Ijc3IiB5PSIzOCIgd2lkdGg9IjM4IiBoZWlnaHQ9IjExNiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iMzgiIHk9Ijc3IiB3aWR0aD0iMTE2IiBoZWlnaHQ9IjM4IiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
     
-    <title>MedBridge Gaza</title>
+    <title>ShifaLink</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com/3.3.0"></script>
@@ -23,12 +23,15 @@
     <!-- Custom CSS Variables and Base Styles -->
     <style>
         :root {
-            --primary-blue: #2c5aa0;
-            --success-green: #28a745;
-            --warning-yellow: #ffc107;
-            --danger-red: #dc3545;
-            --light-gray: #f8f9fa;
-            --dark-gray: #343a40;
+            --primary-olive: #6b7744;
+            --primary-olive-dark: #556032;
+            --primary-olive-light: #8b9b5f;
+            --success-green: #7ba05b;
+            --warning-yellow: #b8a068;
+            --danger-red: #a0544b;
+            --light-olive: #f5f6f2;
+            --dark-olive: #3d4229;
+            --accent-olive: #9aab7a;
         }
         
         * {
@@ -38,8 +41,8 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
-            color: var(--dark-gray);
-            background-color: var(--light-gray);
+            color: var(--dark-olive);
+            background-color: var(--light-olive);
             margin: 0;
             padding: 0;
         }
@@ -76,7 +79,7 @@
         }
         
         .voice-btn {
-            background: #3b82f6;
+            background: var(--accent-olive);
             color: white;
             border: none;
             border-radius: 8px;
@@ -90,7 +93,7 @@
         }
         
         .voice-btn:hover {
-            background: #2563eb;
+            background: var(--primary-olive);
         }
         
         .voice-btn.recording {
@@ -120,12 +123,12 @@
         }
         
         .btn-primary {
-            background-color: var(--primary-blue);
+            background-color: var(--primary-olive);
             color: white;
         }
         
         .btn-primary:hover {
-            background-color: #1e4a8a;
+            background-color: var(--primary-olive-dark);
             transform: translateY(-1px);
         }
         
@@ -175,7 +178,8 @@
         
         /* Navigation */
         .nav-bar {
-            background: white;
+            background: linear-gradient(135deg, var(--primary-olive), var(--primary-olive-dark));
+            color: white;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             padding: 16px 20px;
             position: sticky;
@@ -183,13 +187,26 @@
             z-index: 100;
         }
         
+        /* Logo Styles */
+        .logo {
+            height: 40px;
+            width: auto;
+            margin-right: 12px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
         /* Stats cards */
         .stat-card {
-            background: linear-gradient(135deg, var(--primary-blue), #1e4a8a);
+            background: linear-gradient(135deg, var(--primary-olive), var(--primary-olive-dark));
             color: white;
             border-radius: 12px;
             padding: 20px;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .stat-number {
@@ -238,25 +255,45 @@
 </head>
 <body>
     <!-- Login View -->
-    <div id="login-view" class="view active min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
+    <div id="login-view" class="view active min-h-screen flex items-center justify-center" style="background: linear-gradient(135deg, var(--light-olive), var(--accent-olive));">
         <div class="card max-w-md w-full mx-4">
             <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-blue-900 mb-2">MedBridge Gaza</h1>
-                <p class="text-gray-600">Medical consultation platform</p>
+                <div class="logo-variation mb-6">
+                    <div class="logo-container justify-center mb-4">
+                        <img src="logo.png?v=3" alt="ShifaLink Logo" class="logo" style="height: 100px;">
+                    </div>
+                    <div class="tagline-v4" style="
+                        font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+                        font-size: 14px;
+                        font-weight: 400;
+                        color: var(--primary-olive-dark);
+                        letter-spacing: 0.3px;
+                        margin-bottom: 8px;
+                    ">Healing Beyond Borders</div>
+                    <div class="accent-line" style="
+                        width: 50px;
+                        height: 2px;
+                        background: linear-gradient(90deg, var(--primary-olive-light), var(--primary-olive-dark));
+                        margin: 8px auto 0;
+                        border-radius: 1px;
+                    "></div>
+                </div>
             </div>
             
             <form id="login-form" class="space-y-6">
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
                     <input type="text" id="username" name="username" required 
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                           style="--tw-ring-color: var(--primary-olive);"
                            placeholder="Enter your username">
                 </div>
                 
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
                     <input type="password" id="password" name="password" required 
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                           style="--tw-ring-color: var(--primary-olive);"
                            placeholder="Enter your password">
                 </div>
                 
@@ -289,11 +326,13 @@
         <nav class="nav-bar">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <h1 class="text-xl font-bold text-blue-900">MedBridge Gaza</h1>
+                    <div class="logo-container">
+                        <img src="logo.png?v=2" alt="ShifaLink Logo" class="logo" style="height: 50px;">
+                    </div>
                 </div>
                 <div class="flex items-center space-x-4">
                     <button id="install-btn" class="btn btn-success text-sm" style="display: none;">📱 Install App</button>
-                    <span class="text-sm text-gray-600">Dr. <span id="doctor-name">Loading...</span></span>
+                    <span class="text-sm text-white">Dr. <span id="doctor-name">Loading...</span></span>
                     <button id="logout-btn" class="btn btn-secondary text-sm">Logout</button>
                 </div>
             </div>
@@ -390,7 +429,7 @@
         <!-- Footer -->
         <footer class="bg-white border-t border-gray-200 py-6 mt-12">
             <div class="container mx-auto px-4 text-center">
-                <p class="text-gray-600 text-sm">© 2024 MedBridge Gaza. Medical consultation platform for healthcare professionals.</p>
+                <p class="text-gray-600 text-sm">© 2025 ShifaLink. Medical consultation platform for healthcare professionals.</p>
             </div>
         </footer>
     </div>
@@ -401,11 +440,14 @@
         <nav class="nav-bar">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
+                    <div class="logo-container">
+                        <img src="logo.png?v=2" alt="ShifaLink Logo" class="logo" style="height: 50px;">
+                    </div>
                     <button id="back-to-dashboard" class="btn btn-secondary text-sm">← Back to Dashboard</button>
-                    <h1 class="text-xl font-bold text-blue-900">Create New Case</h1>
+                    <h1 class="text-xl font-bold text-white">Create New Case</h1>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-600">Dr. <span id="case-doctor-name">Ahmed Hassan</span></span>
+                    <span class="text-sm text-white">Dr. <span id="case-doctor-name">Ahmed Hassan</span></span>
                 </div>
             </div>
         </nav>
@@ -418,33 +460,59 @@
                         <label for="case-title" class="block text-sm font-medium text-gray-700 mb-2">Case Title *</label>
                         <input type="text" id="case-title" name="title" required 
                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                               placeholder="Brief description of the case">
+                               placeholder="Brief case description">
                     </div>
                     
                     <div>
-                        <label for="case-description" class="block text-sm font-medium text-gray-700 mb-2">Detailed Description *</label>
-                        <div class="voice-input-container">
-                            <textarea id="case-description" name="description" rows="6" required 
-                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                      placeholder="Provide detailed information about the patient's condition, symptoms, and your concerns"></textarea>
-                            <button type="button" onclick="startVoiceInput('case-description')" class="voice-btn mt-2">
-                                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
-                                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
-                                </svg>
-                                🎤 Speak Description
-                            </button>
-                            <div id="case-description-status" class="voice-status"></div>
+                        <label for="age-range" class="block text-sm font-medium text-gray-700 mb-2">Age Range *</label>
+                        <select id="age-range" name="age_range" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Select age range</option>
+                            <option value="0-5">0-5 years</option>
+                            <option value="6-12">6-12 years</option>
+                            <option value="13-17">13-17 years</option>
+                            <option value="18-30">18-30 years</option>
+                            <option value="31-50">31-50 years</option>
+                            <option value="51+">51+ years</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Gender *</label>
+                        <div class="flex space-x-6">
+                            <label class="flex items-center">
+                                <input type="radio" name="gender" value="male" required 
+                                       class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                <span class="ml-2 text-sm text-gray-700">Male</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="gender" value="female" required 
+                                       class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                <span class="ml-2 text-sm text-gray-700">Female</span>
+                            </label>
                         </div>
                     </div>
                     
                     <div>
-                        <label for="case-symptoms" class="block text-sm font-medium text-gray-700 mb-2">Key Symptoms</label>
+                        <label for="case-type" class="block text-sm font-medium text-gray-700 mb-2">Case Type *</label>
+                        <select id="case-type" name="case_type" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Select case type</option>
+                            <option value="cardiology">Cardiology</option>
+                            <option value="orthopedics">Orthopedics</option>
+                            <option value="emergency">Emergency</option>
+                            <option value="pediatrics">Pediatrics</option>
+                            <option value="surgery">Surgery</option>
+                            <option value="general">General Medicine</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="case-symptoms" class="block text-sm font-medium text-gray-700 mb-2">Symptoms *</label>
                         <div class="voice-input-container">
-                            <textarea id="case-symptoms" name="symptoms" rows="3" 
+                            <textarea id="case-symptoms" name="symptoms" rows="4" required 
                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                      placeholder="List the main symptoms observed"></textarea>
+                                      placeholder="Describe symptoms and presentation..."></textarea>
                             <button type="button" onclick="startVoiceInput('case-symptoms')" class="voice-btn mt-2">
                                 <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
@@ -458,11 +526,21 @@
                     </div>
                     
                     <div>
-                        <label for="case-tags" class="block text-sm font-medium text-gray-700 mb-2">Medical Tags</label>
-                        <input type="text" id="case-tags" name="tags" 
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                               placeholder="e.g., trauma, pediatrics, emergency, surgery">
-                        <p class="text-xs text-gray-500 mt-1">Separate tags with commas</p>
+                        <label for="medical-history" class="block text-sm font-medium text-gray-700 mb-2">Medical History *</label>
+                        <div class="voice-input-container">
+                            <textarea id="medical-history" name="medical_history" rows="4" required 
+                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                      placeholder="Relevant medical history..."></textarea>
+                            <button type="button" onclick="startVoiceInput('medical-history')" class="voice-btn mt-2">
+                                <svg class="microphone-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path d="M10 4a6 6 0 00-6 6v1a1 1 0 002 0v-1a4 4 0 118 0v1a1 1 0 002 0v-1a6 6 0 00-6-6z"/>
+                                    <path d="M3 11a1 1 0 00-1 1v1a6 6 0 0012 0v-1a1 1 0 00-2 0v1a4 4 0 01-8 0v-1a1 1 0 00-1-1z"/>
+                                </svg>
+                                🎤 Speak Medical History
+                            </button>
+                            <div id="medical-history-status" class="voice-status"></div>
+                        </div>
                     </div>
                     
                     <div>
@@ -477,20 +555,12 @@
                         </select>
                     </div>
                     
-                    <div class="flex items-center space-x-3">
-                        <input type="checkbox" id="research-consent" name="research_consent" 
-                               class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-                        <label for="research-consent" class="text-sm text-gray-700">
-                            I consent to this case being used for research and training purposes (anonymized)
-                        </label>
-                    </div>
-                    
                     <div class="flex space-x-4 pt-6">
                         <button type="button" id="save-draft-btn" class="btn btn-secondary flex-1">
-                            Save as Draft
+                            Save Draft
                         </button>
                         <button type="submit" class="btn btn-primary flex-1">
-                            Submit Case
+                            Submit for Review
                         </button>
                     </div>
                 </form>
@@ -520,7 +590,7 @@
                     <div>
                         <h2 id="detail-case-title" class="text-2xl font-bold text-gray-900 mb-2">Trauma Case - Compound Fracture</h2>
                         <div class="flex items-center space-x-4 text-sm text-gray-600">
-                            <span>Case ID: #MB-2024-001</span>
+                            <span>Case ID: #MB-2025-001</span>
                             <span>Submitted: 2 hours ago</span>
                             <span class="status-badge status-in-review">In Review</span>
                         </div>
@@ -604,11 +674,13 @@
         <nav class="nav-bar">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <h1 class="text-xl font-bold text-blue-900">MedBridge Gaza</h1>
+                    <div class="logo-container">
+                        <img src="logo.png?v=2" alt="ShifaLink Logo" class="logo" style="height: 50px;">
+                    </div>
                 </div>
                 <div class="flex items-center space-x-4">
                     <button id="install-btn-ext" class="btn btn-success text-sm" style="display: none;">📱 Install App</button>
-                    <span class="text-sm text-gray-600">Dr. <span id="ext-doctor-name">Loading...</span></span>
+                    <span class="text-sm text-white">Dr. <span id="ext-doctor-name">Loading...</span></span>
                     <button id="ext-logout-btn" class="btn btn-secondary text-sm">Logout</button>
                 </div>
             </div>
@@ -638,86 +710,75 @@
                 </div>
             </div>
 
-            <!-- Filter Section -->
-            <div class="mb-6">
-                <div class="flex items-center space-x-4">
-                    <div class="form-group mb-0">
-                        <label for="case-filter" class="form-label text-sm">Filter by Specialty:</label>
-                        <select id="case-filter" class="form-input">
-                            <option value="">All Cases</option>
-                            <option value="trauma">Trauma</option>
-                            <option value="pediatrics">Pediatrics</option>
-                            <option value="cardiology">Cardiology</option>
-                            <option value="orthopedics">Orthopedics</option>
-                        </select>
-                    </div>
-                    <button id="view-my-assigned-btn" class="btn btn-secondary text-sm">View My Assigned Cases</button>
-                </div>
-            </div>
-
             <!-- Available Cases Section -->
             <div class="mb-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-semibold text-gray-900">Available Cases</h3>
-                    <span class="text-sm text-gray-600">Click any case to review and assign</span>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Available Cases for Review</h3>
+                
+                <!-- Filter Section -->
+                <div class="flex items-center space-x-3 mb-6">
+                    <select id="case-filter" class="form-input" style="width: auto;">
+                        <option value="">All Types</option>
+                        <option value="cardiology">Cardiology</option>
+                        <option value="orthopedics">Orthopedics</option>
+                        <option value="emergency">Emergency</option>
+                        <option value="pediatrics">Pediatrics</option>
+                        <option value="surgery">Surgery</option>
+                    </select>
+                    <button class="btn btn-secondary text-sm">Filter</button>
                 </div>
                 
-                <div id="available-cases-container" class="space-y-4">
-                    <!-- Case cards will be populated by JavaScript -->
+                <!-- Case Cards -->
+                <div class="space-y-4 mb-8">
                     <div class="card">
-                        <div class="flex items-start justify-between">
+                        <div class="flex items-center justify-between">
                             <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 mb-2">Trauma Case - Compound Fracture</h4>
-                                <p class="text-gray-600 text-sm mb-3">Patient with severe compound fracture of the right tibia requiring immediate surgical intervention...</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
-                                    <span>Submitted: 2 hours ago</span>
-                                    <span class="status-badge status-submitted">Awaiting Review</span>
-                                    <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">High Priority</span>
-                                </div>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">trauma</span>
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">orthopedics</span>
-                                </div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Chest Pain - 45yr Male</h4>
+                                <p class="text-sm text-gray-600">Cardiology • Submitted 2 days ago</p>
                             </div>
-                            <button class="btn btn-primary text-sm" onclick="showCaseAssignment('case-1')">Review & Assign</button>
+                            <button class="btn btn-primary text-sm" onclick="showCaseAssignment('case-1')">Assign to Me</button>
                         </div>
                     </div>
                     
                     <div class="card">
-                        <div class="flex items-start justify-between">
+                        <div class="flex items-center justify-between">
                             <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 mb-2">Pediatric Emergency - Respiratory Distress</h4>
-                                <p class="text-gray-600 text-sm mb-3">3-year-old patient presenting with severe respiratory distress and suspected pneumonia...</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
-                                    <span>Submitted: 4 hours ago</span>
-                                    <span class="status-badge status-submitted">Awaiting Review</span>
-                                    <span class="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs">Medium Priority</span>
-                                </div>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">pediatrics</span>
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
-                                </div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Severe Headache - 28yr Female</h4>
+                                <p class="text-sm text-gray-600">Emergency • Submitted 1 day ago</p>
                             </div>
-                            <button class="btn btn-primary text-sm" onclick="showCaseAssignment('case-2')">Review & Assign</button>
+                            <button class="btn btn-primary text-sm" onclick="showCaseAssignment('case-2')">Assign to Me</button>
                         </div>
                     </div>
                     
                     <div class="card">
-                        <div class="flex items-start justify-between">
+                        <div class="flex items-center justify-between">
                             <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 mb-2">Cardiac Event - Chest Pain Assessment</h4>
-                                <p class="text-gray-600 text-sm mb-3">45-year-old male presenting with acute chest pain, possible MI, requiring immediate assessment...</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
-                                    <span>Submitted: 1 day ago</span>
-                                    <span class="status-badge status-submitted">Awaiting Review</span>
-                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Standard Priority</span>
-                                </div>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">cardiology</span>
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
-                                </div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Pediatric Respiratory Issue</h4>
+                                <p class="text-sm text-gray-600">Pediatrics • Submitted 3 hours ago</p>
                             </div>
-                            <button class="btn btn-primary text-sm" onclick="showCaseAssignment('case-3')">Review & Assign</button>
+                            <button class="btn btn-primary text-sm" onclick="showCaseAssignment('case-3')">Assign to Me</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="flex justify-center space-x-2 mb-8">
+                    <button class="px-3 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">←</button>
+                    <button class="px-3 py-2 bg-blue-600 text-white rounded text-sm">1</button>
+                    <button class="px-3 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">→</button>
+                </div>
+                
+                <!-- My Assigned Cases Section -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-semibold text-gray-900 mb-4">My Assigned Cases (2)</h4>
+                    <div class="card bg-blue-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-1">Joint Pain - 55yr Male</h4>
+                                <p class="text-sm text-gray-600">Orthopedics • Assigned 1 day ago</p>
+                            </div>
+                            <button class="btn btn-warning text-sm" onclick="showCaseReview('assigned-case-1')">Review</button>
                         </div>
                     </div>
                 </div>
@@ -727,7 +788,7 @@
         <!-- Footer -->
         <footer class="bg-white border-t border-gray-200 py-6 mt-12">
             <div class="container mx-auto px-4 text-center">
-                <p class="text-gray-600 text-sm">© 2024 MedBridge Gaza. Medical consultation platform for healthcare professionals.</p>
+                <p class="text-gray-600 text-sm">© 2025 ShifaLink. Medical consultation platform for healthcare professionals.</p>
             </div>
         </footer>
     </div>
@@ -755,7 +816,7 @@
                         <div>
                             <h2 id="assign-case-title" class="text-2xl font-bold text-gray-900 mb-2">Trauma Case - Compound Fracture</h2>
                             <div class="flex items-center space-x-4 text-sm text-gray-600 mb-4">
-                                <span>Case ID: #MB-2024-001</span>
+                                <span>Case ID: #MB-2025-001</span>
                                 <span>Submitted: 2 hours ago</span>
                                 <span>Priority: <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">High</span></span>
                             </div>
@@ -830,7 +891,7 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
                     <div>
                         <h2 id="review-case-title" class="text-2xl font-bold text-gray-900 mb-2">Trauma Case - Compound Fracture</h2>
                         <div class="flex items-center space-x-4 text-sm text-gray-600">
-                            <span>Case ID: #MB-2024-001</span>
+                            <span>Case ID: #MB-2025-001</span>
                             <span>Assigned: 1 hour ago</span>
                             <span class="status-badge status-in-review">In Review</span>
                         </div>
@@ -995,16 +1056,14 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
 
             <!-- Filter Section -->
             <div class="mb-6">
-                <div class="flex items-center space-x-4">
-                    <div class="form-group mb-0">
-                        <label for="status-filter" class="form-label text-sm">Filter by Status:</label>
-                        <select id="status-filter" class="form-input">
-                            <option value="">All Cases</option>
-                            <option value="in-review">In Review</option>
-                            <option value="draft">Draft</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                    </div>
+                <div class="flex items-center space-x-3">
+                    <select id="status-filter" class="form-input" style="width: auto;">
+                        <option value="">All Cases</option>
+                        <option value="in-review">In Review</option>
+                        <option value="draft">Draft</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <button class="btn btn-secondary text-sm">Filter</button>
                 </div>
             </div>
 
@@ -1079,7 +1138,7 @@ Severe pain, swelling, deformity, open wound with bone exposure, decreased sensa
         <!-- Footer -->
         <footer class="bg-white border-t border-gray-200 py-6 mt-12">
             <div class="container mx-auto px-4 text-center">
-                <p class="text-gray-600 text-sm">© 2024 MedBridge Gaza. Medical consultation platform for healthcare professionals.</p>
+                <p class="text-gray-600 text-sm">© 2025 ShifaLink. Medical consultation platform for healthcare professionals.</p>
             </div>
         </footer>
     </div>
