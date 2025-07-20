@@ -3,29 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedBridge Gaza</title>
+    <meta name="description" content="MedBridge Gaza - Medical consultation platform for healthcare professionals">
+    <meta name="theme-color" content="#2c5aa0">
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2c5aa0">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="MedBridge Gaza">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjMmM1YWEwIi8+CjxyZWN0IHg9Ijc3IiB5PSIzOCIgd2lkdGg9IjM4IiBoZWlnaHQ9IjExNiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iMzgiIHk9Ijc3IiB3aWR0aD0iMTE2IiBoZWlnaHQ9IjM4IiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjMmM1YWEwIi8+CjxyZWN0IHg9Ijc3IiB5PSIzOCIgd2lkdGg9IjM4IiBoZWlnaHQ9IjExNiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iMzgiIHk9Ijc3IiB3aWR0aD0iMTE2IiBoZWlnaHQ9IjM4IiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+    
+    <title>MedBridge Gaza</title>
     
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#2c5aa0',
-                        secondary: '#6c757d'
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="https://cdn.tailwindcss.com/3.3.0"></script>
     
     <!-- Firebase SDK -->
     <script type="module">
@@ -49,9 +42,6 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-
-        // Enable Firestore offline persistence
-        // This is enabled by default in newer versions of Firebase
 
         // Global Firebase objects for use in other scripts
         window.firebaseApp = app;
@@ -105,33 +95,19 @@
 
         // Update UI based on authentication state
         function updateAuthUI(user) {
-            const authStatus = document.getElementById('auth-status');
-            const userInfo = document.getElementById('user-info');
-            const loginSection = document.getElementById('login-section');
-            const dashboardSection = document.getElementById('dashboard-section');
-            
             if (user) {
-                authStatus.textContent = 'Authenticated';
-                authStatus.className = 'text-green-600 font-semibold';
-                userInfo.textContent = `User: ${user.email}`;
-                userInfo.className = 'text-sm text-gray-600';
-                
-                // Show dashboard, hide login
-                loginSection.classList.add('hidden');
-                dashboardSection.classList.remove('hidden');
+                // User is signed in - show appropriate dashboard based on user type
+                const userType = localStorage.getItem('userType') || 'internal';
+                if (userType === 'internal') {
+                    showView('internal-dashboard');
+                } else {
+                    showView('external-dashboard');
+                }
             } else {
-                authStatus.textContent = 'Not Authenticated';
-                authStatus.className = 'text-red-600 font-semibold';
-                userInfo.textContent = '';
-                
-                // Show login, hide dashboard
-                loginSection.classList.remove('hidden');
-                dashboardSection.classList.add('hidden');
+                // User is signed out - show login
+                showView('login-view');
             }
         }
-
-        // Initialize authentication (no auto sign-in for email/password)
-        // Users will need to login manually
 
         // Network status handling for offline capability
         window.addEventListener('online', () => {
@@ -151,94 +127,966 @@
             updateAuthUI
         };
     </script>
+    
+    <!-- Custom CSS Variables and Base Styles -->
+    <style>
+        :root {
+            --primary-blue: #2c5aa0;
+            --success-green: #28a745;
+            --warning-yellow: #ffc107;
+            --danger-red: #dc3545;
+            --light-gray: #f8f9fa;
+            --dark-gray: #343a40;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background-color: var(--light-gray);
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* View Management */
+        .view {
+            display: none !important;
+        }
+        
+        .view.active {
+            display: block !important;
+        }
+        
+        /* Touch-friendly buttons */
+        .btn {
+            min-height: 44px;
+            min-width: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1e4a8a;
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background-color: var(--success-green);
+            color: white;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-yellow);
+            color: #333;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        /* Card styles */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-draft { background: var(--warning-yellow); color: #333; }
+        .status-submitted { background: #17a2b8; color: white; }
+        .status-in-review { background: #fd7e14; color: white; }
+        .status-completed { background: var(--success-green); color: white; }
+        
+        /* Navigation */
+        .nav-bar {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        /* Stats cards */
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-blue), #1e4a8a);
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+        
+        /* Responsive grid */
+        .grid-responsive {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: 1fr;
+        }
+        
+        @media (min-width: 768px) {
+            .grid-responsive {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .grid-responsive {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* Loading states */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        /* Focus states for accessibility */
+        .btn:focus,
+        .card:focus {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+    </style>
 </head>
-<body class="bg-gray-50">
-    <div class="min-h-screen">
-        <!-- Header -->
-        <header class="bg-primary text-white shadow-lg">
-            <div class="container mx-auto px-4 py-4">
-                <div class="flex justify-between items-center">
-                    <h1 class="text-2xl font-bold">🏥 MedBridge Gaza</h1>
-                    <div class="flex items-center space-x-4 text-sm">
-                        <div>
-                            <span class="font-semibold">Auth:</span>
-                            <span id="auth-status" class="ml-2">Loading...</span>
-                        </div>
-                    </div>
-                </div>
-                <div id="user-info" class="text-sm mt-2"></div>
+<body>
+    <!-- Login View -->
+    <div id="login-view" class="view active min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
+        <div class="card max-w-md w-full mx-4">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-blue-900 mb-2">MedBridge Gaza</h1>
+                <p class="text-gray-600">Medical consultation platform</p>
             </div>
-        </header>
+            
+            <form id="login-form" class="space-y-6">
+                <div id="auth-error" class="text-red-600 text-sm text-center hidden"></div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" id="email" name="email" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           placeholder="doctor@example.com">
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" id="password" name="password" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           placeholder="Enter your password">
+                </div>
+                
+                <div>
+                    <label for="role" class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                    <select id="role" name="role" required 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Select your role</option>
+                        <option value="internal">Internal Doctor</option>
+                        <option value="external">External Doctor</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-full" id="signin-btn">
+                    Sign In
+                </button>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">Don't have an account? 
+                    <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Contact Admin</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Internal Doctor Dashboard View -->
+    <div id="internal-dashboard-view" class="view">
+        <!-- Navigation Bar -->
+        <nav class="nav-bar">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-xl font-bold text-blue-900">MedBridge Gaza</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="install-btn" class="btn btn-success text-sm" style="display: none;">📱 Install App</button>
+                    <span class="text-sm text-gray-600">Dr. <span id="doctor-name">Loading...</span></span>
+                    <button id="logout-btn" class="btn btn-secondary text-sm">Logout</button>
+                </div>
+            </div>
+        </nav>
 
         <!-- Main Content -->
-        <main class="container mx-auto px-4 py-8">
-            <div class="max-w-4xl mx-auto">
-
-
-                <!-- Login Form (shown when not authenticated) -->
-                <div id="login-section" class="bg-white rounded-lg shadow-md p-8">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">Welcome to MedBridge Gaza</h2>
-                    <p class="text-gray-600 mb-6 text-center">
-                        A progressive web application for medical personnel in Gaza to seek expert medical opinions and guidance.
-                    </p>
-                    
-                    <div id="login-form" class="max-w-md mx-auto">
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-                                Email
-                            </label>
-                            <input type="email" id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="doctor@example.com">
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-                                Password
-                            </label>
-                            <input type="password" id="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" placeholder="••••••••">
-                        </div>
-                        <div class="flex items-center justify-between mb-4">
-                            <label class="flex items-center">
-                                <input type="radio" name="userType" value="internal" class="mr-2" checked>
-                                <span class="text-sm">Internal Doctor</span>
-                            </label>
-                            <label class="flex items-center">
-                                <input type="radio" name="userType" value="external" class="mr-2">
-                                <span class="text-sm">External Doctor</span>
-                            </label>
-                        </div>
-                        <div class="flex space-x-4">
-                            <button id="login-btn" class="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex-1">
-                                Login
-                            </button>
-                            <button id="register-btn" class="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors flex-1">
-                                Register
-                            </button>
-                        </div>
-                        <div id="auth-error" class="text-red-600 text-sm mt-2 text-center hidden"></div>
-                    </div>
-                </div>
-
-                <!-- Dashboard (shown when authenticated) -->
-                <div id="dashboard-section" class="bg-white rounded-lg shadow-md p-8 text-center hidden">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome to MedBridge Gaza</h2>
-                    <p class="text-gray-600 mb-6">
-                        A progressive web application for medical personnel in Gaza to seek expert medical opinions and guidance.
-                    </p>
-                    <div class="flex justify-center space-x-4">
-                        <button id="populate-mock" class="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
-                            Populate Mock Data
-                        </button>
-                        <button id="view-data" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                            View Data
-                        </button>
-                        <button id="signout-btn" class="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors">
-                            Sign Out
-                        </button>
-                    </div>
-                </div>
-
-
+        <div class="container mx-auto px-4 py-6 max-w-6xl">
+            <!-- Welcome Section -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome back, Dr. <span id="welcome-name">Loading...</span></h2>
+                <p class="text-gray-600">Manage your cases and seek expert consultations</p>
             </div>
-        </main>
+
+            <!-- Quick Actions -->
+            <div class="mb-8">
+                <button id="create-case-btn" class="btn btn-primary text-lg px-8 py-4">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Create New Case
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid-responsive mb-8">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-cases">24</div>
+                    <div class="stat-label">Total Cases</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pending-cases">8</div>
+                    <div class="stat-label">Pending Review</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completed-cases">16</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+            </div>
+
+            <!-- Recent Cases Section -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold text-gray-900">My Recent Cases</h3>
+                    <button id="view-all-cases-btn" class="btn btn-secondary text-sm">View All</button>
+                </div>
+                
+                <div id="recent-cases-container" class="space-y-4">
+                    <!-- Case cards will be populated by JavaScript -->
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-2">Trauma Case - Compound Fracture</h4>
+                                <p class="text-gray-600 text-sm mb-3">Patient with severe compound fracture of the right tibia requiring immediate surgical intervention...</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                    <span>Submitted: 2 hours ago</span>
+                                    <span class="status-badge status-in-review">In Review</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary text-sm">View Details</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-2">Pediatric Emergency - Respiratory Distress</h4>
+                                <p class="text-gray-600 text-sm mb-3">3-year-old patient presenting with severe respiratory distress and suspected pneumonia...</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                    <span>Submitted: 1 day ago</span>
+                                    <span class="status-badge status-completed">Completed</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary text-sm">View Details</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-2">Burn Case - Thermal Injury</h4>
+                                <p class="text-gray-600 text-sm mb-3">Adult patient with 15% body surface area thermal burns requiring specialized treatment...</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                    <span>Submitted: 3 days ago</span>
+                                    <span class="status-badge status-submitted">Submitted</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary text-sm">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-200 py-6 mt-12">
+            <div class="container mx-auto px-4 text-center">
+                <p class="text-gray-600 text-sm">© 2024 MedBridge Gaza. Medical consultation platform for healthcare professionals.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Case Creation View -->
+    <div id="case-creation-view" class="view">
+        <!-- Navigation Bar -->
+        <nav class="nav-bar">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button id="back-to-dashboard" class="btn btn-secondary text-sm">← Back to Dashboard</button>
+                    <h1 class="text-xl font-bold text-blue-900">Create New Case</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Dr. <span id="case-doctor-name">Ahmed Hassan</span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Case Creation Form -->
+        <div class="container mx-auto px-4 py-6 max-w-4xl">
+            <div class="card">
+                <form id="case-creation-form" class="space-y-6">
+                    <div>
+                        <label for="case-title" class="block text-sm font-medium text-gray-700 mb-2">Case Title *</label>
+                        <input type="text" id="case-title" name="title" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="Brief description of the case">
+                    </div>
+                    
+                    <div>
+                        <label for="case-description" class="block text-sm font-medium text-gray-700 mb-2">Detailed Description *</label>
+                        <textarea id="case-description" name="description" rows="6" required 
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                  placeholder="Provide detailed information about the patient's condition, symptoms, and your concerns"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label for="case-symptoms" class="block text-sm font-medium text-gray-700 mb-2">Key Symptoms</label>
+                        <textarea id="case-symptoms" name="symptoms" rows="3" 
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                  placeholder="List the main symptoms observed"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label for="case-tags" class="block text-sm font-medium text-gray-700 mb-2">Medical Tags</label>
+                        <input type="text" id="case-tags" name="tags" 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="e.g., trauma, pediatrics, emergency, surgery">
+                        <p class="text-xs text-gray-500 mt-1">Separate tags with commas</p>
+                    </div>
+                    
+                    <div>
+                        <label for="case-urgency" class="block text-sm font-medium text-gray-700 mb-2">Urgency Level *</label>
+                        <select id="case-urgency" name="urgency" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Select urgency level</option>
+                            <option value="low">Low - Routine consultation</option>
+                            <option value="medium">Medium - Requires attention within 24 hours</option>
+                            <option value="high">High - Urgent, requires immediate attention</option>
+                            <option value="critical">Critical - Life-threatening situation</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3">
+                        <input type="checkbox" id="research-consent" name="research_consent" 
+                               class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                        <label for="research-consent" class="text-sm text-gray-700">
+                            I consent to this case being used for research and training purposes (anonymized)
+                        </label>
+                    </div>
+                    
+                    <div class="flex space-x-4 pt-6">
+                        <button type="button" id="save-draft-btn" class="btn btn-secondary flex-1">
+                            Save as Draft
+                        </button>
+                        <button type="submit" class="btn btn-primary flex-1">
+                            Submit Case
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Case Detail View -->
+    <div id="case-detail-view" class="view">
+        <!-- Navigation Bar -->
+        <nav class="nav-bar">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button id="back-to-cases" class="btn btn-secondary text-sm">← Back to Cases</button>
+                    <h1 class="text-xl font-bold text-blue-900">Case Details</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Dr. <span id="detail-doctor-name">Ahmed Hassan</span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Case Details Content -->
+        <div class="container mx-auto px-4 py-6 max-w-4xl">
+            <div class="card mb-6">
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <h2 id="detail-case-title" class="text-2xl font-bold text-gray-900 mb-2">Trauma Case - Compound Fracture</h2>
+                        <div class="flex items-center space-x-4 text-sm text-gray-600">
+                            <span>Case ID: #MB-2024-001</span>
+                            <span>Submitted: 2 hours ago</span>
+                            <span class="status-badge status-in-review">In Review</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Description</h3>
+                        <p id="detail-case-description" class="text-gray-700">
+                            Patient with severe compound fracture of the right tibia requiring immediate surgical intervention. 
+                            The fracture is open with significant soft tissue damage and potential vascular compromise.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Symptoms</h3>
+                        <p id="detail-case-symptoms" class="text-gray-700">
+                            Severe pain, swelling, deformity, open wound with bone exposure, decreased sensation in foot
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Tags</h3>
+                        <div id="detail-case-tags" class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">trauma</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">orthopedics</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expert Responses Section -->
+            <div class="card">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Expert Responses</h3>
+                <div id="expert-responses" class="space-y-4">
+                    <div class="border-l-4 border-blue-500 pl-4 py-2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-semibold text-gray-900">Dr. Sarah Johnson</span>
+                                <span class="text-sm text-gray-500">Orthopedic Surgeon</span>
+                            </div>
+                            <span class="text-sm text-gray-500">1 hour ago</span>
+                        </div>
+                        <p class="text-gray-700 mb-3">
+                            This is a complex case requiring immediate attention. I recommend immediate surgical debridement 
+                            and external fixation. The vascular status needs to be carefully monitored...
+                        </p>
+                        <div class="flex items-center space-x-4">
+                            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">👍 Helpful (3)</button>
+                            <button class="text-gray-600 hover:text-gray-800 text-sm">Reply</button>
+                        </div>
+                    </div>
+                    
+                    <div class="border-l-4 border-green-500 pl-4 py-2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-semibold text-gray-900">Dr. Michael Chen</span>
+                                <span class="text-sm text-gray-500">Emergency Medicine</span>
+                            </div>
+                            <span class="text-sm text-gray-500">30 minutes ago</span>
+                        </div>
+                        <p class="text-gray-700 mb-3">
+                            Agree with Dr. Johnson's assessment. Additionally, consider prophylactic antibiotics 
+                            and tetanus prophylaxis given the open nature of the injury...
+                        </p>
+                        <div class="flex items-center space-x-4">
+                            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">👍 Helpful (1)</button>
+                            <button class="text-gray-600 hover:text-gray-800 text-sm">Reply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- External Doctor Dashboard View -->
+    <div id="external-dashboard-view" class="view">
+        <!-- Navigation Bar -->
+        <nav class="nav-bar">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-xl font-bold text-blue-900">MedBridge Gaza</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="install-btn-ext" class="btn btn-success text-sm" style="display: none;">📱 Install App</button>
+                    <span class="text-sm text-gray-600">Dr. <span id="ext-doctor-name">Loading...</span></span>
+                    <button id="ext-logout-btn" class="btn btn-secondary text-sm">Logout</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container mx-auto px-4 py-6 max-w-6xl">
+            <!-- Welcome Section -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome back, Dr. <span id="ext-welcome-name">Loading...</span></h2>
+                <p class="text-gray-600">Review cases and provide expert consultations</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid-responsive mb-8">
+                <div class="stat-card">
+                    <div class="stat-number" id="available-cases">12</div>
+                    <div class="stat-label">Available Cases</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="my-assigned-cases">5</div>
+                    <div class="stat-label">My Assigned Cases</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completed-reviews">23</div>
+                    <div class="stat-label">Completed Reviews</div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="mb-6">
+                <div class="flex items-center space-x-4">
+                    <div class="form-group mb-0">
+                        <label for="case-filter" class="form-label text-sm">Filter by Specialty:</label>
+                        <select id="case-filter" class="form-input">
+                            <option value="">All Cases</option>
+                            <option value="trauma">Trauma</option>
+                            <option value="pediatrics">Pediatrics</option>
+                            <option value="cardiology">Cardiology</option>
+                            <option value="orthopedics">Orthopedics</option>
+                        </select>
+                    </div>
+                    <button id="view-my-assigned-btn" class="btn btn-secondary text-sm">View My Assigned Cases</button>
+                </div>
+            </div>
+
+            <!-- Available Cases Section -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Available Cases</h3>
+                    <span class="text-sm text-gray-600">Click any case to review and assign</span>
+                </div>
+                
+                <div id="available-cases-container" class="space-y-4">
+                    <!-- Case cards will be populated by JavaScript -->
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-2">Trauma Case - Compound Fracture</h4>
+                                <p class="text-gray-600 text-sm mb-3">Patient with severe compound fracture of the right tibia requiring immediate surgical intervention...</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
+                                    <span>Submitted: 2 hours ago</span>
+                                    <span class="status-badge status-submitted">Awaiting Review</span>
+                                    <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">High Priority</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">trauma</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">orthopedics</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary text-sm" onclick="showCaseAssignment('case-1')">Review & Assign</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-2">Pediatric Emergency - Respiratory Distress</h4>
+                                <p class="text-gray-600 text-sm mb-3">3-year-old patient presenting with severe respiratory distress and suspected pneumonia...</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
+                                    <span>Submitted: 4 hours ago</span>
+                                    <span class="status-badge status-submitted">Awaiting Review</span>
+                                    <span class="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs">Medium Priority</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">pediatrics</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary text-sm" onclick="showCaseAssignment('case-2')">Review & Assign</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-2">Cardiac Event - Chest Pain Assessment</h4>
+                                <p class="text-gray-600 text-sm mb-3">45-year-old male presenting with acute chest pain, possible MI, requiring immediate assessment...</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
+                                    <span>Submitted: 1 day ago</span>
+                                    <span class="status-badge status-submitted">Awaiting Review</span>
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Standard Priority</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">cardiology</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary text-sm" onclick="showCaseAssignment('case-3')">Review & Assign</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-200 py-6 mt-12">
+            <div class="container mx-auto px-4 text-center">
+                <p class="text-gray-600 text-sm">© 2024 MedBridge Gaza. Medical consultation platform for healthcare professionals.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Case Assignment View -->
+    <div id="case-assignment-view" class="view">
+        <!-- Navigation Bar -->
+        <nav class="nav-bar">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button id="back-to-ext-dashboard" class="btn btn-secondary text-sm">← Back to Dashboard</button>
+                    <h1 class="text-xl font-bold text-blue-900">Review Case</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Dr. <span id="assign-doctor-name">Loading...</span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Case Assignment Content -->
+        <div class="container mx-auto px-4 py-6 max-w-4xl">
+            <div class="card">
+                <div class="mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h2 id="assign-case-title" class="text-2xl font-bold text-gray-900 mb-2">Trauma Case - Compound Fracture</h2>
+                            <div class="flex items-center space-x-4 text-sm text-gray-600 mb-4">
+                                <span>Case ID: #MB-2024-001</span>
+                                <span>Submitted: 2 hours ago</span>
+                                <span>Priority: <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">High</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="form-group">
+                        <label class="form-label">Case Description</label>
+                        <textarea id="assign-case-description" rows="4" class="form-input" readonly>
+Patient with severe compound fracture of the right tibia requiring immediate surgical intervention. The fracture is open with significant soft tissue damage and potential vascular compromise.
+                        </textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Key Symptoms</label>
+                        <textarea id="assign-case-symptoms" rows="3" class="form-input" readonly>
+Severe pain, swelling, deformity, open wound with bone exposure, decreased sensation in foot
+                        </textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Medical Tags</label>
+                        <div id="assign-case-tags" class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">trauma</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">orthopedics</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Urgency Level</label>
+                        <div class="px-4 py-2 bg-red-50 border border-red-200 rounded-lg">
+                            <span class="font-semibold text-red-800">High - Urgent, requires immediate attention</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex space-x-4 pt-6 mt-6 border-t">
+                    <button type="button" id="decline-case-btn" class="btn btn-secondary flex-1">
+                        Decline Case
+                    </button>
+                    <button type="button" id="assign-to-me-btn" class="btn btn-primary flex-1">
+                        Assign Case to Myself
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Case Review View -->
+    <div id="case-review-view" class="view">
+        <!-- Navigation Bar -->
+        <nav class="nav-bar">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button id="back-to-assigned-cases" class="btn btn-secondary text-sm">← Back to Assigned Cases</button>
+                    <h1 class="text-xl font-bold text-blue-900">Provide Expert Review</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Dr. <span id="review-doctor-name">Loading...</span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Case Review Content -->
+        <div class="container mx-auto px-4 py-6 max-w-4xl">
+            <!-- Case Info Card -->
+            <div class="card mb-6">
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <h2 id="review-case-title" class="text-2xl font-bold text-gray-900 mb-2">Trauma Case - Compound Fracture</h2>
+                        <div class="flex items-center space-x-4 text-sm text-gray-600">
+                            <span>Case ID: #MB-2024-001</span>
+                            <span>Assigned: 1 hour ago</span>
+                            <span class="status-badge status-in-review">In Review</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="form-group">
+                        <label class="form-label">Case Description</label>
+                        <div class="px-4 py-3 bg-gray-50 border rounded-lg">
+                            <p id="review-case-description" class="text-gray-700">
+                                Patient with severe compound fracture of the right tibia requiring immediate surgical intervention. 
+                                The fracture is open with significant soft tissue damage and potential vascular compromise.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Key Symptoms</label>
+                        <div class="px-4 py-3 bg-gray-50 border rounded-lg">
+                            <p id="review-case-symptoms" class="text-gray-700">
+                                Severe pain, swelling, deformity, open wound with bone exposure, decreased sensation in foot
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expert Review Form -->
+            <div class="card">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Provide Expert Review</h3>
+                
+                <form id="expert-review-form" class="space-y-6">
+                    <div class="form-group">
+                        <label for="expert-diagnosis" class="form-label">Primary Assessment & Recommendations *</label>
+                        <textarea id="expert-diagnosis" name="diagnosis" rows="6" required 
+                                  class="form-input"
+                                  placeholder="Provide your expert assessment, recommended treatment plan, and any immediate actions required..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="additional-tests" class="form-label">Recommended Additional Tests/Imaging</label>
+                        <textarea id="additional-tests" name="tests" rows="3" 
+                                  class="form-input"
+                                  placeholder="List any additional diagnostic tests, imaging, or lab work needed..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="follow-up" class="form-label">Follow-up Instructions</label>
+                        <textarea id="follow-up" name="followup" rows="3" 
+                                  class="form-input"
+                                  placeholder="Provide follow-up care instructions and monitoring guidelines..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="urgency-level" class="form-label">Case Urgency Assessment *</label>
+                        <select id="urgency-level" name="urgency" required class="form-input">
+                            <option value="">Select urgency level</option>
+                            <option value="immediate">Immediate - Life threatening, act within minutes</option>
+                            <option value="urgent">Urgent - Serious condition, act within hours</option>
+                            <option value="standard">Standard - Stable condition, routine care</option>
+                            <option value="routine">Routine - Non-urgent, can wait for scheduled care</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Confidence Level</label>
+                        <div class="radio-group">
+                            <label class="flex items-center">
+                                <input type="radio" name="confidence" value="high" class="mr-2">
+                                <span>High - Very confident in assessment</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="confidence" value="moderate" class="mr-2">
+                                <span>Moderate - Additional consultation may help</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="confidence" value="low" class="mr-2">
+                                <span>Low - Recommend second opinion</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-4 pt-6">
+                        <button type="button" id="save-draft-review-btn" class="btn btn-secondary flex-1">
+                            Save Draft
+                        </button>
+                        <button type="submit" class="btn btn-success flex-1">
+                            Submit Expert Review
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Assigned Cases View -->
+    <div id="my-assigned-cases-view" class="view">
+        <!-- Navigation Bar -->
+        <nav class="nav-bar">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button id="back-to-ext-main" class="btn btn-secondary text-sm">← Back to Dashboard</button>
+                    <h1 class="text-xl font-bold text-blue-900">My Assigned Cases</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Dr. <span id="assigned-doctor-name">Loading...</span></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- My Assigned Cases Content -->
+        <div class="container mx-auto px-4 py-6 max-w-6xl">
+            <!-- Stats Cards -->
+            <div class="grid-responsive mb-8">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-assigned">5</div>
+                    <div class="stat-label">Total Assigned</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="in-review-count">3</div>
+                    <div class="stat-label">In Review</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completed-today">2</div>
+                    <div class="stat-label">Completed Today</div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="mb-6">
+                <div class="flex items-center space-x-4">
+                    <div class="form-group mb-0">
+                        <label for="status-filter" class="form-label text-sm">Filter by Status:</label>
+                        <select id="status-filter" class="form-input">
+                            <option value="">All Cases</option>
+                            <option value="in-review">In Review</option>
+                            <option value="draft">Draft</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assigned Cases Section -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold text-gray-900">My Assigned Cases</h3>
+                </div>
+                
+                <div id="assigned-cases-container" class="space-y-4">
+                    <!-- Case cards will be populated by JavaScript -->
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-2">Trauma Case - Compound Fracture</h4>
+                                <p class="text-gray-600 text-sm mb-3">Patient with severe compound fracture of the right tibia requiring immediate surgical intervention...</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
+                                    <span>Assigned: 1 hour ago</span>
+                                    <span class="status-badge status-in-review">In Review</span>
+                                    <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">High Priority</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">trauma</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">orthopedics</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-success text-sm" onclick="showCaseReview('case-1')">Continue Review</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-2">Pediatric Emergency - Respiratory Distress</h4>
+                                <p class="text-gray-600 text-sm mb-3">3-year-old patient presenting with severe respiratory distress and suspected pneumonia...</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
+                                    <span>Assigned: 3 hours ago</span>
+                                    <span class="status-badge status-draft">Draft Saved</span>
+                                    <span class="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs">Medium Priority</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">pediatrics</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-warning text-sm" onclick="showCaseReview('case-2')">Continue Review</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-2">Cardiac Event - Chest Pain Assessment</h4>
+                                <p class="text-gray-600 text-sm mb-3">45-year-old male presenting with acute chest pain, possible MI, requiring immediate assessment...</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500 mb-2">
+                                    <span>Completed: Yesterday</span>
+                                    <span class="status-badge status-completed">Review Completed</span>
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Standard Priority</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">cardiology</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">emergency</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary text-sm" onclick="showCaseReview('case-3')">View Review</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-200 py-6 mt-12">
+            <div class="container mx-auto px-4 text-center">
+                <p class="text-gray-600 text-sm">© 2024 MedBridge Gaza. Medical consultation platform for healthcare professionals.</p>
+            </div>
+        </footer>
     </div>
 
     <!-- Mock Data Script -->
@@ -246,217 +1094,377 @@
 
     <!-- Service Worker Registration -->
     <script>
-        // Register Service Worker for PWA functionality
+        // Register service worker for PWA functionality
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
+            window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/sw.js')
-                    .then((registration) => {
-                        console.log('Service Worker registered successfully:', registration);
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
                     })
-                    .catch((error) => {
-                        console.error('Service Worker registration failed:', error);
+                    .catch(function(error) {
+                        console.log('ServiceWorker registration failed: ', error);
                     });
             });
-        } else {
-            console.log('Service Worker not supported');
         }
 
-        // Authentication button functionality
-        document.getElementById('login-btn').addEventListener('click', async () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const errorDiv = document.getElementById('auth-error');
+        // View Management
+        function showView(viewId) {
+            console.log('showView called with:', viewId);
             
-            if (!email || !password) {
-                errorDiv.textContent = 'Please enter both email and password';
-                errorDiv.classList.remove('hidden');
-                return;
-            }
+            // Hide all views
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.remove('active');
+                console.log('Hiding view:', view.id);
+            });
             
-            try {
-                await window.firebaseUtils.signInWithEmail(email, password);
-                errorDiv.classList.add('hidden');
-            } catch (error) {
-                errorDiv.textContent = `Login failed: ${error.message}`;
-                errorDiv.classList.remove('hidden');
-            }
-        });
-
-        document.getElementById('register-btn').addEventListener('click', async () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const userType = document.querySelector('input[name="userType"]:checked').value;
-            const errorDiv = document.getElementById('auth-error');
+            // Show the target view
+            const targetView = document.getElementById(viewId);
+            console.log('Target view found:', !!targetView);
             
-            if (!email || !password) {
-                errorDiv.textContent = 'Please enter both email and password';
-                errorDiv.classList.remove('hidden');
-                return;
-            }
-            
-            if (password.length < 6) {
-                errorDiv.textContent = 'Password must be at least 6 characters';
-                errorDiv.classList.remove('hidden');
-                return;
-            }
-            
-            try {
-                const user = await window.firebaseUtils.createUserWithEmail(email, password);
+            if (targetView) {
+                targetView.classList.add('active');
+                console.log('Showing view:', targetView.id);
                 
-                // Create user profile in Firestore
-                const { setDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
-                await setDoc(doc(window.firebaseDb, 'users', user.uid), {
-                    uid: user.uid,
-                    email: user.email,
-                    displayName: user.email.split('@')[0], // Use email prefix as display name
-                    userType: userType,
-                    specialty: 'General Medicine', // Default specialty
-                    hospital: 'To be updated',
-                    location: 'Gaza',
-                    experience: 'To be updated',
-                    phone: '',
-                    isVerified: false,
-                    createdAt: new Date(),
-                    lastActive: new Date()
-                });
-                
-                errorDiv.classList.add('hidden');
-            } catch (error) {
-                errorDiv.textContent = `Registration failed: ${error.message}`;
-                errorDiv.classList.remove('hidden');
-            }
-        });
-
-        document.getElementById('signout-btn').addEventListener('click', async () => {
-            await window.firebaseUtils.signOutUser();
-        });
-
-        // Button functionality
-
-
-        document.getElementById('populate-mock').addEventListener('click', async () => {
-            if (confirm('This will populate your Firestore database with comprehensive mock data. Continue?')) {
-                try {
-                    const { setDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
-                    
-                    if (!window.firebaseDb) {
-                        alert('❌ Firebase not initialized');
-                        return;
-                    }
-
-                    console.log('Starting to populate Firestore with comprehensive mock data...');
-                    
-                    // Use the existing mock data from mock-data.js
-                    if (typeof window.MOCK_DATA === 'undefined') {
-                        alert('❌ Mock data not loaded. Please refresh the page and try again.');
-                        return;
-                    }
-
-                    const mockData = window.MOCK_DATA;
-                    
-                    // Add users
-                    console.log('Adding users...');
-                    for (const user of mockData.users) {
-                        await setDoc(doc(window.firebaseDb, 'users', user.uid), user);
-                        console.log(`  ✅ Added user: ${user.displayName}`);
-                    }
-                    
-                    // Add cases
-                    console.log('Adding medical cases...');
-                    console.log('Cases to add:', mockData.cases.length);
-                    for (const caseData of mockData.cases) {
-                        console.log('Adding case:', caseData.title, 'with ID:', caseData.id);
-                        await setDoc(doc(window.firebaseDb, 'cases', caseData.id), caseData);
-                        console.log(`  ✅ Added case: ${caseData.title}`);
-                    }
-                    
-                    // Add answers
-                    console.log('Adding answers/feedback...');
-                    for (const answer of mockData.answers) {
-                        await setDoc(doc(window.firebaseDb, 'answers', answer.id), answer);
-                        console.log(`  ✅ Added answer: ${answer.id}`);
-                    }
-                    
-                    // Add votes
-                    console.log('Adding votes...');
-                    for (const vote of mockData.votes) {
-                        await setDoc(doc(window.firebaseDb, 'votes', vote.id), vote);
-                        console.log(`  ✅ Added vote: ${vote.id}`);
-                    }
-                    
-                    alert(`✅ Comprehensive mock data populated successfully!\n\n📊 Summary:\n- Users: ${mockData.users.length}\n- Cases: ${mockData.cases.length}\n- Answers: ${mockData.answers.length}\n- Votes: ${mockData.votes.length}\n\nCheck the console for details.`);
-                    console.log('✅ Firestore population completed successfully!');
-                    
-                } catch (error) {
-                    alert(`❌ Error populating mock data: ${error.message}`);
-                    console.error('Error:', error);
+                // Load user info for dashboard views
+                if (viewId === 'internal-dashboard-view' || viewId === 'case-creation-view' || viewId === 'case-detail-view' || 
+                    viewId === 'external-dashboard-view' || viewId === 'case-assignment-view' || viewId === 'case-review-view' || viewId === 'my-assigned-cases-view') {
+                    loadUserInfo();
                 }
-            }
-        });
-
-        document.getElementById('view-data').addEventListener('click', async () => {
-            try {
-                const { collection, getDocs } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
                 
-                if (!window.firebaseDb) {
-                    alert('❌ Firebase not initialized');
+                console.log('View switch completed successfully');
+            } else {
+                console.error('Target view not found:', viewId);
+            }
+        }
+
+        // Load and display user information
+        function loadUserInfo() {
+            const userInfo = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const username = userInfo.username || 'Default User';
+            
+            // Update all username displays (both internal and external doctor elements)
+            const doctorNameElements = document.querySelectorAll('#doctor-name, #welcome-name, #case-doctor-name, #detail-doctor-name, #ext-doctor-name, #ext-welcome-name, #assign-doctor-name, #review-doctor-name, #assigned-doctor-name');
+            doctorNameElements.forEach(element => {
+                if (element) {
+                    element.textContent = username;
+                }
+            });
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, setting up event listeners');
+            
+            // Test that views exist
+            const loginView = document.getElementById('login-view');
+            const dashboardView = document.getElementById('internal-dashboard-view');
+            console.log('Login view exists:', !!loginView);
+            console.log('Dashboard view exists:', !!dashboardView);
+            
+            // Initialize user info on page load
+            loadUserInfo();
+            
+            // Login form submission - ONLY handle form submit, not button click
+            const loginForm = document.getElementById('login-form');
+            console.log('Login form found:', !!loginForm);
+            
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('Login form submitted');
+                    handleLogin();
+                });
+            }
+        
+        // Login handler function
+        async function handleLogin() {
+            console.log('handleLogin called');
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            const errorDiv = document.getElementById('auth-error');
+            
+            console.log('Form values:', { email, password, role });
+            
+            // Basic validation
+            if (!email || !password || !role) {
+                errorDiv.textContent = 'Please fill in all fields';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+            
+            try {
+                // Try to sign in with Firebase
+                const user = await window.firebaseUtils.signInWithEmail(email, password);
+                
+                // Store user info for display
+                localStorage.setItem('currentUser', JSON.stringify({
+                    email: user.email,
+                    role: role
+                }));
+                localStorage.setItem('userType', role);
+                
+                errorDiv.classList.add('hidden');
+                console.log('Firebase login successful');
+                
+            } catch (error) {
+                // If login fails, try to create a new user
+                try {
+                    console.log('Login failed, trying to create new user...');
+                    const user = await window.firebaseUtils.createUserWithEmail(email, password);
+                    
+                    // Create user profile in Firestore
+                    const { setDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                    await setDoc(doc(window.firebaseDb, 'users', user.uid), {
+                        uid: user.uid,
+                        email: user.email,
+                        displayName: user.email.split('@')[0],
+                        userType: role,
+                        specialty: 'General Medicine',
+                        hospital: 'To be updated',
+                        location: 'Gaza',
+                        experience: 'To be updated',
+                        phone: '',
+                        isVerified: false,
+                        createdAt: new Date(),
+                        lastActive: new Date()
+                    });
+                    
+                    // Store user info for display
+                    localStorage.setItem('currentUser', JSON.stringify({
+                        email: user.email,
+                        role: role
+                    }));
+                    localStorage.setItem('userType', role);
+                    
+                    errorDiv.classList.add('hidden');
+                    console.log('Firebase registration successful');
+                    
+                } catch (createError) {
+                    console.error('Registration failed:', createError);
+                    errorDiv.textContent = `Authentication failed: ${createError.message}`;
+                    errorDiv.classList.remove('hidden');
                     return;
                 }
+            }
+            
+            console.log('Switching to dashboard for role:', role);
+            
+            if (role === 'internal') {
+                console.log('About to call showView for internal dashboard');
+                console.log('showView function exists:', typeof showView);
+                try {
+                    showView('internal-dashboard-view');
+                    console.log('showView call completed');
+                } catch (error) {
+                    console.error('Error calling showView:', error);
+                }
+            } else if (role === 'external') {
+                console.log('About to call showView for external dashboard');
+                try {
+                    showView('external-dashboard-view');
+                    console.log('External dashboard view shown');
+                } catch (error) {
+                    console.error('Error showing external dashboard:', error);
+                }
+            }
+        }
+        
+            // Navigation buttons
+            const createCaseBtn = document.getElementById('create-case-btn');
+            if (createCaseBtn) {
+                createCaseBtn.addEventListener('click', function() {
+                    showView('case-creation-view');
+                });
+            }
 
-                console.log('Fetching data from Firestore...');
-                
-                // Get users
-                const usersSnapshot = await getDocs(collection(window.firebaseDb, 'users'));
-                const users = [];
-                usersSnapshot.forEach(doc => {
-                    users.push({ id: doc.id, ...doc.data() });
+            const backToDashboard = document.getElementById('back-to-dashboard');
+            if (backToDashboard) {
+                backToDashboard.addEventListener('click', function() {
+                    showView('internal-dashboard-view');
                 });
-                
-                // Get cases
-                const casesSnapshot = await getDocs(collection(window.firebaseDb, 'cases'));
-                const cases = [];
-                casesSnapshot.forEach(doc => {
-                    cases.push({ id: doc.id, ...doc.data() });
+            }
+
+            const backToCases = document.getElementById('back-to-cases');
+            if (backToCases) {
+                backToCases.addEventListener('click', function() {
+                    showView('internal-dashboard-view');
                 });
-                
-                // Get answers
-                const answersSnapshot = await getDocs(collection(window.firebaseDb, 'answers'));
-                const answers = [];
-                answersSnapshot.forEach(doc => {
-                    answers.push({ id: doc.id, ...doc.data() });
+            }
+
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async function() {
+                    try {
+                        await window.firebaseUtils.signOutUser();
+                        // Clear stored user information
+                        localStorage.removeItem('currentUser');
+                        localStorage.removeItem('userType');
+                        showView('login-view');
+                    } catch (error) {
+                        console.error('Logout failed:', error);
+                        // Still clear local storage and show login
+                        localStorage.removeItem('currentUser');
+                        localStorage.removeItem('userType');
+                        showView('login-view');
+                    }
                 });
-                
-                console.log('📊 Database Contents:');
-                console.log('Users:', users.length, users);
-                console.log('Cases:', cases.length, cases);
-                console.log('Answers:', answers.length, answers);
-                
-                let dataSummary = `📊 Database Contents:\n\n`;
-                dataSummary += `👥 Users: ${users.length}\n`;
-                dataSummary += `📋 Cases: ${cases.length}\n`;
-                dataSummary += `💬 Answers: ${answers.length}\n\n`;
-                
-                if (cases.length > 0) {
-                    dataSummary += `📋 Cases:\n`;
-                    cases.forEach(caseData => {
-                        dataSummary += `- ${caseData.title} (${caseData.specialty})\n`;
-                    });
-                }
-                
-                if (users.length > 0) {
-                    dataSummary += `\n👥 Users:\n`;
-                    users.forEach(user => {
-                        dataSummary += `- ${user.displayName} (${user.userType})\n`;
-                    });
-                }
-                
-                alert(dataSummary);
-                
-            } catch (error) {
-                alert(`❌ Error viewing data: ${error.message}`);
-                console.error('Error:', error);
+            }
+
+            // Case creation form
+            const caseForm = document.getElementById('case-creation-form');
+            if (caseForm) {
+                caseForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // TODO: Implement case submission to Firebase
+                    alert('Case submitted successfully!');
+                    showView('internal-dashboard-view');
+                });
+            }
+
+            // Save draft button
+            const saveDraftBtn = document.getElementById('save-draft-btn');
+            if (saveDraftBtn) {
+                saveDraftBtn.addEventListener('click', function() {
+                    // TODO: Implement draft saving
+                    alert('Draft saved successfully!');
+                });
+            }
+
+            // Case detail buttons
+            const viewDetailsBtns = document.querySelectorAll('.card .btn-primary');
+            viewDetailsBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    showView('case-detail-view');
+                });
+            });
+            
+            // Handle install button click
+            const installBtn = document.getElementById('install-btn');
+            if (installBtn) {
+                installBtn.addEventListener('click', async () => {
+                    console.log('Install button clicked');
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        console.log('Install outcome:', outcome);
+                        if (outcome === 'accepted') {
+                            console.log('PWA installed successfully');
+                        }
+                        deferredPrompt = null;
+                        installBtn.style.display = 'none';
+                    }
+                });
+            }
+
+            // External Doctor Navigation Events
+            const extLogoutBtn = document.getElementById('ext-logout-btn');
+            if (extLogoutBtn) {
+                extLogoutBtn.addEventListener('click', async function() {
+                    try {
+                        await window.firebaseUtils.signOutUser();
+                        localStorage.removeItem('currentUser');
+                        localStorage.removeItem('userType');
+                        showView('login-view');
+                    } catch (error) {
+                        console.error('Logout failed:', error);
+                        localStorage.removeItem('currentUser');
+                        localStorage.removeItem('userType');
+                        showView('login-view');
+                    }
+                });
+            }
+
+            const viewMyAssignedBtn = document.getElementById('view-my-assigned-btn');
+            if (viewMyAssignedBtn) {
+                viewMyAssignedBtn.addEventListener('click', function() {
+                    showView('my-assigned-cases-view');
+                });
+            }
+
+            const backToExtDashboard = document.getElementById('back-to-ext-dashboard');
+            if (backToExtDashboard) {
+                backToExtDashboard.addEventListener('click', function() {
+                    showView('external-dashboard-view');
+                });
+            }
+
+            const backToAssignedCases = document.getElementById('back-to-assigned-cases');
+            if (backToAssignedCases) {
+                backToAssignedCases.addEventListener('click', function() {
+                    showView('my-assigned-cases-view');
+                });
+            }
+
+            const backToExtMain = document.getElementById('back-to-ext-main');
+            if (backToExtMain) {
+                backToExtMain.addEventListener('click', function() {
+                    showView('external-dashboard-view');
+                });
+            }
+
+            // Case Assignment Events
+            const assignToMeBtn = document.getElementById('assign-to-me-btn');
+            if (assignToMeBtn) {
+                assignToMeBtn.addEventListener('click', function() {
+                    alert('Case assigned successfully!');
+                    showView('my-assigned-cases-view');
+                });
+            }
+
+            const declineCaseBtn = document.getElementById('decline-case-btn');
+            if (declineCaseBtn) {
+                declineCaseBtn.addEventListener('click', function() {
+                    alert('Case declined.');
+                    showView('external-dashboard-view');
+                });
+            }
+
+            // Expert Review Form
+            const expertReviewForm = document.getElementById('expert-review-form');
+            if (expertReviewForm) {
+                expertReviewForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Expert review submitted successfully!');
+                    showView('my-assigned-cases-view');
+                });
+            }
+
+            const saveDraftReviewBtn = document.getElementById('save-draft-review-btn');
+            if (saveDraftReviewBtn) {
+                saveDraftReviewBtn.addEventListener('click', function() {
+                    alert('Review draft saved successfully!');
+                });
             }
         });
+
+        // External Doctor Navigation Functions
+        function showCaseAssignment(caseId) {
+            console.log('Showing case assignment for:', caseId);
+            showView('case-assignment-view');
+        }
+
+        function showCaseReview(caseId) {
+            console.log('Showing case review for:', caseId);
+            showView('case-review-view');
+        }
+
+        // PWA Install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('PWA install prompt available');
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button
+            const installBtn = document.getElementById('install-btn');
+            if (installBtn) {
+                installBtn.style.display = 'inline-flex';
+            }
+        });
+
+
     </script>
 </body>
 </html> 
